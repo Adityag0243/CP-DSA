@@ -28,8 +28,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/mradi/OneDrive/Desktop/CP/Recurssion",
-      "program": "c:/Users/mradi/OneDrive/Desktop/CP/Recurssion/build/Debug/outDebug",
+      "cwd": "c:/Users/mradi/OneDrive/Desktop/CP",
+      "program": "c:/Users/mradi/OneDrive/Desktop/CP/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
