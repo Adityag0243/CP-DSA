@@ -32,9 +32,6 @@ int insert(int num,vector<int> &v){
     }
 
 
-
-
-
     int ans=10*ans1+ans2;          //for indices 5 and 9 it will return 59 for 2 and 4 it will return 24  
     return ans;
 }
