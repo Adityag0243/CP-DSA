@@ -28,8 +28,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/mradi/OneDrive/Desktop/CP/codeforce/contest4pw",
-      "program": "c:/Users/mradi/OneDrive/Desktop/CP/codeforce/contest4pw/build/Debug/outDebug",
+      "cwd": "c:/Users/mradi/OneDrive/Desktop/CP/leetcode",
+      "program": "c:/Users/mradi/OneDrive/Desktop/CP/leetcode/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
