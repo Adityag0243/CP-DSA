@@ -4,8 +4,9 @@ from typing import Any
 class Node:
     def __init__(self,data,prev=None,next=None):
         self.data=data
-        self.prev=prev
+        self.prev=prev  
         self.next=next
+        
     def __str__(self):
         return str(self.data)
     
@@ -16,6 +17,7 @@ class Dll:
         self.__head=None
         self.__tail=None
         self.__size=0
+        self.trav=None
     
     def size(self):
         return self.__size
@@ -23,7 +25,11 @@ class Dll:
     def __increasesize__(self):
         self.__size+=1
         
-        
+    
+    # def __itr__():
+    #     self.trav
+    
+    
     def __appendHead__(self,node):
         self.__head=node
         self.__tail=self.__head
@@ -95,7 +101,7 @@ class Dll:
         self.__tail=itr
         self.__size-=1
           
-
+# isme thodi dikkat hai
     def remove(self,pos):
         if self.__size==0:
             return IndexError("Size is already zero")
@@ -124,10 +130,6 @@ class Dll:
 # # print(N.data)
 
 l=Dll()
-
-l.append(20)
-
-
 l.append(30)
 
 
