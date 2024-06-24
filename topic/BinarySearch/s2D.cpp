@@ -8,8 +8,8 @@ typedef long long ll;
 #define no cout<<"NO"<<endl
 #define vp(v) vector<pair<int,int>> v;
 
-bool check(int n,int arr[][3],int mid,int m){
-    int sum=0;
+bool check(int n,int arr[][3],ll mid,int m){
+    ll sum=0;
     l(i,0,n){
             int onet=(arr[i][0]*arr[i][1]+arr[i][2]);
             sum+=((mid/onet)*arr[i][1]);
@@ -42,17 +42,15 @@ int main(){
     }
     cout<<ans<<endl;
     vector<int> vans(n);
-    int sum=m;
+    ll sum=m;
     l(i,0,n){
         int onet=(arr[i][0]*arr[i][1]+arr[i][2]);
-        // cout<<((ans/onet)*arr[i][1] + ((ans%onet)/arr[i][0]))<<" ";
         vans[i]=(ans/onet)*arr[i][1];
         sum-=vans[i];
     }
-    // cout<<"sum is : "<<sum<<"   ";
+
     l(i,0,n){
         int onet=(arr[i][0]*arr[i][1]+arr[i][2]);
-        // cout<<((ans%onet)/arr[i][0])<<" ";
         if(((ans%onet)/arr[i][0])<sum){
             vans[i]+=((ans%onet)/arr[i][0]); 
             sum-=((ans%onet)/arr[i][0]);
