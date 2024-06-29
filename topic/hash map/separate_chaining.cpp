@@ -28,21 +28,24 @@ class Hashmap{
 
     hash<int> hash_int;
 
-
+// if load factor goes up to threshold
     void resize(){
 
         vector<vector<vector<int>>> vnew;
         cap=cap+2;
+        // pushing empty 2d matrix into vnew so that we can call it by index value
         for(int i=0;i<cap;i++){
             vector<vector<int>> vsample;
             vnew.push_back(vsample);
         }
+
+        // copy all previous key data with newer hash value
         for(int i=0;i<v.size();i++){
             for(int j=0;j<v[i].size();j++){
                 
                 size_t hash1 = hash_int(v[i][j][0]);
-                v[i][j][0]=hash1%cap;
-                vnew[v[i][j][0]].push_back(v[i][j]);
+                v[i][j][2]=hash1%cap;                      // changing the previous hash value with new
+                vnew[v[i][j][2]].push_back(v[i][j]);      // pushing key,value,hash 's vector in the bucket at the index equal new hash
                 
             }
         }
@@ -62,16 +65,17 @@ class Hashmap{
         size_t hash1 = hash_fn(key);
         e->hash=hash1%cap;
 
-        if(e->hash==cap-1){
+        if(e->hash==cap-1){     // just pushing empty 2d vector so that can call it by index value
             vector<vector<int>> vsample;
             v.push_back(vsample);
             cap++;
         }
-        bool check=false;
+
+        bool check=false;      // to check if key already present
         for(int j=0;j<v[e->hash].size();j++){
             if(v[e->hash][j][0]==key){
                 size--;
-                v[e->hash][j][1]=e->data;
+                v[e->hash][j][1]=e->data;          //if already present then change its value
                 check=true;
                 break;
             }
@@ -87,7 +91,7 @@ class Hashmap{
 
 
     void show_map(){
-        // cout<<"hello";
+        cout<<"showing map:  ";
         for(int i=0;i<v.size();i++){
             for(int j=0;j<v[i].size();j++){
                 for(int k=0;k<3;k++){
@@ -138,12 +142,19 @@ int main(){
 
     Hashmap* a= new Hashmap();
     a->insert(1,10);
+    a->show_map();
     a->insert(3,20);
+    a->show_map();
     a->insert(3,19);
+    a->show_map();
     a->insert(1,12);
     a->insert(5,13);
+    a->show_map();
+    cout<<"......................\n";
     a->insert(1,23);
+    a->show_map();
     a->deletekey(1);
+    a->show_map();
     a->insert(8,20);
     a->insert(23,25);
     a->insert(15,5);
@@ -152,4 +163,5 @@ int main(){
     a->get(8);
     a->get(1);
     a->get(4);
+    a->get(23);
 }
