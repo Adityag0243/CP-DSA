@@ -15,18 +15,6 @@ class Entry{
     }
 };
 class Hashmap{
-
-
-
-
-
-
-
-
-
-
-
-
     
     int cap=1;
     int size=0;
@@ -97,6 +85,7 @@ class Hashmap{
         load_factor=float(size)/cap;
     }
 
+
     void show_map(){
         // cout<<"hello";
         for(int i=0;i<v.size();i++){
@@ -132,6 +121,8 @@ class Hashmap{
         for(int i=0;i<v[hashval].size();i++){
             if(v[hashval][i][0]==key){
                 pos=i;
+                size--;
+                load_factor=float(size)/cap;
                 break;
             }
         }
@@ -154,6 +145,8 @@ int main(){
     a->insert(1,23);
     a->deletekey(1);
     a->insert(8,20);
+    a->insert(23,25);
+    a->insert(15,5);
     a->show_map();
     a->get(3);
     a->get(8);
