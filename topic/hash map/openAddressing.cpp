@@ -16,7 +16,7 @@ class Entry{
 };
 class Hashmap{
     
-    int cap=1;
+    int cap=7;
     int size=0;
     float load_factor=0;    
     public:
@@ -24,105 +24,95 @@ class Hashmap{
     Hashmap(){
         
     }
-    vector<vector<vector<int>>> v;
-
-    hash<int> hash_int;
-
-    int probe(int x){
-        return 7*x;   //p(x)=5x
+    vector<vector<int>> v;
+    void sizing(){
+        for(int i=0;i<(cap-size);i++){
+            vector<int> vin(3,-1);
+            v.push_back(vin);
+        }
     }
+    
+    
 
-    // void resize(){
-
-    //     vector<vector<vector<int>>> vnew;
-    //     cap=cap+2;
-    //     for(int i=0;i<cap;i++){
-    //         vector<vector<int>> vsample;
-    //         vnew.push_back(vsample);
-    //     }
-    //     for(int i=0;i<v.size();i++){
-    //         for(int j=0;j<v[i].size();j++){
-    //             size_t hash1 = hash_int(v[i][j][0]);
-    //             v[i][j][0]=hash1%cap;
-    //             vnew[v[i][j][0]].push_back(v[i][j]);
-                
-    //         }
-    //     }
-    //     v=vnew;
+    // hash<int> hash_int;
+    // int hashing(int key){
+    //     return 5*key;
     // }
 
 
 
 
 
-    void insert(int key , int val){
-        // if(float(size)/cap>=0.6){
-        //     this->resize();
+    int probe(int x){
+        return 5*x;   //p(x)=5x
+    }
+
+    void resize(){
+
+        // vector<vector<vector<int>>> vnew;
+        // cap=cap+2;
+        // for(int i=0;i<cap;i++){
+        //     vector<vector<int>> vsample;
+        //     vnew.push_back(vsample);
         // }
+        // for(int i=0;i<v.size();i++){
+        //     for(int j=0;j<v[i].size();j++){
+        //         size_t hash1 = hash_int(v[i][j][0]);
+        //         v[i][j][0]=hash1%cap;
+        //         vnew[v[i][j][0]].push_back(v[i][j]);
+                
+        //     }
+        // }
+        // v=vnew;
+    }
+
+
+
+
+
+    void insert(int key , int val){
+        this->sizing();
         
-
         Entry* e =new Entry(key , val);
-        size_t hash1 = hash_fn(key);
-        e->hash=hash1%cap;
-
-        if(e->hash==cap-1){
-            vector<vector<int>> vsample;
-            v.push_back(vsample);
-            cap++;
-        }
-        bool check=false;
-        for(int j=0;j<v[e->hash].size();j++){
-            if(v[e->hash][j][0]==key){
-                v[e->hash][j][1]=e->data;
-                check=true;
-                break;
+        e->hash=probe(e->key)%cap;
+        if(size==cap) this->resize();
+        else{
+            int x=0;
+            while(true){
+                if(v[(e->hash+x)%cap][0]==e->key){
+                    v[(e->hash+x)%cap][1]=e->data;
+                }
+                else if(v[(e->hash+x)%cap][0]==-1){
+                    size++;
+                    v[(e->hash+x)%cap][0]=e->key;
+                    v[(e->hash+x)%cap][1]=e->data;
+                    v[(e->hash+x)%cap][2]=e->hash;
+                    break;
+                }
+                x++;
             }
         }
-        if(check) return;
-
-        size++;        
-        vector<int> entry;
-        entry={e->key,e->data,e->hash};
-        // v[e->hash].push_back(entry);
-
-        int x=0;
-        while(true){
-            int ind=((int)e->hash+probe(x))%cap;
-            if(v[ind].empty()){
-                entry={e->key,e->data,ind};
-                e->hash=ind;
-                v[ind].push_back(entry);
-                break;
-            }else x++;
-            cout<<"bhai bacha lo  ";
-        }
-    
     }
 
 
     void show_map(){
         // cout<<"hello";
         for(int i=0;i<v.size();i++){
-            for(int j=0;j<v[i].size();j++){
-                for(int k=0;k<3;k++){
-                    cout<<v[i][j][k]<<" ";
-                }
-                if(j<v[i].size()-1) cout<<", ";
+            for(int k=0;k<3;k++){
+                cout<<v[i][k]<<" ";
             }
-            if(v[i].size()) cout<<endl;
         }
     }
 
 
     void get(int key){
-        size_t hash1 = hash_fn(key);
-        int hashval=hash1%cap;
-        for(int i=0;i<v[hashval].size();i++){
-            if(v[hashval][i][0]==key){
-                cout<<"value for this key is: "<<v[hashval][i][1]<<"\n";
-                return;
-            }
+        int hash1 =probe(key);
+        hash1%=cap;
+        if(v[hash1%cap][0]==key){
+            cout<<"value at "<<key<<" key is: "<<v[hash1%cap][1];
         }
+
+        //remaining
         cout<<"KEY "<<key<<" NOT FOUND \n";
 
     }
