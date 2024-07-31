@@ -43,10 +43,6 @@ public:
  */
 
 
-
-
-
-
 /************** 232. Implement Queue using Stacks ************/
 
 class MyQueue {
@@ -102,13 +98,6 @@ public:
  * int param_3 = obj->peek();
  * bool param_4 = obj->empty();
  */
-
-
-
-
-
-
-
 
 
 /********************   380. Insert Delete GetRandom O(1)     *********************/
@@ -382,7 +371,7 @@ public:
         return current->val;
     }
     
-    string forward(int steps) {
+    string forward(int steps){
         if(steps>(size-current_pos)){
             current_pos=size;
             while(current->next!=NULL) current=current->next;
