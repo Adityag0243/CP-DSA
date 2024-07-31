@@ -110,6 +110,7 @@ public:
         Node* temp=head->next;
         head=NULL;
         head=temp;
+        if(size<3) tail=head;
         size-=1;
     }
     void pop(){

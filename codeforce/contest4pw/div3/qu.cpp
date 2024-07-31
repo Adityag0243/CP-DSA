@@ -1,120 +1,57 @@
 #include<bits/stdc++.h>
 using namespace std;
 typedef long long ll;
-#define l(i,st,n) for(int i=st;i<n;i++) 
-#define rl(i,st,n) for(int i=n-1;i>=st;i--) 
-#define srt(v) sort(v.begin(),v.end()) 
+// #define ll int
+#define l(i,st,n) for(int i=st;i<n;i++)
+#define rl(i,st,n) for(int i=n-1;i>=st;i--)
+#define srt(v) sort(v.begin(),v.end())
 #define yes cout<<"YES"<<endl
 #define no cout<<"NO"<<endl
 #define vp(v) vector<pair<int,int>> v;
-
-bool binary(vector<int> &v,int num);
-bool binary1(vector<int> &v,int num);
-
-
-bool binary(vector<int> &v,int num){
-	int l=0;
-	int h=v.size()-1;
-	int ans;
-	while(l<=h){
-		int mid=(l+h)/2;
-		if(v[mid]==num){
-			v.erase(v.begin()+mid);
-			return true;
-		}
-		else if(v[mid]>num) h=mid-1;
-		else l=mid+1;
-	}
-	return false;
-}
-
-// 5
-// 1 2 3 3 4
-// 5 5 5 3 4
-// 6
-// 1 3 7 5 5 4
-
-
-
-
-
-bool binary1(vector<int> &v,int num){
-	int l=0;
-	int h=v.size()-1;
-	while(l<=h){
-		int mid=(l+h)/2;
-		if(v[mid]==num){
-			return true;
-		}
-		else if(v[mid]>num) h=mid-1;
-		else l=mid+1;
-	}
-	return false;
-}
-
-
-
-
-
-
-
 
 int main(){
 	int t;
 	cin>>t;
 	while(t--){
-		int n;
-		cin>>n;
-		vector<int> a(n),b(n);
-		l(i,0,n) cin>>a[i];
-		l(i,0,n) cin>>b[i];
-		int m;
-		cin>>m;
-		vector<int> d(m);
-		l(i,0,m) cin>>d[i];
+		int n,q;
+		cin>>n>>q;
+		string s1,s2;
+		cin>>s1>>s2;
+		int cnt=0;
+		vector<vector<int>> v1(26);
+		vector<vector<int>> v2(26);
 
-		bool check2=true;
-		vector<int> dc(m);
-		dc=d;
-		srt(dc);
-
+		vector<int> ans;
 		l(i,0,n){
-			if(a[i]!=b[i]){
-				if(binary(dc,b[i])==false){
-				check2=false;
-				break;
-				}
+			v1[s1[i]-'a'].push_back(i+1);
+			v2[s2[i]-'a'].push_back(i+1);
+		}
+		
+		
+
+		while(q--){
+			int l,r;
+			cin>>l>>r;
+			int cnt=0;
+			l(i,0,26){
+				int cnt1=0,cnt2=0;
+				int ind1=lower_bound(v1[i].begin(),v1[i].end(),l)-v1[i].begin();
+				int ind2=upper_bound(v1[i].begin(),v1[i].end(),r)-v1[i].begin();
+				cnt1=ind2-ind1;
+				ind1=lower_bound(v2[i].begin(),v2[i].end(),l)-v2[i].begin();
+				ind2=upper_bound(v2[i].begin(),v2[i].end(),r)-v2[i].begin();
+				cnt2=ind2-ind1;
+
+
+				
+				cnt+=(abs(cnt1-cnt2));
 			}
-		}	
-
-		if(check2==false){
-			no;
-			continue;
-		}
-		
-		bool check1=false;
-		vector<int> checker;
-		srt(b);
-		int lastp=m;
-		int count=0;
-		rl(i,0,m){
-			if(binary1(b,d[i])==false){
-				lastp=i;
-				break;
-			}
+			cout<<cnt/2<<endl;
 		}
 
-		if(lastp==m) check1=true;
-		l(i,lastp,m){
-			if(binary1(b,d[i])) check1=true;
-		}
-		
-		if(check1) yes;
-		else no;
-		
-		
-		}
-	
 
-	
+		
+		
+		
+	}
 }

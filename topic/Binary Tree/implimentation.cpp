@@ -30,18 +30,18 @@ void inorder(Node* curr)
     }
 }
 
-// void preorder(Node* curr){      //wrong
-//     if(curr==nullptr) return;
+void preorder(Node* curr){      //wrong
+    if(curr==nullptr) return;
     
-//     cout<<curr->data<<" ";
-//     if(curr->l!=nullptr){
-//         inorder(curr->l);
-//     }
-//     if(curr->r!=nullptr){
-//         inorder(curr->r);
+    cout<<curr->data<<" ";
+    if(curr->l!=nullptr){
+        inorder(curr->l);
+    }
+    if(curr->r!=nullptr){
+        inorder(curr->r);
 
-//     }
-// }
+    }
+}
 
 
 bool search(char a,Node* curr){

@@ -9,8 +9,24 @@ typedef long long ll;
 #define no cout<<"NO"<<endl
 #define vp(v) vector<pair<int,int>> v;
 
-int main(){
-    l(i,4,300){
-        if( (float)(pow(2,i))/i == (pow(2,i))/i   && (float)(pow(2,i) -1 )/(i-1) == (pow(2,i) -1)/(i-1) ) cout<<i<<" ";
+
+int main() {
+    int n;
+    cin>>n;
+    vector<int> v(n+1);
+    l(i,0,n+1) v[i]=i;
+    l(i,2,n+1){
+        if(v[i]==i)
+        for(int j=i*i;j<=n;j+=i){
+            if(v[j]==j) v[j]=i;
+        }
     }
+    cout<<v[n];
+    n/=v[n];
+    while(n>1){
+        cout<<"*"<<v[n];
+        n/=v[n];
+    }
+
+    return 0;
 }

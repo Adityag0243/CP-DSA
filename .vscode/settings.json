@@ -5,6 +5,9 @@
     "ostream": "cpp",
     "cmath": "cpp",
     "vector": "cpp",
-    "new": "cpp"
-  }
+    "new": "cpp",
+    "chrono": "cpp",
+    "*.tcc": "cpp"
+  },
+  "workbench.panel.defaultLocation": "bottom"
 }

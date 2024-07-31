@@ -1,6 +1,5 @@
 #include<bits/stdc++.h>
 using namespace std;
-// #define l(i,st,n) for(int i=st;i<n;i++) 
 
 
 class Entry{
@@ -20,7 +19,8 @@ class Hashmap{
     int size=0;
     float load_factor=0;    
     public:
-    hash<int> hash_fn;
+    vector<vector<int>> v;
+    hash<int> hash_int;
     Hashmap(){
         
     }
@@ -32,38 +32,32 @@ class Hashmap{
         }
     }
     
-    
 
-    // hash<int> hash_int;
-    // int hashing(int key){
-    //     return 5*key;
-    // }
-
-
-
-
+    int hashing(int key){
+        return 5*key;
+    }
 
     int probe(int x){
-        return 5*x;   //p(x)=5x
+        return 5*x;   //p(x)=5x (we should put prime as a coeffiecient less collidable , why??)
     }
 
     void resize(){
 
-        // vector<vector<vector<int>>> vnew;
-        // cap=cap+2;
-        // for(int i=0;i<cap;i++){
-        //     vector<vector<int>> vsample;
-        //     vnew.push_back(vsample);
-        // }
-        // for(int i=0;i<v.size();i++){
-        //     for(int j=0;j<v[i].size();j++){
-        //         size_t hash1 = hash_int(v[i][j][0]);
-        //         v[i][j][0]=hash1%cap;
-        //         vnew[v[i][j][0]].push_back(v[i][j]);
+        vector<vector<vector<int>>> vnew;
+        cap=cap+2;
+        for(int i=0;i<cap;i++){
+            vector<vector<int>> vsample;
+            vnew.push_back(vsample);
+        }
+        for(int i=0;i<v.size();i++){
+            for(int j=0;j<v[i].size();j++){
+                size_t hash1 = hash_int(v[i][j][0]);
+                v[i][j][0]=hash1%cap;
+                vnew[v[i][j][0]].push_back(v[i][j]);
                 
-        //     }
-        // }
-        // v=vnew;
+            }
+        }
+        this->v = vnew;
     }
 
 

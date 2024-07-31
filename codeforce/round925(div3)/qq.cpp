@@ -10,7 +10,9 @@ typedef long long ll;
 #define vp(v) vector<pair<int,int>> v;
 
 int main(){
-    l(i,4,300){
-        if( (float)(pow(2,i))/i == (pow(2,i))/i   && (float)(pow(2,i) -1 )/(i-1) == (pow(2,i) -1)/(i-1) ) cout<<i<<" ";
-    }
+    int t;
+    cin>>t;
+    int sum=0;
+    l(i,1,15) if((t>>i)&1) sum+=i;
+    cout<<sum<<" ";
 }

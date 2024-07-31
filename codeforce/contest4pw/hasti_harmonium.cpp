@@ -10,7 +10,25 @@ typedef long long ll;
 #define vp(v) vector<pair<int,int>> v;
 
 int main(){
-    l(i,4,300){
-        if( (float)(pow(2,i))/i == (pow(2,i))/i   && (float)(pow(2,i) -1 )/(i-1) == (pow(2,i) -1)/(i-1) ) cout<<i<<" ";
+    string s;
+    cin>>s;
+    char ch=s[0];
+    
+    l(i,0,s.size()-1){
+       ch=min(ch,s[i]);
     }
+    int ind;
+    l(i,0,s.size()){
+        if(s[i]==ch){
+            ind=i;
+            break;
+        }
+    }
+    char ch2='z';
+
+    l(i,ind+1,s.size()){
+        ch2=min(ch2,s[i]);
+    }
+    cout<<ch<<ch2;
+
 }
