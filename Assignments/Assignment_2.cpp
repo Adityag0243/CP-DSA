@@ -383,7 +383,6 @@ public:
     }
     
     string forward(int steps) {
-        
         if(steps>(size-current_pos)){
             current_pos=size;
             while(current->next!=NULL) current=current->next;

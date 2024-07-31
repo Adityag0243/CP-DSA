@@ -67,9 +67,6 @@ class AVL{
         }
 
 
-
-
-
         Node* insert(Node* rt,Node* A){
             // Node* temp=rt;
             if(rt==nullptr){
@@ -122,9 +119,6 @@ class AVL{
             cout << curr->data << " "; 
         }
 
-
-
-
         void show(){
             cout<<"Inorder: ";
             inorder(root);
@@ -135,6 +129,28 @@ class AVL{
         Node* getroot(){
             return root;
         }
+
+
+
+        void order_of_key(){
+            
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 };
 
