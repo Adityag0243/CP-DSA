@@ -27,8 +27,7 @@ int main(){
         }
     }
     vector<int> pos(n+1,0);
-
-
+    
     while(m--){
         char sign;
         cin>>sign;

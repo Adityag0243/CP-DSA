@@ -28,7 +28,7 @@ public:
         head=tail=NULL;
         size=0;
     }
-    void enqueue(int val){
+    void enqueue(int val){     // push ==> enqueue
         Node* newNode=new Node(val);
         newNode->next=NULL;
         if(size==0){
@@ -58,8 +58,8 @@ public:
     }
     bool isempty(){
         return size==0;
-    }
-    void dequeue(){
+    } 
+    void dequeue(){      // pop  ===> dequeue
         if(isempty()) throw out_of_range("No element present in Queue");
         else{
             Node* temp=head;

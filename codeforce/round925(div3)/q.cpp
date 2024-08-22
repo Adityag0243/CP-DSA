@@ -10,52 +10,7 @@ typedef long long ll;
 #define vp(v) vector<pair<int,int>> v;
 
 int main(){
-    int t;
-    cin>>t;
-    while(t--){
-        int n,m,k;
-        cin>>n>>m>>k;
-        vector<char> v(n);
-        l(i,0,n) cin>>v[i];
-        int i=0;
-        bool ans=true;
-        while(i<n){
-            bool check=true;
-            int stop=m;
-            while(stop-- && i<n ){
-                if(v[i]=='L'){
-                    check=false;
-                    i++;
-                    break;
-                }
-                i++;
-                
-            }
-            if(stop>0 && i<=n && v[i-1]!='L'){
-                check=false;
-            }
-            if(check){
-                if(v[i]=='C'){
-                    ans=false;
-                    break;
-                }else{
-                    while(v[i]!='L'){
-                        k--;
-                        if(v[i]=='C' || k<0){
-                            ans=false;
-                            break;
-                        }
-                        i++;
-                    }
-                    if(ans==false) break;
-                    i++;
-                }
-            }
-        }
-        if(ans==false) no;
-        else yes;
-        
-
-        
+    l(i,4,300){
+        if( (float)(pow(2,i))/i == (pow(2,i))/i   && (float)(pow(2,i) -1 )/(i-1) == (pow(2,i) -1)/(i-1) ) cout<<i<<" ";
     }
 }
