@@ -52,8 +52,11 @@ int main(){
         adj[b].push_back(e2);
     }
 
+    int no_of_connected_componenet=0;
     for (int i = 0; i < n; i++) {     // this will handle if graph is disconnected
         if (!visited[i]) {
+            no_of_connected_componenet++;    // we can use this variable in visited array to identify whether visited or not and with that we can get array like 1 1 2 2 3 4 3 2 3 1    means all 1 are connected to each other 2 are another connected component connected with each other same with 3 and 4 as well 
+            
             bfs(i); // Start BFS from any unvisited node
         }
     }

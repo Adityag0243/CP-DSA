@@ -14,7 +14,25 @@
     "regex": "cpp",
     "utility": "cpp",
     "valarray": "cpp",
-    "random": "cpp"
+    "random": "cpp",
+    "forward_list": "cpp",
+    "string": "cpp",
+    "unordered_map": "cpp",
+    "unordered_set": "cpp",
+    "memory": "cpp",
+    "fstream": "cpp",
+    "functional": "cpp",
+    "future": "cpp",
+    "istream": "cpp",
+    "shared_mutex": "cpp",
+    "sstream": "cpp",
+    "streambuf": "cpp",
+    "thread": "cpp",
+    "tuple": "cpp",
+    "ratio": "cpp",
+    "system_error": "cpp",
+    "type_traits": "cpp"
   },
-  "workbench.panel.defaultLocation": "bottom"
+  "workbench.panel.defaultLocation": "bottom",
+  "C_Cpp.errorSquiggles": "disabled"
 }

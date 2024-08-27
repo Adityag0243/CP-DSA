@@ -10,8 +10,19 @@ typedef long long ll;
 #define vp(v) vector<pair<int,int>> v;
 
 int main(){
-    int n,k;
-    cin>>n>>k;
-    cout<<k*(n/k)+k;
-    
+    int t;
+    cin>>t;
+    while(t--){
+        int n;
+        cin>>n;
+        string s;
+        cin>>s;
+
+        srt(s);
+        l(i,0,n/2){
+            cout<<s[i]<<s[n-1-i];
+        }
+        if(n&1) cout<<s[n/2];
+        cout<<endl;
+    }
 }
