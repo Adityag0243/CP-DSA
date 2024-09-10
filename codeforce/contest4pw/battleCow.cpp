@@ -43,9 +43,7 @@ int main(){
             }else cout<<0<<endl;
             continue;
         }
-        
-
-        
+          
         
         int firstlarge=search(v[k-1],0,v);
         if(vcopy[k-1]==v[k-1]){
