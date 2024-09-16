@@ -201,9 +201,9 @@ int main() {
         auto end = chrono::high_resolution_clock::now();
         chrono::duration<double> duration2 = end - mid;
 
-        // Accumulate the duration
-        total_duration  += duration;
-        total_duration2 += duration2;
+       
+        total_duration  += duration;   // total distance from IPQ Dijkstra
+        total_duration2 += duration2;  // total distance from Lazy implimentation Dijkstra
 
         // Output the distances to the output file
 
