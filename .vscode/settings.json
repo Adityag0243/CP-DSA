@@ -31,7 +31,8 @@
     "tuple": "cpp",
     "ratio": "cpp",
     "system_error": "cpp",
-    "type_traits": "cpp"
+    "type_traits": "cpp",
+    "iosfwd": "cpp"
   },
   "workbench.panel.defaultLocation": "bottom",
   "C_Cpp.errorSquiggles": "disabled"

@@ -44,9 +44,6 @@ void shortest_path(int source , int destination){
 
 
 void dijkstra(int source,int destination){
-
-    // priority_queue<pair<int,int>> pq;
-
     priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;   // iska mtlb ab hum min heap use kr rhe hai
 
     pq.push( make_pair(0,source) );
