@@ -12,9 +12,9 @@ using namespace std;
 vector<int> dijkstra2(int source, int n, const vector<vector<pair<int, int>>>& adj);
 
 
-
+                            // Lazy Implimentation (using min heap)
 vector<int> dijkstra2(int source, int n, const vector<vector<pair<int, int>>>& adj) {
-    // Create a priority queue (min-heap)
+  
     priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
 
     // Initialize distances to all nodes as infinity
@@ -32,18 +32,18 @@ vector<int> dijkstra2(int source, int n, const vector<vector<pair<int, int>>>& a
         int u_dist = pq.top().first;
         pq.pop();
 
-        // Skip processing if the distance is outdated
-        if (u_dist > dist[u]) continue;
+        
+        if (u_dist > dist[u]) continue;   // already have minimum distance that u_dist
 
-        // Loop over the neighbors of u
+        // Looping over neighbors of u
         for (const pair<int, int>& neighbor : adj[u]) {
-            int v = neighbor.first;    // Destination node
-            int weight = neighbor.second;  // Weight of edge u -> v
+            int v = neighbor.first;               // Destination node
+            int weight = neighbor.second;         // Weight of edge u -> v
 
             // Relaxation step
             if (dist[u] + weight < dist[v]) {
                 dist[v] = dist[u] + weight;
-                pq.push({dist[v], v});  // Push updated distance and node into the priority queue
+                pq.push({dist[v], v});  // Push updated distance and node into the priority queue  // here IPQ would help better
             }
         }
     }
