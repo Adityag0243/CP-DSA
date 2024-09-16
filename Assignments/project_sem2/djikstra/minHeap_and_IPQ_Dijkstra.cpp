@@ -1,12 +1,6 @@
 // with help of chatgpt....
-#include <iostream>
-#include <vector>
-#include <queue>
-#include <limits>
-#include <utility>  // For std::pair
-#include <chrono>   // For time measurement
-#include <iomanip>  // For setting output precision
-#include <cstdio>   // For fopen, fclose, etc.
+
+#include<bits/stdc++.h>
 
 using namespace std;
 vector<int> dijkstra2(int source, int n, const vector<vector<pair<int, int>>>& adj);
