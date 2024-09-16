@@ -46,9 +46,6 @@ vector<int> dijkstra2(int source, int n, const vector<vector<pair<int, int>>>& a
 }
 
 
-
-
-
 class IndexedPriorityQueue {
 public:
     IndexedPriorityQueue(int maxSize) : size(0), n(maxSize), heap(maxSize + 1), index(maxSize, -1), keys(maxSize, numeric_limits<int>::max()) {}
@@ -120,7 +117,8 @@ private:
     }
 };
 
-// Dijkstra's algorithm using IPQ
+                                                // Dijkstra's algorithm using IPQ
+
 vector<int> dijkstra(int source, int n, const vector<vector<pair<int, int>>> &adj) {
     vector<int> dist(n, numeric_limits<int>::max());
     IndexedPriorityQueue ipq(n);
@@ -162,8 +160,9 @@ int main() {
     fscanf(infile, "%d", &t);
 
   
-    chrono::duration<double> total_duration(0);
+    chrono::duration<double> total_duration(0);  
     chrono::duration<double> total_duration2(0);
+    int cnt=0;   // count of how many time IPQ dijkstra perform better
 
 
     for(int i=0;i<t;i++){
@@ -171,13 +170,11 @@ int main() {
         fscanf(infile, "%d %d", &n, &m);
 
         vector<vector<pair<int, int>>> adj(n);
-
+   
         int u, v, w;
         for (int i = 0; i < m; ++i) {
             fscanf(infile, "%d %d %d", &u, &v, &w);
-            adj[u].push_back(make_pair(v, w));
-            // For undirected graphs, uncomment the following line
-            // adj[v].push_back(make_pair(u, w));
+            adj[u].push_back(make_pair(v, w));       // directed graph
         }
 
         
@@ -186,26 +183,23 @@ int main() {
         fscanf(infile, "%d", &source);
        
 
-        // Start measuring time
+
         auto start = chrono::high_resolution_clock::now();
-
-        vector<int> distances = dijkstra(source, n, adj);
-
-        // End measuring time
-
+        vector<int> distances = dijkstra(source, n, adj);   // calling lazy implimentation of Dijkstra
         auto mid = chrono::high_resolution_clock::now();
-        chrono::duration<double> duration = mid - start;
-
-        vector<int> distances2 = dijkstra2(source, n, adj);
-
+        vector<int> distances2 = dijkstra2(source, n, adj);  // calling IPQ Dijkstra
         auto end = chrono::high_resolution_clock::now();
-        chrono::duration<double> duration2 = end - mid;
+
+
+        chrono::duration<double> duration = mid - start;   // time taken by lazy implimentation
+        chrono::duration<double> duration2 = end - mid;    // time taken by IPQ Dijkstra
 
        
-        total_duration  += duration;   // total distance from IPQ Dijkstra
-        total_duration2 += duration2;  // total distance from Lazy implimentation Dijkstra
+        total_duration  += duration;   // total time-taken from IPQ Dijkstra
+        total_duration2 += duration2;  // total time-taken from Lazy implimentation of Dijkstra
 
-        // Output the distances to the output file
+
+        // for printing distance from particular node
 
         // fprintf(outfile, "Distances from node %d:\n", source);
         // for (int i = 0; i < n; ++i) {
@@ -216,10 +210,14 @@ int main() {
         //         fprintf(outfile, "Distance to node %d = %d\n", i, distances[i]);
         //     }
         // }
+
+
         fprintf(outfile, "Time taken by min heap dijkstra and IPQ dijkstra : %f and %f seconds\n", duration2.count() , duration.count());
+        if(duration2.count() >= duration.count()) cnt++;
 
     }
-    
+
+    fprintf(outfile, "\nOut of %d time IPQ Dijkstra perform %d times better than normal PQ\n\n", t,cnt);
     fprintf(outfile, "Average time taken by min heap dijkstra and IPQ dijkstra : %f and %f seconds\n", total_duration2.count()/t , total_duration.count()/t);
     fclose(infile);
     fclose(outfile);
