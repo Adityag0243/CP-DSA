@@ -192,7 +192,6 @@ int main() {
         chrono::duration<double> duration = mid - start;   // time taken by lazy implimentation
         chrono::duration<double> duration2 = end - mid;    // time taken by IPQ Dijkstra
 
-       
         total_duration  += duration;   // total time-taken from IPQ Dijkstra
         total_duration2 += duration2;  // total time-taken from Lazy implimentation of Dijkstra
 
@@ -201,8 +200,6 @@ int main() {
             if(i<t/2) cnt1++;
             else cnt2++;
         }
-        
-
     }
     fprintf(outfile, "\nOut of %d time IPQ Dijkstra perform %d times better than normal PQ for normal graph\n", t/2,cnt1);
     fprintf(outfile, "\nOut of %d time IPQ Dijkstra perform %d times better than normal PQ forrelatively densed graph\n\n",t-t/2,cnt2);
