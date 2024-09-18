@@ -11,33 +11,30 @@ vector<int> dijkstra2(int source, int n, const vector<vector<pair<int, int>>>& a
   
     priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
 
-    // Initialize distances to all nodes as infinity
-    vector<int> dist(n, numeric_limits<int>::max());
-    
-    // Distance to the source is 0
+    vector<int> dist(n, INT_MAX);
     dist[source] = 0;
 
     // Insert the source node into the priority queue
     pq.push({0, source});  // {distance, node}
-
+ 
     while (!pq.empty()) {
-        // Extract the node with the minimum distance
+        // Extract the node with the minimum distance as it will be on top (min-heap)....
         int u = pq.top().second;
         int u_dist = pq.top().first;
         pq.pop();
 
         
-        if (u_dist > dist[u]) continue;   // already have minimum distance that u_dist
+        if (u_dist > dist[u]) continue;   // already got minimum distance than u_dist  // here IPQ would help better
 
         // Looping over neighbors of u
         for (const pair<int, int>& neighbor : adj[u]) {
             int v = neighbor.first;               // Destination node
-            int weight = neighbor.second;         // Weight of edge u -> v
+            int weight = neighbor.second;         // weightage to reach neighbors
 
             // Relaxation step
             if (dist[u] + weight < dist[v]) {
                 dist[v] = dist[u] + weight;
-                pq.push({dist[v], v});  // Push updated distance and node into the priority queue  // here IPQ would help better
+                pq.push({dist[v], v});  // Push updated distance and node into the priority queue
             }
         }
     }
@@ -162,7 +159,10 @@ int main() {
   
     chrono::duration<double> total_duration(0);  
     chrono::duration<double> total_duration2(0);
-    int cnt=0;   // count of how many time IPQ dijkstra perform better
+
+    int cnt1=0 , cnt2=0;   // count of how many time IPQ dijkstra perform better
+                            // cnt1 for less densed cnt2 for more densed graph
+                            //first half node input is less densed second half is relatively more densed
 
 
     for(int i=0;i<t;i++){
@@ -182,8 +182,6 @@ int main() {
         int source;
         fscanf(infile, "%d", &source);
        
-
-
         auto start = chrono::high_resolution_clock::now();
         vector<int> distances = dijkstra(source, n, adj);   // calling lazy implimentation of Dijkstra
         auto mid = chrono::high_resolution_clock::now();
@@ -213,12 +211,17 @@ int main() {
 
 
         fprintf(outfile, "Time taken by min heap dijkstra and IPQ dijkstra : %f and %f seconds\n", duration2.count() , duration.count());
-        if(duration2.count() >= duration.count()) cnt++;
+        if(duration2.count() >= duration.count()){
+            if(i<t/2) cnt1++;
+            else cnt2++;
+        }
+        
 
     }
 
-    fprintf(outfile, "\nOut of %d time IPQ Dijkstra perform %d times better than normal PQ\n\n", t,cnt);
-    fprintf(outfile, "Average time taken by min heap dijkstra and IPQ dijkstra : %f and %f seconds\n", total_duration2.count()/t , total_duration.count()/t);
+    fprintf(outfile, "\nOut of %d time IPQ Dijkstra perform %d times better than normal PQ for normal graph\n", t/2,cnt1);
+    fprintf(outfile, "\nOut of %d time IPQ Dijkstra perform %d times better than normal PQ forrelatively densed graph\n\n",t-t/2,cnt2);
+    fprintf(outfile, "Average time taken by min heap dijkstra and IPQ dijkstra : %.9f and %.9f seconds\n", total_duration2.count()/t , total_duration.count()/t);
     fclose(infile);
     fclose(outfile);
 
