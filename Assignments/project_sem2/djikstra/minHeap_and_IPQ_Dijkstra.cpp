@@ -204,12 +204,10 @@ int main() {
         
 
     }
-
     fprintf(outfile, "\nOut of %d time IPQ Dijkstra perform %d times better than normal PQ for normal graph\n", t/2,cnt1);
     fprintf(outfile, "\nOut of %d time IPQ Dijkstra perform %d times better than normal PQ forrelatively densed graph\n\n",t-t/2,cnt2);
     fprintf(outfile, "Average time taken by min heap dijkstra and IPQ dijkstra : %.9f and %.9f seconds\n", total_duration2.count()/t , total_duration.count()/t);
     fclose(infile);
     fclose(outfile);
-
     return 0;
 }

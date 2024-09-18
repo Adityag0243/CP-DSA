@@ -40,7 +40,7 @@ int main() {
     int m = rand() % val+ 10*n;  // Number of edges
 
 
-    outfile << n << " " << m << endl;
+    outfile << n << " " <<m<< endl;
 
     for (int i = 0; i < m; ++i) {
         int u = rand() % n;
@@ -52,10 +52,6 @@ int main() {
     int source=rand()%n;
     outfile << source << endl;
     }
-
-
-
-
 
     outfile.close();
     cout << "Large input generated and saved to 'large_input.txt'" << endl;
