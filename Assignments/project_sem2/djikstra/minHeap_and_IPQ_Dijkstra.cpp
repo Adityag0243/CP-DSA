@@ -196,21 +196,7 @@ int main() {
         total_duration  += duration;   // total time-taken from IPQ Dijkstra
         total_duration2 += duration2;  // total time-taken from Lazy implimentation of Dijkstra
 
-
-        // for printing distance from particular node
-
-        // fprintf(outfile, "Distances from node %d:\n", source);
-        // for (int i = 0; i < n; ++i) {
-        //     if (distances[i] == numeric_limits<int>::max()) {
-        //         continue;
-        //         fprintf(outfile, "Distance to node %d = INF\n", i);
-        //     } else {
-        //         fprintf(outfile, "Distance to node %d = %d\n", i, distances[i]);
-        //     }
-        // }
-
-
-        fprintf(outfile, "Time taken by min heap dijkstra and IPQ dijkstra : %f and %f seconds\n", duration2.count() , duration.count());
+        // fprintf(outfile, "Time taken by min heap dijkstra and IPQ dijkstra : %f and %f seconds\n", duration2.count() , duration.count());
         if(duration2.count() >= duration.count()){
             if(i<t/2) cnt1++;
             else cnt2++;
