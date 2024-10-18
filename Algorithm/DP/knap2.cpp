@@ -23,30 +23,34 @@ using namespace std;
 #define l(i,st,n)       for(int i=st;i<n;i++)
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
+int n , W;  
+int dp[100005];
 
 signed main(){
-    int t;
-    cin >> t;
-    while(t--){
-        int n,k;
-        cin >> n >> k;
-        vi v(n+1);
-        l(i,0,n) cin >> v[i];
-        v[n] = v[n-1]/2;
-        int prev = 0;
-        int next = 0;
-        int cnt = 0;
+    cin >> n >> W;
+    int weight , value;
+    l(i,0,100005) dp[i]=10000000000;
+    // dp[i] - min weight we can get for value i 
+    dp[0] = 0;   // Iguess very Important line if it works well 
 
-        l(i,1,n+1){
-            if(2*v[i] <= v[i-1]){
-                next = i-1;
-                cnt += max((int)0, next-prev+1-k);
-                prev = i;
-                // cout << cnt << " ";
-            }
+    l(i,0,n){
+        cin >> weight;
+        cin >> value;
+        rl(j ,0, 100002-value){
+            if( dp[j] > W   ||   dp[j] + weight > W ) continue;
+            dp[j + value] = min( dp[j + value] ,  dp[j] + weight);
+        } 
+    }
+
+
+    
+
+    rl(i,0,100005){
+        if(dp[i] <= W){
+            cout<<i<<endl;
+            break;
         }
-        
-        cout << cnt << endl;
-        
     }
 }
+
+

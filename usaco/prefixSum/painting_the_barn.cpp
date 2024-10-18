@@ -3,7 +3,7 @@ using namespace std;
 #define all(arr)        arr.begin(), arr.end()
 #define vi              vector<int>
 #define vvi             vector<vi>
-#define int             int64_t
+// #define int             int64_t
 #define yes             cout << "YES" << endl;
 #define no              cout << "NO" << endl;
 #define p(x)            cout << (x) << endl;
@@ -25,28 +25,56 @@ using namespace std;
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
 signed main(){
-    int t;
-    cin >> t;
-    while(t--){
-        int n,k;
-        cin >> n >> k;
-        vi v(n+1);
-        l(i,0,n) cin >> v[i];
-        v[n] = v[n-1]/2;
-        int prev = 0;
-        int next = 0;
-        int cnt = 0;
 
-        l(i,1,n+1){
-            if(2*v[i] <= v[i-1]){
-                next = i-1;
-                cnt += max((int)0, next-prev+1-k);
-                prev = i;
-                // cout << cnt << " ";
-            }
+
+    freopen("paintbarn.in", "r", stdin);
+    freopen("paintbarn.out", "w", stdout);
+
+    
+    int n , k;
+    cin >> n >> k;
+
+    vector<vector<int>>  barn(1002, vector<int> (1002,0));
+    while(n--){
+        int x1,y1,x2,y2;
+        cin >> x1 >> y1 >> x2 >> y2 ;
+        x2--;
+        y2--;
+        // cout<<"putting positive value at index "<<x1<<"  "<<y1<<"\n";
+        for(int i = x1; i <= x2 ; i++){
+            barn[i][y1]++;
         }
-        
-        cout << cnt << endl;
-        
+        // cout<<"putting negative value at index "<<x1<<"  "<<y2+1<<"\n";
+
+        for(int i = x1 ; i <= x2 ; i++){
+            barn[i][y2+1]--;
+        }
     }
+
+    l(i,0,1001){
+        l(j,1,1001){
+            barn[i][j] += barn[i][j-1];
+        }
+    }
+
+
+    // l(i,0,10){
+    //     l(j,0,10){
+    //         cout<<barn[i][j]<<" ";
+    //     }
+    //     cout<<endl;
+    // }
+
+    
+
+    int cnt=0;
+    for(int i = 0; i<1001 ; i++){
+        l(j,0,1001){
+            if(barn[i][j] == k) cnt++;
+        }
+    }
+        // cout << "helllo   " << endl;
+
+    cout<<cnt;   
+    
 }

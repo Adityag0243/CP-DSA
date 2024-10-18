@@ -1,60 +1,21 @@
-#include <bits/stdc++.h>
+#include<bits/stdc++.h>
 using namespace std;
-#define f(i, start, end) for (int i = start; i < end; i++)
-#define fs(i, start, end, step) for (int i = start; i < end; i += step)
-#define fr(i, start, end) for (int i = start; i > end; i--)
-#define all(arr) arr.begin(), arr.end()
-#define vi vector<int>
-#define vvi vector<vi>
-#define YES cout << "YES" << endl;
-#define NO cout << "NO" << endl;
-#define p(x) cout << (x) << endl;
-#define sp(x) cout << (x) << " ";
-#define endl '\n'
-#define vlli vector<long long int>
-#define mxv(arr) *max_element(arr.begin(), arr.end())
-#define mnv(arr) *min_element(arr.begin(), arr.end())
-#define smv(arr) accumulate(arr.begin(), arr.end(), 0LL)
-#define srt(arr) sort(arr.begin(), arr.end())
-#define rev(arr) reverse(all(arr))
-#define MOD2 1000000007
-#define fastio ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr)
-typedef long long lli;
+typedef long long ll;
+// #define ll int
+#define l(i,st,n) for(int i=st;i<n;i++)
 
-void solve() {
-    int n, m; 
-    cin >> n >> m;
-    string s; 
-    cin >> s;
-    vi v(m); 
-    f(i, 0, m){
-        cin >> v[i];
-    }
-    string c; 
-    cin >> c;
-    set<int>st;
-    f(i, 0, m){
-        st.insert(v[i]);
-    }
-    vi ans;
-    // int idx = 0;
-    for(auto itr=st.begin();itr!=st.end();itr++){
-        ans.push_back(*itr);
-    }
-    srt(c);
-    int idx = 0;
 
-    f(i, 0, ans.size()){
-        s[ans[i]-1] = c[idx];
-        idx++;
+int main(){
+    freopen("input.in","r",stdin);
+    freopen("a.out","w",stdout);
+    int t;
+    cin>>t;
+    l(j,1,t+1){
+       
+        double n,p;
+        cin>>n>>p;
+        p/=100;
+        cout<<"Case #"<<j<<": ";
+        cout <<setprecision(15) <<  100*(pow(p,(n-1)/n) - p)<<endl;
     }
-    cout<<s<<endl;
-}
-
-int main() {
-    fastio;
-    int t; 
-    cin >> t;
-    while (t--)
-        solve();
 }

@@ -32,7 +32,10 @@
     "ratio": "cpp",
     "system_error": "cpp",
     "type_traits": "cpp",
-    "iosfwd": "cpp"
+    "iosfwd": "cpp",
+    "iomanip": "cpp",
+    "deque": "c",
+    "list": "c"
   },
   "workbench.panel.defaultLocation": "bottom",
   "C_Cpp.errorSquiggles": "disabled"

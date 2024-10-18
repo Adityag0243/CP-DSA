@@ -24,29 +24,36 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-signed main(){
-    int t;
-    cin >> t;
-    while(t--){
-        int n,k;
-        cin >> n >> k;
-        vi v(n+1);
-        l(i,0,n) cin >> v[i];
-        v[n] = v[n-1]/2;
-        int prev = 0;
-        int next = 0;
-        int cnt = 0;
 
-        l(i,1,n+1){
-            if(2*v[i] <= v[i-1]){
-                next = i-1;
-                cnt += max((int)0, next-prev+1-k);
-                prev = i;
-                // cout << cnt << " ";
-            }
+int h , w;
+int dp[1001][1001];
+char arr[1001][1001];
+
+bool is_valid(int i , int j){
+    if(i==0 || j==0) return true;
+    return (i<=h && i>0 && j>0 && j<=w && arr[i][j]=='.');
+}
+
+signed main(){
+    cin >> h >> w;
+    memset(arr, 0, sizeof(arr));
+    l(i,1,h+1){
+        l(j,1,w+1){
+            cin >> arr[i][j];
         }
-        
-        cout << cnt << endl;
-        
     }
+    memset(dp, 0, sizeof(dp));
+
+    // start logic now............
+    l(i,1,h+1){
+        l(j,1,w+1){
+            if(i ==1 && j ==1) dp[i][j] = 1;
+            if( arr[i][j] == '#') continue;
+            if( is_valid(i-1,j) ) dp[i][j] += dp[i-1][j];
+            if( is_valid(i,j-1) ) dp[i][j] += dp[i][j-1];
+            dp[i][j]%=MOD2;
+        }
+    }
+    cout<<dp[h][w];
+    
 }

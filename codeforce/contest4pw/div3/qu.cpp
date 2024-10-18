@@ -1,57 +1,45 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 using namespace std;
-typedef long long ll;
-// #define ll int
-#define l(i,st,n) for(int i=st;i<n;i++)
-#define rl(i,st,n) for(int i=n-1;i>=st;i--)
-#define srt(v) sort(v.begin(),v.end())
-#define yes cout<<"YES"<<endl
-#define no cout<<"NO"<<endl
-#define vp(v) vector<pair<int,int>> v;
+#define all(arr) arr.begin(), arr.end()
+#define vi vector<int>
+#define vvi vector<vi>
+#define int uint64_t
+#define YES cout << "YES" << endl;
+#define NO cout << "NO" << endl;
+#define p(x) cout << (x) << endl;
+#define sp(x) cout << (x) << " ";
+#define endl '\n'
+#define mxv(arr) *max_element(arr.begin(), arr.end())
+#define mnv(arr) *min_element(arr.begin(), arr.end())
+#define smv(arr) accumulate(arr.begin(), arr.end(), 0LL)
+#define srt(arr) sort(arr.begin(), arr.end())
+#define rev(arr) reverse(all(arr))
+#define MOD2 1000000007
+#define fastio ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr)
 
-int main(){
-	int t;
-	cin>>t;
-	while(t--){
-		int n,q;
-		cin>>n>>q;
-		string s1,s2;
-		cin>>s1>>s2;
-		int cnt=0;
-		vector<vector<int>> v1(26);
-		vector<vector<int>> v2(26);
-
-		vector<int> ans;
-		l(i,0,n){
-			v1[s1[i]-'a'].push_back(i+1);
-			v2[s2[i]-'a'].push_back(i+1);
-		}
-		
-		
-
-		while(q--){
-			int l,r;
-			cin>>l>>r;
-			int cnt=0;
-			l(i,0,26){
-				int cnt1=0,cnt2=0;
-				int ind1=lower_bound(v1[i].begin(),v1[i].end(),l)-v1[i].begin();
-				int ind2=upper_bound(v1[i].begin(),v1[i].end(),r)-v1[i].begin();
-				cnt1=ind2-ind1;
-				ind1=lower_bound(v2[i].begin(),v2[i].end(),l)-v2[i].begin();
-				ind2=upper_bound(v2[i].begin(),v2[i].end(),r)-v2[i].begin();
-				cnt2=ind2-ind1;
-
-
-				
-				cnt+=(abs(cnt1-cnt2));
-			}
-			cout<<cnt/2<<endl;
-		}
-
-
-		
-		
-		
-	}
+int arr[200005]={0};
+void solve() {
+    int n , m; cin >> n >> m;
+    vi a(n); for(int i = 0; i < n; i++) cin >> a[i];
+    vi b(m); for(int i = 0; i < m; i++) cin >> b[i];
+    for(int i = 0; i < m; i++){
+        
+        int g = b[i] + a[0];
+        if(arr[b[i]] != 0){
+                sp(arr[b[i]]);
+                continue;
+        }
+        for(int j = 0; j < n ; j ++){
+            g = __gcd(g , b[i] + a[j]);
+            if(g==1) break;
+        }
+        arr[b[i]] = g;
+        sp(g);
+    }
+}
+signed main() {
+    fastio;
+    // int t; cin >> t;
+    // while (t--)
+        solve();
 }

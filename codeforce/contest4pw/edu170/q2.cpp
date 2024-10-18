@@ -25,28 +25,43 @@ using namespace std;
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
 signed main(){
+    fastio
     int t;
     cin >> t;
     while(t--){
-        int n,k;
+        int n, k;
         cin >> n >> k;
-        vi v(n+1);
-        l(i,0,n) cin >> v[i];
-        v[n] = v[n-1]/2;
-        int prev = 0;
-        int next = 0;
-        int cnt = 0;
+        vi v(n);
 
-        l(i,1,n+1){
-            if(2*v[i] <= v[i-1]){
-                next = i-1;
-                cnt += max((int)0, next-prev+1-k);
-                prev = i;
-                // cout << cnt << " ";
+        map<int,int> cnt;
+
+        l(i, 0, n){
+            cin >> v[i];
+            cnt[v[i]]++; 
+        }
+
+        int ans = 0;
+        int maxi = mxv(v); 
+        int i = mnv(v);   
+        int inner  = 0; 
+        int enter = i;
+        for( ; i<= maxi ;i ++){
+            if(cnt.find(i)==cnt.end()){
+                ans = max(ans , inner);
+                inner = 0;
+                enter = i+1;
+            }else if( i >= enter +k){
+                ans = max(ans , inner);
+                inner -= cnt[enter];
+                enter++;
+                i--;
+            }else{
+                inner += cnt[i];
+                ans = max(ans , inner);
             }
         }
         
-        cout << cnt << endl;
-        
+
+        cout << ans << endl;
     }
 }

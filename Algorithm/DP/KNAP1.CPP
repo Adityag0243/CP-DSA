@@ -23,30 +23,33 @@ using namespace std;
 #define l(i,st,n)       for(int i=st;i<n;i++)
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
+int n , W;  
+vi v;
+vi w;
+map<pair<int , int>, int > mp; 
+int fn(int sum , int i){
+    if(i >= n) return 0;
+
+    if(mp.find(make_pair(i,sum)) != mp.end()) return mp[make_pair(i, sum)];
+    
+    int val = fn(sum , i+1);
+
+    sum + w[i] <= W  ?  mp[make_pair(i, sum)] = max(val ,v[i] + fn(sum+w[i] , i+1)) : mp[make_pair(i, sum)] = val;
+
+    return mp[make_pair(i, sum)];
+}
+
 
 signed main(){
-    int t;
-    cin >> t;
-    while(t--){
-        int n,k;
-        cin >> n >> k;
-        vi v(n+1);
-        l(i,0,n) cin >> v[i];
-        v[n] = v[n-1]/2;
-        int prev = 0;
-        int next = 0;
-        int cnt = 0;
-
-        l(i,1,n+1){
-            if(2*v[i] <= v[i-1]){
-                next = i-1;
-                cnt += max((int)0, next-prev+1-k);
-                prev = i;
-                // cout << cnt << " ";
-            }
-        }
-        
-        cout << cnt << endl;
-        
+    fastio
+    cin >> n >> W;
+    w.resize(n);
+    v.resize(n);
+    l(i,0,n){
+        cin >> w[i];
+        cin >> v[i];
     }
+
+    cout << fn(0 , 0);
+
 }

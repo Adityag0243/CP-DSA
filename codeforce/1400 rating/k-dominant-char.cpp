@@ -3,7 +3,7 @@ using namespace std;
 #define all(arr)        arr.begin(), arr.end()
 #define vi              vector<int>
 #define vvi             vector<vi>
-#define int             int64_t
+// #define int             int64_t
 #define yes             cout << "YES" << endl;
 #define no              cout << "NO" << endl;
 #define p(x)            cout << (x) << endl;
@@ -24,29 +24,32 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-signed main(){
-    int t;
-    cin >> t;
-    while(t--){
-        int n,k;
-        cin >> n >> k;
-        vi v(n+1);
-        l(i,0,n) cin >> v[i];
-        v[n] = v[n-1]/2;
-        int prev = 0;
-        int next = 0;
-        int cnt = 0;
+int main(){
+    fastio;
 
-        l(i,1,n+1){
-            if(2*v[i] <= v[i-1]){
-                next = i-1;
-                cnt += max((int)0, next-prev+1-k);
-                prev = i;
-                // cout << cnt << " ";
-            }
-        }
-        
-        cout << cnt << endl;
-        
+    string s;
+    cin >> s;
+    vi v[26];
+
+    l(i,0,26){
+        v[i].pb(-1);
     }
+    l(i,0,s.size()){
+        v[s[i]-'a'].pb(i);
+    }
+    l(i,0,26){
+        v[i].pb(s.size());
+    }
+    int minima = INT_MAX;
+    l(i,0,26){
+        int maxima=INT_MIN;
+        l(j,1,v[i].size()){
+            // cout << 1 << endl;
+            maxima = max (maxima , v[i][j]-v[i][j-1]);
+        }
+        minima = min(minima,maxima);
+    }
+    cout << minima << endl;
+
+    return 0;
 }

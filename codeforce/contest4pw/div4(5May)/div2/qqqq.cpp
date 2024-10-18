@@ -24,29 +24,34 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
+
+
 signed main(){
     int t;
     cin >> t;
     while(t--){
-        int n,k;
-        cin >> n >> k;
-        vi v(n+1);
-        l(i,0,n) cin >> v[i];
-        v[n] = v[n-1]/2;
-        int prev = 0;
-        int next = 0;
-        int cnt = 0;
-
-        l(i,1,n+1){
-            if(2*v[i] <= v[i-1]){
-                next = i-1;
-                cnt += max((int)0, next-prev+1-k);
-                prev = i;
-                // cout << cnt << " ";
+        int n ;
+        cin >>n;
+        char a[2][n];
+        int cnt[n];
+        l(i,0,n) cnt[i] = 0;
+        l(i,0,2){
+            l(j,0,n){
+                cin>>a[i][j];
+                if(a[i][j] == 'A') cnt[j]++;
             }
         }
+        // l(i,0,n) cout <<cnt[i]<<" ";
+        // cout<<endl;
+
+        int ans = 0;
+        for(int i=0 ; i<n ; i+=3){
+            int c = cnt[i]+cnt[i+1]+cnt[i+2];
+            if( c >= 4 ) ans+=2;
+            else if( c>= 2) ans+=1; 
+        }
+        cout <<ans<<endl;
         
-        cout << cnt << endl;
-        
+       
     }
 }

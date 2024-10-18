@@ -18,7 +18,7 @@ vector<int> dijkstra2(int source, int n, const vector<vector<pair<int, int>>>& a
     pq.push({0, source});  // {distance, node}
  
     while (!pq.empty()) {
-        // Extract the node with the minimum distance as it will be on top (min-heap)....
+
         int u = pq.top().second;
         int u_dist = pq.top().first;
         pq.pop();

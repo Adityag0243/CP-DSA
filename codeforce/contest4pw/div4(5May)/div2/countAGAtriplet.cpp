@@ -1,3 +1,6 @@
+// i<j<k count triplet 'a' 'g' 'a'
+
+
 #include <bits/stdc++.h>
 using namespace std;
 #define all(arr)        arr.begin(), arr.end()
@@ -25,28 +28,18 @@ using namespace std;
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
 signed main(){
-    int t;
-    cin >> t;
-    while(t--){
-        int n,k;
-        cin >> n >> k;
-        vi v(n+1);
-        l(i,0,n) cin >> v[i];
-        v[n] = v[n-1]/2;
-        int prev = 0;
-        int next = 0;
-        int cnt = 0;
-
-        l(i,1,n+1){
-            if(2*v[i] <= v[i-1]){
-                next = i-1;
-                cnt += max((int)0, next-prev+1-k);
-                prev = i;
-                // cout << cnt << " ";
-            }
+    string s;
+    cin >> s;
+    int cnt_a = 0;
+    int cnt_ag = 0;
+    int cnt_aga = 0;
+    l(i,0,s.size()){
+        if(s[i]=='a'){
+            cnt_a++;
+            cnt_aga += cnt_ag;
         }
-        
-        cout << cnt << endl;
-        
+        if(s[i]=='g') cnt_ag += cnt_a;
     }
+
+    cout << cnt_aga;
 }

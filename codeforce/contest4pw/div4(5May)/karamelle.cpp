@@ -23,30 +23,35 @@ using namespace std;
 #define l(i,st,n)       for(int i=st;i<n;i++)
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
-
+//baki hai ye code abhi.....
 signed main(){
-    int t;
-    cin >> t;
-    while(t--){
-        int n,k;
-        cin >> n >> k;
-        vi v(n+1);
-        l(i,0,n) cin >> v[i];
-        v[n] = v[n-1]/2;
-        int prev = 0;
-        int next = 0;
-        int cnt = 0;
+   
+    int n;
+    cin >> n;
+    vi v(n);
+    l(i,0,n) cin >> v[i];
+    srt(v);
+    int alice=0,bob=0;
+    int sum = 0;
+    l(i,0,n) sum+=v[i];
+    if(sum & 1){
+        cout << -1 << endl;
+    }else{
 
-        l(i,1,n+1){
-            if(2*v[i] <= v[i-1]){
-                next = i-1;
-                cnt += max((int)0, next-prev+1-k);
-                prev = i;
-                // cout << cnt << " ";
+        rl(i,0,n){
+            if(alice > bob){
+                bob += v[i];
+            }else{
+                alice += v[i];
             }
         }
-        
-        cout << cnt << endl;
-        
+        if( alice == bob ){
+            rl(i,0,n){
+                cout << v[i] << " ";  
+            }
+        }else cout << -1 << endl;
+    
     }
+        
+    
 }

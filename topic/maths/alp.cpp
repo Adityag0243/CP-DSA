@@ -1,3 +1,4 @@
+// https://codeforces.com/contest/888/problem/D
 #include <bits/stdc++.h>
 using namespace std;
 #define all(arr)        arr.begin(), arr.end()
@@ -25,28 +26,24 @@ using namespace std;
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
 signed main(){
-    int t;
-    cin >> t;
-    while(t--){
-        int n,k;
-        cin >> n >> k;
-        vi v(n+1);
-        l(i,0,n) cin >> v[i];
-        v[n] = v[n-1]/2;
-        int prev = 0;
-        int next = 0;
-        int cnt = 0;
-
-        l(i,1,n+1){
-            if(2*v[i] <= v[i-1]){
-                next = i-1;
-                cnt += max((int)0, next-prev+1-k);
-                prev = i;
-                // cout << cnt << " ";
-            }
+    int n,k;
+    cin >> n;
+    cin >> k;
+    int ans = 1;
+    rl(i,2,k+1){
+        int val1 = n , val2 = i;
+        l(j,1,i){
+            val1 *= (n-j);
+            val2 *= j;
         }
-        
-        cout << cnt << endl;
-        
+        val1 /= val2;
+        if (i==3) val1*=2;
+        else if(i==4) val1*=9;
+        ans += val1;
     }
+    cout << ans << endl;
+    
+    
+    
+    
 }

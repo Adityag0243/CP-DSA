@@ -25,28 +25,57 @@ using namespace std;
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
 signed main(){
-    int t;
+    string s,t;
+    cin >> s;
     cin >> t;
-    while(t--){
-        int n,k;
-        cin >> n >> k;
-        vi v(n+1);
-        l(i,0,n) cin >> v[i];
-        v[n] = v[n-1]/2;
-        int prev = 0;
-        int next = 0;
-        int cnt = 0;
+    int dp[s.length()+1][t.length()+1];
 
-        l(i,1,n+1){
-            if(2*v[i] <= v[i-1]){
-                next = i-1;
-                cnt += max((int)0, next-prev+1-k);
-                prev = i;
-                // cout << cnt << " ";
+    l(i,0,s.length()+1){
+        dp[i][0] = 0;
+    }
+    l(i,0,t.length()+1){
+        dp[0][i] = 0;
+    }
+
+    l(i,0,s.length()){
+        l(j,0,t.length()){
+            dp[i+1][j+1] = max(dp[i][j+1] , dp[i+1][j]);
+
+            if(s[i] == t[j]){
+                dp[i+1][j+1] = max(dp[i+1][j+1] , dp[i][j] + 1);
             }
         }
-        
-        cout << cnt << endl;
-        
     }
+
+    // l(i,0,s.length()+1){
+    //     l(j,0,t.length()+1){
+    //         cout << dp[i][j] << " ";
+    //     }
+    //     cout << endl;
+    // }
+    
+    string st = "";
+
+    int cnt = dp[s.length()][t.length()];
+    int till = t.length()+1;
+
+
+    rl(i,1,s.length()+1){
+        rl(j,1,till){
+            // cout << cnt<<" ";
+            
+            if(dp[i][j] != cnt) break;
+            if(s[i-1]==t[j-1]){
+                cnt--;
+                till = j;
+                st += s[i-1];
+                break; 
+            }
+        }
+    }
+    reverse(st.begin(), st.end());
+    cout << st <<endl;
 }
+
+
+
