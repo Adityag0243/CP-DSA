@@ -1,4 +1,7 @@
- // if(j==v.size()-1){
-    //     dp[j]=max(v[j],v[j+1]);
-    //     return dp[j];
-    // }
+ for(auto node : adj[curr])
+        {
+            if(visited[node] == false){
+                q.push(node);
+                visited[node] = true;
+            }
+        }

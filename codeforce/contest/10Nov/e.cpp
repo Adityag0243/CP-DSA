@@ -25,47 +25,25 @@ using namespace std;
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
 signed main(){
-    int t;
-    cin >> t;
-    while(t--){
-        int n;
-        cin >> n;
-        string s;
-        cin >> s;
-        vi d(n);
+    
+    int n;
+    cin >> n;
+    vector<pair<int,int>> vxy(n); 
+    vector<pair<int,int>> vyx(n);
+    l(i,0,n){
+        cin>>vxy[i].first;
+        cin>>vxy[i].second;
+        vyx[i].first = vxy[i].second; 
+        vyx[i].second = vxy[i].first;
+    }
+    srt(vxy);
+    srt(vyx);
 
-        l(i,0,n) cin >> d[i];
-        l(i,0,n) d[i]= min(d[i]+i , n);
-
-        vi st(n,0);
-        int last = 0;
-        int identity = 1;
-        l(i,0,n){   
-            last = max(last , i-1);
-            if(s[i]=='R' && d[i] > last){
-                st[last+1] += identity;
-                last = min(d[i],n);
-                st[last+1] -= identity;
-                identity++;
-            }
-        }
-        l(i,1,n) st[i]+=st[i-1];     
-        int cnt = 0; 
-        int prev= 0;
-        bool check = true;
-        l(i,0,n){
-            if(s[i]=='B' && st[i]==0){
-                check=false;
-                break;
-            }
-            if(s[i]=='B' && st[i] != prev){
-                prev = st[i];
-                cnt+=1;
-            }
-        }
-        if(check) cout<<cnt<<endl;
-        else cout << -1 << endl;
-        
+    for(int i= 0 ; i<n-2 ;i++){
+        int ind = upper_bound(all(vxy),v[i].first) - v.begin();
         
     }
+
+        
+    
 }
