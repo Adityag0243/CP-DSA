@@ -1,0 +1,1 @@
+{"name":"Local: simple_string","url":"d:\\Desktop\\CP\\codeforce\\1300 rating\\simple_string.cpp","tests":[{"id":1733860295461,"input":"8 2\n1 2 4 100000 123 456 789 1\n\n","output":"28964.2857142857"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Desktop\\CP\\codeforce\\1300 rating\\simple_string.cpp","group":"local","local":true}

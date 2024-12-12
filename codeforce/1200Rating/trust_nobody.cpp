@@ -32,6 +32,15 @@ signed main(){
         cin >> n;
         vi v(n);
         l(i,0,n) cin >> v[i];
-        
+     
+        int ans = -1;
+        for(int i = 0; i<n ; i++){
+            int cnt =0;
+            l(j,0,n){
+                if(v[j] <= i) cnt++;
+            }
+            if(cnt == n-i) ans = i;
+        }
+        cout<<ans<<endl;
     }
 }

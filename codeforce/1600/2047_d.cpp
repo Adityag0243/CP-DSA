@@ -25,6 +25,7 @@ using namespace std;
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
 signed main(){
+    fastio
     int t;
     cin >> t;
     while(t--){
@@ -32,6 +33,26 @@ signed main(){
         cin >> n;
         vi v(n);
         l(i,0,n) cin >> v[i];
-        
+        vi cv = v;
+        vi ans;
+        srt(cv);
+
+        int prev = 1e9+2;
+        int j = n-1;
+        rl(i,0,n){         // reverse loop
+            
+            while(j >= 0 && cv[j] > v[i] && cv[j] <= prev){
+                ans.pb(cv[j]+1);
+                j--;
+            }
+            if( j>=0 && cv[j] == v[i]){
+                ans.pb(cv[j]);
+                j--;
+            }
+            
+        }
+        srt(ans);
+        l(i,0,n) cout<<ans[i]<<" ";
+        cout<<endl;
     }
 }

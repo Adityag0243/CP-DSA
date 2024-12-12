@@ -25,13 +25,14 @@ using namespace std;
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
 signed main(){
-    int t;
-    cin >> t;
-    while(t--){
-        int n;
-        cin >> n;
-        vi v(n);
-        l(i,0,n) cin >> v[i];
-        
+    int n;
+    cin >> n;
+    if(n==1){
+        cout<<4;
+        return 0;
     }
+    int num = 4 * (n/2);
+    if(n & 1){
+        cout << 3*num; 
+    }else cout<<num;
 }

@@ -25,13 +25,19 @@ using namespace std;
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
 signed main(){
+    fastio
     int t;
     cin >> t;
+    vi v;
+    v.pb(1);
+    for(int i = 1; i<100000 && v[i-1] < 200000; i++){
+        v.pb((v[i-1]+1)*2 );
+    }
+    // l(i,0,v.size()) cout<<v[i]<<" ";
     while(t--){
         int n;
         cin >> n;
-        vi v(n);
-        l(i,0,n) cin >> v[i];
-        
+        int ind = lower_bound(all(v) , n) - v.begin();
+        cout<<ind+1<<endl;
     }
 }

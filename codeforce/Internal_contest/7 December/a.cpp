@@ -25,13 +25,37 @@ using namespace std;
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
 signed main(){
-    int t;
-    cin >> t;
-    while(t--){
-        int n;
-        cin >> n;
-        vi v(n);
-        l(i,0,n) cin >> v[i];
-        
+    
+    int n,s;
+    cin >> n >> s;
+    vi v(n);
+    l(i,0,n) cin >> v[i];
+
+    vi cv = v;
+    
+    
+    int lo =1;
+    int hi = n;   
+    int ans = 0;
+    int amount = 0;
+
+
+    while(lo <= hi)
+    {
+        int mid = lo + (hi - lo)/2;
+        l(i,0,n) cv[i] = v[i] + (i+1)*mid;
+        srt(cv);
+        l(i,1,n) cv[i]+=cv[i-1];
+
+        if(cv[mid-1] <= s){
+            amount = cv[mid-1];
+            ans = mid;
+            lo = mid+1;
+        }else{
+            hi = mid-1;
+        } 
     }
+    cout<<ans<<" "<<amount<<endl;
+
+    
 }

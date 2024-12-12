@@ -24,6 +24,9 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
+// pending.............
+
+
 signed main(){
     int t;
     cin >> t;

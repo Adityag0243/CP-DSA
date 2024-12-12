@@ -30,8 +30,41 @@ signed main(){
     while(t--){
         int n;
         cin >> n;
-        vi v(n);
-        l(i,0,n) cin >> v[i];
+        string s;
+        cin >> s;
+        // cout<<"hmmji2 ";
         
+        int st=n+1,end=0;
+        l(i,0,n){
+            if(s[i] == '*'){
+                st  = min(st,i);
+                end = max(end,i);
+            }
+        }
+
+        deque<int> space;
+        l(i,st,end){
+            if(s[i]=='.') space.pb(i);
+        }
+
+        int pt1 = st;
+        int pt2 = end;
+        
+        int ans = 0;
+        // cout<<"hmm ";
+        while(pt1 < pt2 && !space.empty()){
+            // cout<<"ok ";
+            if( space.front() - pt1  <  pt2 - space.back()){
+                ans += space.front() - pt1;
+                space.pop_front();
+                pt1++;
+            }else{
+                ans += pt2 - space.back();
+                space.pop_back();
+                pt2--;
+            }
+            // cout<<ans<<" ..  ";
+        }
+        cout << ans << endl;   
     }
 }

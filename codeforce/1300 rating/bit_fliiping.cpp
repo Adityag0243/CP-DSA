@@ -28,10 +28,35 @@ signed main(){
     int t;
     cin >> t;
     while(t--){
-        int n;
-        cin >> n;
-        vi v(n);
-        l(i,0,n) cin >> v[i];
+        int n,k;
+        cin>>n>>k;
+        string s;
+        cin>>s;
+        vi ans(n,0);
+        int K = k;
+        
+        l(i,0,n){
+            if(k == 0) break;
+            if( (K&1) && s[i]=='1'){
+                ans[i] =1;
+                k--;
+            }else if( (K&1)==0 && s[i]=='0'){
+                ans[i]=1;
+                k--;
+            }
+        }
+        ans[n-1] += k;
+
+        l(i,0,n){
+            if((K - ans[i])&1){
+                if(s[i] == '1') s[i] = '0';
+                else s[i] = '1';
+            }
+        }
+                
+        cout<<s<<endl;
+        l(i,0,n) cout<<ans[i]<<" ";
+        cout<<endl;
         
     }
 }

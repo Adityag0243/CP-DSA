@@ -24,14 +24,52 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-signed main(){
-    int t;
-    cin >> t;
-    while(t--){
-        int n;
-        cin >> n;
-        vi v(n);
-        l(i,0,n) cin >> v[i];
-        
+
+
+
+
+void bfs(vector<char> &color , vector<set<int>> &v){
+    vector<bool> visited(100005,false);
+    visited[1] = true;
+    color[1] = 'r';
+    queue<int> q;
+    q.push(1);
+
+    while(!q.empty()){
+        int node = q.front();
+        q.pop();
+        for( int neighbour : v[node]){
+            if( !visited[neighbour] ){
+                visited[neighbour] = true;
+                color[neighbour] = color[node] == 'r' ? 'b' : 'r';
+                q.push(neighbour);
+            }
+        }
     }
+}
+
+signed main(){
+    int n;
+    cin>>n;
+    vector<char> color(n+1,'x');
+    vector< set<int> >v(n+1);
+
+    l(i,0,n){
+        int a,b;
+        cin >> a >> b;
+        v[a].insert(b);
+        v[b].insert(a);
+    }
+    bfs(color,v);
+    int red=0;
+    int blue=0;
+    l(i,1,n+1)
+    {
+        if(color[i] == 'r') red++;
+        else blue++;
+    }
+    
+    cout<< red*blue - (n-1); // given n-1 edge already given --> red*blue total posibility
+    
+    
 }
