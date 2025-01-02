@@ -24,35 +24,31 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-
-int fn(map<int,set<int>> &mp , int n , map<int,int> &dp){
-    if(mp.find(n) == mp.end()) return n;
-    if(dp.find(n) != dp.end()) return dp[n];
-    int ans = n;
-    for( auto it: mp[n]){
-        ans = max( ans , fn(mp , n + it , dp));
-    }
-    return dp[n] = ans;
-}
-
-
 signed main(){
     int t;
     cin >> t;
     while(t--){
-        int n;
-        cin >> n;
+        int n , k;
+        cin >> n >> k;
         vi v(n);
         l(i,0,n) cin >> v[i];
-        map<int,set<int>> mp;
-        map<int,int> dp;
-        l(i,1,n){
-            if(i + v[i] >= n){
-                mp[i + v[i]].insert(i);
+
+        int maxi = -1;
+        // vi remainder(k,-1);
+        map<int,int> mp;
+
+        l(i,0,n){
+            if( v[i] % k == 0 ) continue;
+            int num = k - v[i] % k;
+            if( mp.find(num) == mp.end() ) mp[num] = num;
+            else{
+                mp[num] += k;
+                num = mp[num];
             }
+
+            maxi = max(maxi, num);
         }
-       
-        cout << fn(mp,n,dp) << endl;;
-        
+
+        cout << maxi + 1 << endl;
     }
 }

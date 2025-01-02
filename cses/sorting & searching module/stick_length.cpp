@@ -24,35 +24,26 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-
-int fn(map<int,set<int>> &mp , int n , map<int,int> &dp){
-    if(mp.find(n) == mp.end()) return n;
-    if(dp.find(n) != dp.end()) return dp[n];
-    int ans = n;
-    for( auto it: mp[n]){
-        ans = max( ans , fn(mp , n + it , dp));
-    }
-    return dp[n] = ans;
-}
-
-
 signed main(){
-    int t;
-    cin >> t;
-    while(t--){
-        int n;
-        cin >> n;
-        vi v(n);
-        l(i,0,n) cin >> v[i];
-        map<int,set<int>> mp;
-        map<int,int> dp;
-        l(i,1,n){
-            if(i + v[i] >= n){
-                mp[i + v[i]].insert(i);
-            }
-        }
-       
-        cout << fn(mp,n,dp) << endl;;
+    
+    int n;
+    cin >> n;
+    vi v(n);
+    l(i,0,n) cin >> v[i];
+    
+    // summation( abs(Yi - K) ) // abs means absolute value
+    //   minimize this summation and give the appropriate +ve value of K, Yi >= 0 for 0<i<n 
+    //   to minimize that summation
+    
+    // -->   median is the best value to do so
+    srt(v);
+    int k = (n&1) ? v[n/2] : (v[n/2 - 1] + v[n/2])/2 ;
+    int ans = 0;
+
+    l(i,0,n) ans += abs(k-v[i]);
+
+
         
-    }
+        cout<<ans;
+    
 }

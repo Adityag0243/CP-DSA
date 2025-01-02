@@ -19,21 +19,37 @@ using namespace std;
 #define x               first
 #define y               second
 #define gcd(a,b)        __gcd((a),(b))
+#define out+ a +endl     cout << a << endl
 #define lcm(a,b)        ((a)*(b)) / gcd((a),(b))
 #define l(i,st,n)       for(int i=st;i<n;i++)
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
 
-int fn(map<int,set<int>> &mp , int n , map<int,int> &dp){
-    if(mp.find(n) == mp.end()) return n;
-    if(dp.find(n) != dp.end()) return dp[n];
-    int ans = n;
-    for( auto it: mp[n]){
-        ans = max( ans , fn(mp , n + it , dp));
+
+int fn(vector<int> &v, int n ,string &s){
+    stack<int> st;
+    l(i,0,n){
+        if(s[i] == '(') st.push(i);
+        else{
+            if(!st.empty()){
+                v[i] = 2;
+                v[st.top()] = 2;
+                st.pop();
+            }
+        }
     }
-    return dp[n] = ans;
+    int cnt = 1;
+    l(i,1,n) if(v[i] != v[i-1]) cnt=2;
+    return cnt;
+
 }
+
+
+
+
+
+
 
 
 signed main(){
@@ -42,17 +58,45 @@ signed main(){
     while(t--){
         int n;
         cin >> n;
-        vi v(n);
-        l(i,0,n) cin >> v[i];
-        map<int,set<int>> mp;
-        map<int,int> dp;
-        l(i,1,n){
-            if(i + v[i] >= n){
-                mp[i + v[i]].insert(i);
+        string s;
+        cin >> s;
+
+        int cb = 0;
+        l(i,0,n) if(s[i] == '(') cb++;
+
+        if(n&1  || n/2 != cb){
+            cout<<-1<<endl;
+            continue;
+        }
+
+        
+        vi v(n,1);
+        int cnt = fn(v,n,s);
+
+        if(cnt == 2){
+            reverse(s.begin() , s.end());
+            vi v1(n,1);
+            if( cnt > fn(v1,n,s)){
+                v = v1;
+                cnt = 1;
             }
         }
-       
-        cout << fn(mp,n,dp) << endl;;
+
+        if(cnt ==1 && v[0] == 2){
+            l(i,0,n) v[i] = 1;
+        }
+        cout<<cnt<<endl;
+
+
+
+
+
+
+
+
+
+        l(i,0,n) cout<<v[i]<<" ";        
+        cout<<endl;
         
     }
 }

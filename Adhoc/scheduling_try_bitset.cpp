@@ -24,35 +24,34 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-
-int fn(map<int,set<int>> &mp , int n , map<int,int> &dp){
-    if(mp.find(n) == mp.end()) return n;
-    if(dp.find(n) != dp.end()) return dp[n];
-    int ans = n;
-    for( auto it: mp[n]){
-        ans = max( ans , fn(mp , n + it , dp));
-    }
-    return dp[n] = ans;
-}
+// wrong..thought and codeeee.................................
 
 
 signed main(){
-    int t;
-    cin >> t;
-    while(t--){
-        int n;
-        cin >> n;
-        vi v(n);
-        l(i,0,n) cin >> v[i];
-        map<int,set<int>> mp;
-        map<int,int> dp;
-        l(i,1,n){
-            if(i + v[i] >= n){
-                mp[i + v[i]].insert(i);
+    
+    
+    int n;
+    cin >> n;
+    vector< bitset<1500> > v(n);  // as in one day there is 1440 minutes 
+    l(i,0,n){                     // loop for(int i = 0;  i < n;  i++)
+        int start_time , final_time;
+        cin >> start_time >> final_time;
+
+        l(j,start_time,final_time+1){
+            v[i][j] = true;             // making all bitset true from Start time to final time
+        }
+    }
+    int ans  = 0 ;
+    l(i,0,n){
+        int inner_cnt = 1; // atleast one event is selected
+
+        l(j,0,n){
+            if( (v[i] & v[j]) == 0 ){
+                inner_cnt++;            // and is zero of two event means they do not oerlap 
             }
         }
-       
-        cout << fn(mp,n,dp) << endl;;
-        
+        // now inner_cnt come up with the count of event can be//////////////////wrong
     }
+        
+    
 }

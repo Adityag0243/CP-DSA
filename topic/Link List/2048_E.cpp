@@ -24,35 +24,48 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-
-int fn(map<int,set<int>> &mp , int n , map<int,int> &dp){
-    if(mp.find(n) == mp.end()) return n;
-    if(dp.find(n) != dp.end()) return dp[n];
-    int ans = n;
-    for( auto it: mp[n]){
-        ans = max( ans , fn(mp , n + it , dp));
-    }
-    return dp[n] = ans;
-}
-
-
+//WRONG   INPUT
+// T = 1 N= 2 M = 3
 signed main(){
     int t;
     cin >> t;
     while(t--){
-        int n;
-        cin >> n;
-        vi v(n);
-        l(i,0,n) cin >> v[i];
-        map<int,set<int>> mp;
-        map<int,int> dp;
-        l(i,1,n){
-            if(i + v[i] >= n){
-                mp[i + v[i]].insert(i);
+        int n,m;
+        cin >> n>> m;
+        if(m >= 2*n){
+            cout<<"NO" << endl;
+        }else{
+            yes
+            l(i,0,n){
+                l(j,0,m){
+                    cout<< i+1 <<" ";
+                }
+                cout<<endl;
             }
+            l(k,1,n+1){
+                int cnt = min(n,m);
+                l(j,1,cnt+1){
+                    cout<<j<<" ";
+                }
+                // cout<<cnt <<":cnt   "<<m-cnt<<" ";
+                if(m - cnt > 0){
+                    int till = m - cnt;
+                    // cout<<till<<" :till   ";
+                    cnt = 1;
+                    for(int j = 1 ; j <= n && cnt <= till ; j++ ){
+                        if (j != k){
+                            cout<<j<<" ";
+                            cnt++;
+                        }
+                    }
+                }
+                cout<<endl;
+                
+                
+            }
+        
         }
-       
-        cout << fn(mp,n,dp) << endl;;
         
     }
+    return 0;
 }

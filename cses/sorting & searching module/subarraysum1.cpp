@@ -24,35 +24,38 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-
-int fn(map<int,set<int>> &mp , int n , map<int,int> &dp){
-    if(mp.find(n) == mp.end()) return n;
-    if(dp.find(n) != dp.end()) return dp[n];
-    int ans = n;
-    for( auto it: mp[n]){
-        ans = max( ans , fn(mp , n + it , dp));
-    }
-    return dp[n] = ans;
-}
-
-
 signed main(){
-    int t;
-    cin >> t;
+    int t = 1;
+    
     while(t--){
-        int n;
-        cin >> n;
-        vi v(n);
-        l(i,0,n) cin >> v[i];
-        map<int,set<int>> mp;
-        map<int,int> dp;
-        l(i,1,n){
-            if(i + v[i] >= n){
-                mp[i + v[i]].insert(i);
+        int n , x;
+        cin >> n >> x;
+        vi v(n+1);
+        v[0] = 0;
+        l(i,1,n+1) cin >> v[i];
+        l(i,1,n+1) v[i] += v[i-1];
+
+        int pt1 = 1;
+        int pt2 = 1;
+
+        int cnt = 0;
+ 
+        // v[i] > 0 (it is important if it has zero then  for x = 7 array  0 2 5 0 could be tricky)
+
+        while( pt2 <= n ){
+            int curr = v[pt2]-v[pt1-1];
+            if( curr > x){
+                pt1++;
+                if(pt2 < pt1) pt2++;
+            }else if(curr == x){
+                cnt++;
+                pt1++;
+            }else{
+                pt2++;
             }
         }
-       
-        cout << fn(mp,n,dp) << endl;;
+        cout<<cnt;
+
         
     }
 }

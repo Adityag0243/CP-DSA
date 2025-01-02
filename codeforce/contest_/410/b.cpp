@@ -24,35 +24,51 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-
-int fn(map<int,set<int>> &mp , int n , map<int,int> &dp){
-    if(mp.find(n) == mp.end()) return n;
-    if(dp.find(n) != dp.end()) return dp[n];
-    int ans = n;
-    for( auto it: mp[n]){
-        ans = max( ans , fn(mp , n + it , dp));
-    }
-    return dp[n] = ans;
-}
-
-
 signed main(){
     int t;
     cin >> t;
     while(t--){
         int n;
         cin >> n;
-        vi v(n);
-        l(i,0,n) cin >> v[i];
-        map<int,set<int>> mp;
-        map<int,int> dp;
-        l(i,1,n){
-            if(i + v[i] >= n){
-                mp[i + v[i]].insert(i);
-            }
-        }
-       
-        cout << fn(mp,n,dp) << endl;;
+        string st;
+        cin >> st;
+
         
+        n = st.size();
+          
+        // first s and last p matters 
+
+        vi s;
+        vi p;
+        l(i,0,n){
+            if(st[i] == 's') s.pb(i);
+            else if(st[i] == 'p') p.pb(i);
+        }
+        // everything same ---> then yes
+        if(s.size() == n || p.size() == n || s.size()+p.size() == 0){
+            yes
+        }
+        else if(p.size() == 0 || s.size() == 0){
+            yes
+        }
+        else{   // .....sss.s.s.   is right
+            int p_first = 2*n;
+            if( p.size() != 0) p_first = p[0];
+            int ind = upper_bound( all(s) , p_first ) - s.begin();
+
+            if(st[0] !=  's' ) no
+            else if(ind != s.size() && s[ind] > p_first){   // there is s after p
+                no
+            }
+            else yes
+        }
+
+        
+        
+        // s must be at first place
+        // 
+        
+
+
     }
 }

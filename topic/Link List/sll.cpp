@@ -1,14 +1,19 @@
 #include<iostream>
 using namespace std;
 #define val data
+
+
+
 class Node{
     public:
     int data;
     Node* next;
-    Node(int data,Node* next=nullptr){
-     this->data=data;
-     this->next=next;
+
+    Node(int data, Node* next = nullptr) {
+        this->data = data;
+        this->next = next;
     }
+
 };
 
 class Linkedlist{

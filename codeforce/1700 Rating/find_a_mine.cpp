@@ -8,7 +8,6 @@ using namespace std;
 #define no              cout << "NO" << endl;
 #define p(x)            cout << (x) << endl;
 #define sp(x)           cout << (x) << " ";
-#define endl            '\n'
 #define pb              push_back
 #define mxv(arr)        *max_element(arr.begin(), arr.end())
 #define mnv(arr)        *min_element(arr.begin(), arr.end())
@@ -24,15 +23,12 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-
-int fn(map<int,set<int>> &mp , int n , map<int,int> &dp){
-    if(mp.find(n) == mp.end()) return n;
-    if(dp.find(n) != dp.end()) return dp[n];
-    int ans = n;
-    for( auto it: mp[n]){
-        ans = max( ans , fn(mp , n + it , dp));
-    }
-    return dp[n] = ans;
+int fn(int l ,int r)
+{   
+    cout<<'?'<<" "<<l<<" "<<r<<endl;
+    int x;
+    cin >> x;
+    return x;
 }
 
 
@@ -40,19 +36,31 @@ signed main(){
     int t;
     cin >> t;
     while(t--){
-        int n;
-        cin >> n;
-        vi v(n);
-        l(i,0,n) cin >> v[i];
-        map<int,set<int>> mp;
-        map<int,int> dp;
-        l(i,1,n){
-            if(i + v[i] >= n){
-                mp[i + v[i]].insert(i);
-            }
-        }
+        int n, m;
+        cin >> n >> m;
+        int d1 = fn(1,1);
+
+        pair<int,int> corner1;
+        if(n >=  d1 + 1) corner1 = {d1+1 , 1};
+        else corner1 = {n , d1+2 - n};
        
-        cout << fn(mp,n,dp) << endl;;
+
+        int d2 = fn(corner1.first , corner1.second);
+
+
         
+        pair<int,int> corner2;
+        if(m >= d1+1) corner2 = {1 , d1+1};
+        else corner2 = {d1 + 2 - m, m};
+
+        int d3 = fn(corner2.first , corner2.second);
+
+        if(fn( corner1.first - d2/2,corner1.second + d2/2) == 0){
+            cout<<"! "<< corner1.first - d2/2 <<" "<<corner1.second + d2/2<<endl;
+        }else{
+            cout<<"! "<< corner2.first + d3/2 <<" "<<corner2.second - d3/2<<endl;
+        }
+
+
     }
 }

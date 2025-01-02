@@ -1,9 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 #define all(arr)        arr.begin(), arr.end()
+#define int             long long
 #define vi              vector<int>
 #define vvi             vector<vi>
-#define int             int64_t
 #define yes             cout << "YES" << endl;
 #define no              cout << "NO" << endl;
 #define p(x)            cout << (x) << endl;
@@ -24,35 +24,47 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-
-int fn(map<int,set<int>> &mp , int n , map<int,int> &dp){
-    if(mp.find(n) == mp.end()) return n;
-    if(dp.find(n) != dp.end()) return dp[n];
-    int ans = n;
-    for( auto it: mp[n]){
-        ans = max( ans , fn(mp , n + it , dp));
-    }
-    return dp[n] = ans;
-}
-
-
 signed main(){
     int t;
     cin >> t;
     while(t--){
-        int n;
-        cin >> n;
+        int n,k;
+        cin >> n >>k;
         vi v(n);
         l(i,0,n) cin >> v[i];
-        map<int,set<int>> mp;
-        map<int,int> dp;
-        l(i,1,n){
-            if(i + v[i] >= n){
-                mp[i + v[i]].insert(i);
+        if(n==1){
+            cout<<v[0]<<endl;
+            continue;
+        }
+
+        int ans = 1e18+1;
+        if(k>2){
+            ans  = 0;
+        }else{
+            sort(v.begin(), v.end());
+            ans = 1000000000000000000;
+            for (int i = 1; i < n; i++) {
+                // cout<<ans<<endl;
+                ans = min(ans, abs(v[i] - v[i - 1]));
+            }
+
+            if(k==2){
+                l(i,0,n){
+                    l(j,0,n){
+                        if(i == j ) continue;
+                        int diff = abs(v[i] - v[j]);
+                        int ind = lower_bound( all(v) , diff) - v.begin();
+                        if(ind != n) ans = min(ans , abs( diff - v[ind]));
+                        if(ind != 0) ans = min(ans , abs(diff - v[ind-1]));
+                    }
+                }
+                
             }
         }
-       
-        cout << fn(mp,n,dp) << endl;;
+        
+
+        cout<<min(ans,v[0])<<endl;
+
         
     }
 }

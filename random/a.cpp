@@ -24,35 +24,22 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-
-int fn(map<int,set<int>> &mp , int n , map<int,int> &dp){
-    if(mp.find(n) == mp.end()) return n;
-    if(dp.find(n) != dp.end()) return dp[n];
-    int ans = n;
-    for( auto it: mp[n]){
-        ans = max( ans , fn(mp , n + it , dp));
-    }
-    return dp[n] = ans;
-}
-
-
 signed main(){
-    int t;
-    cin >> t;
-    while(t--){
-        int n;
-        cin >> n;
-        vi v(n);
-        l(i,0,n) cin >> v[i];
-        map<int,set<int>> mp;
-        map<int,int> dp;
-        l(i,1,n){
-            if(i + v[i] >= n){
-                mp[i + v[i]].insert(i);
-            }
-        }
-       
-        cout << fn(mp,n,dp) << endl;;
-        
+    cout<<"How's the Weather right now :\n";
+    cout<<"Press 1 for Sunny :\nPress 2 for Overcast: \nPress 3 for Rainy: \nEnter your response: ";
+    int val;
+    cin >> val;
+    if(val == 2) cout<<"you can go for playing";
+    else if( val == 1 ){
+        cout<<"If Temperature is high press 1 or press 2: ";
+        int key;
+        cin>>key;
+        if(key == 1) cout<<"Temp is High you can't go for playing\n";
+        else cout<<"You can Play\n";
+    }else if(val == 3){
+        int key;
+        cin>>key;
+        if(key == 1) cout<<"Wind is strong you cann't play\n";
+        else cout<<"You can play\n";
     }
 }

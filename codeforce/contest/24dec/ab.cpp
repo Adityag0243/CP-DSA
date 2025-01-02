@@ -24,35 +24,18 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-
-int fn(map<int,set<int>> &mp , int n , map<int,int> &dp){
-    if(mp.find(n) == mp.end()) return n;
-    if(dp.find(n) != dp.end()) return dp[n];
-    int ans = n;
-    for( auto it: mp[n]){
-        ans = max( ans , fn(mp , n + it , dp));
-    }
-    return dp[n] = ans;
-}
-
-
 signed main(){
     int t;
     cin >> t;
+    vi p4;
+    p4.pb(1);
+    while( p4[p4.size()-1] <= 1e18) p4.pb( p4[p4.size()-1] * 4);
     while(t--){
         int n;
         cin >> n;
-        vi v(n);
-        l(i,0,n) cin >> v[i];
-        map<int,set<int>> mp;
-        map<int,int> dp;
-        l(i,1,n){
-            if(i + v[i] >= n){
-                mp[i + v[i]].insert(i);
-            }
-        }
-       
-        cout << fn(mp,n,dp) << endl;;
+        int ind = lower_bound(all(p4) , n)  - p4.begin();
+        if( p4[ind] > n) ind--;
+        cout<<(int) pow(2,ind)<<endl;
         
     }
 }

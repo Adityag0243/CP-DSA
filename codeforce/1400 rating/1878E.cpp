@@ -24,18 +24,6 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-
-int fn(map<int,set<int>> &mp , int n , map<int,int> &dp){
-    if(mp.find(n) == mp.end()) return n;
-    if(dp.find(n) != dp.end()) return dp[n];
-    int ans = n;
-    for( auto it: mp[n]){
-        ans = max( ans , fn(mp , n + it , dp));
-    }
-    return dp[n] = ans;
-}
-
-
 signed main(){
     int t;
     cin >> t;
@@ -44,15 +32,55 @@ signed main(){
         cin >> n;
         vi v(n);
         l(i,0,n) cin >> v[i];
-        map<int,set<int>> mp;
-        map<int,int> dp;
-        l(i,1,n){
-            if(i + v[i] >= n){
-                mp[i + v[i]].insert(i);
+
+        int pre[n+1][32];
+
+        // prefixing
+
+            l(i,0,n){
+                l(j,0,31){
+                    if( v[i] & ( 1 << j)) pre[i+1][j] =  pre[i][j] + 1;
+                    else pre[i+1][j] = pre[i][j];
+                }
             }
+
+        int q;
+        cin>>q;
+        while(q--){
+            int l , k;
+            cin >> l >> k;
+
+
+            if(v[l-1] < k){
+                cout << -1 << " ";
+                continue; 
+            }
+
+            int ans = l;
+            int lo = l ; 
+            int hi = n;
+            
+            while( lo <= hi){
+
+                int mid  = (hi + lo)/2;
+                int num = 0;
+                l(bit,0,31){
+                    if( pre[mid][bit] - pre[l-1][bit] == mid - l + 1){
+                        num += (1 << bit);
+                    }
+                }
+
+                if( num >= k){
+                    // ans = max(ans,mid);
+                    ans = mid;
+                    lo  = mid+1;
+                }
+                else hi = mid-1;
+            }
+            cout << ans << " ";
+            
+            
         }
-       
-        cout << fn(mp,n,dp) << endl;;
-        
+        cout << endl;
     }
 }

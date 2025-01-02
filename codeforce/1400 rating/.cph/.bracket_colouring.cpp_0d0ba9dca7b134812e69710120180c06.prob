@@ -1,0 +1,1 @@
+{"name":"Local: bracket_colouring","url":"d:\\Desktop\\CP\\codeforce\\1400 rating\\bracket_colouring.cpp","tests":[{"id":1734671016960,"input":"1\n54\n))(()())()()))))()))()))()((((()))(((((()))())))()())(","output":""}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Desktop\\CP\\codeforce\\1400 rating\\bracket_colouring.cpp","group":"local","local":true}

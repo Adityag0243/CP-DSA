@@ -24,35 +24,37 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
+int n;
+vector<pair<int,int>> v;
+// vector<int> ans;
 
-int fn(map<int,set<int>> &mp , int n , map<int,int> &dp){
-    if(mp.find(n) == mp.end()) return n;
-    if(dp.find(n) != dp.end()) return dp[n];
-    int ans = n;
-    for( auto it: mp[n]){
-        ans = max( ans , fn(mp , n + it , dp));
-    }
-    return dp[n] = ans;
-}
+// int fn(int l , int r , int i){
+//     if(r <= l) return 0;
+//     int cnt = 0;
+
+//     return max( 1 +  )
+
+    
+// }
 
 
 signed main(){
-    int t;
-    cin >> t;
-    while(t--){
-        int n;
-        cin >> n;
-        vi v(n);
-        l(i,0,n) cin >> v[i];
-        map<int,set<int>> mp;
-        map<int,int> dp;
-        l(i,1,n){
-            if(i + v[i] >= n){
-                mp[i + v[i]].insert(i);
-            }
-        }
-       
-        cout << fn(mp,n,dp) << endl;;
-        
+    fastio
+    cin >> n;
+    
+    l(i,0,n){
+        int a ,b;
+        cin >> a >> b;
+        v.pb({a,b});
     }
+    srt(v);
+    if(n == 1){
+        cout<<1<<endl;
+        cout<<1<<endl;
+        return 0;
+    }
+    ans.pb(1);
+    ans.pb(n);
+    cout<< 2 + fn(v[0].first + 1 , v[n-1].first-1 , 2);
+
 }

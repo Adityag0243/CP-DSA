@@ -25,34 +25,45 @@ using namespace std;
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
 
-int fn(map<int,set<int>> &mp , int n , map<int,int> &dp){
-    if(mp.find(n) == mp.end()) return n;
-    if(dp.find(n) != dp.end()) return dp[n];
-    int ans = n;
-    for( auto it: mp[n]){
-        ans = max( ans , fn(mp , n + it , dp));
+int n ,k ;
+int fn(vector<int> &v){
+    int lo = 0 ; 
+    int hi = 1e9;
+    int ans = 0;
+    while(lo<=hi){
+        int mid = lo + (hi - lo)/2;
+        int cnt = 1;
+        int prev = v[0];
+
+        l(i,1,n){
+            if(v[i] - prev >= mid){
+                cnt++;
+                prev = v[i];
+            }
+            if(cnt > k) break;
+        }
+
+        if(cnt >= k){
+            ans = mid;
+            lo = mid+1;
+        }else{
+            hi = mid-1;
+        }
     }
-    return dp[n] = ans;
+    return ans;
 }
-
-
 signed main(){
     int t;
     cin >> t;
     while(t--){
-        int n;
-        cin >> n;
+        cin >> n >> k;
         vi v(n);
         l(i,0,n) cin >> v[i];
-        map<int,set<int>> mp;
-        map<int,int> dp;
-        l(i,1,n){
-            if(i + v[i] >= n){
-                mp[i + v[i]].insert(i);
-            }
+        if(k> n){
+            cout<<0<<endl;
+            continue;
         }
-       
-        cout << fn(mp,n,dp) << endl;;
-        
+        srt(v);
+        cout << fn(v);
     }
 }

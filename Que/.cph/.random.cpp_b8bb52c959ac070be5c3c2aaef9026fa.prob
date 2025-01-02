@@ -1,0 +1,1 @@
+{"name":"Local: random","url":"d:\\Desktop\\CP\\Que\\random.cpp","tests":[{"id":1734277249588,"input":"4\n2\n1 2\n4\n1 1 1 2\n8\n4 5 5 5 1 1 2 1\n10\n1 1 2 2 1 1 3 3 1 1\n","output":"20\n5\n30\n2\n84\n"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Desktop\\CP\\Que\\random.cpp","group":"local","local":true}

@@ -24,35 +24,43 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-
-int fn(map<int,set<int>> &mp , int n , map<int,int> &dp){
-    if(mp.find(n) == mp.end()) return n;
-    if(dp.find(n) != dp.end()) return dp[n];
-    int ans = n;
-    for( auto it: mp[n]){
-        ans = max( ans , fn(mp , n + it , dp));
-    }
-    return dp[n] = ans;
-}
-
-
 signed main(){
-    int t;
-    cin >> t;
-    while(t--){
-        int n;
-        cin >> n;
-        vi v(n);
-        l(i,0,n) cin >> v[i];
-        map<int,set<int>> mp;
-        map<int,int> dp;
-        l(i,1,n){
-            if(i + v[i] >= n){
-                mp[i + v[i]].insert(i);
-            }
+    
+        int n,m,k;
+        cin >> n >> m >> k;
+        vi a(n);
+        l(i,0,n) cin >> a[i];
+        vector<pair<int,int>> b(m);
+        l(i,0,m){
+            int bi;
+            cin>>bi;
+            b[i] = { bi-k, bi+k };
         }
-       
-        cout << fn(mp,n,dp) << endl;;
+        srt(a);
+        srt(b);
+        // l(i,0,n) cout<<a[i]<<" ";
+        // cout<<endl;
+        // l(i,0,m) cout<<b[i].first<<" "<<b[i].second<<",   ";
+        // cout<<endl;
+
+        // cout<<"idhar hu ";
+
+        int j = 0;
+        int i = 0;
+        int cnt = 0;
+
+            while(j < m && i<n){
+                // cout<<"heere "<<i <<j<<"  ";
+                if(a[i] >= b[j].first && a[i] <= b[j].second){
+                    cnt++;
+                    i++;
+                }else if(a[i] < b[j].first){
+                    i++;
+                    j--;
+                }
+                j++;
+            }
+        cout<<cnt;
+
         
-    }
 }

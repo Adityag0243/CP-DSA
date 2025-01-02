@@ -24,35 +24,35 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-
-int fn(map<int,set<int>> &mp , int n , map<int,int> &dp){
-    if(mp.find(n) == mp.end()) return n;
-    if(dp.find(n) != dp.end()) return dp[n];
-    int ans = n;
-    for( auto it: mp[n]){
-        ans = max( ans , fn(mp , n + it , dp));
-    }
-    return dp[n] = ans;
-}
-
-
 signed main(){
-    int t;
-    cin >> t;
-    while(t--){
-        int n;
-        cin >> n;
-        vi v(n);
-        l(i,0,n) cin >> v[i];
-        map<int,set<int>> mp;
-        map<int,int> dp;
-        l(i,1,n){
-            if(i + v[i] >= n){
-                mp[i + v[i]].insert(i);
-            }
-        }
-       
-        cout << fn(mp,n,dp) << endl;;
+    int n,m,q;
+    cin>>n>>m>>q;
+    vi a(n);
+    vi b(m);
+    l(i,0,n) cin>>a[i];
+    l(i,0,m) cin>>b[i];
+
+    int suma = 0;
+    int sumb = 0;
+    l(i,0,n) suma += a[i];
+    l(i,0,m) sumb += b[i];
+    
+
+    vi pa(n);
+    l(i,0,n) pa[i] = a[i]*sumb;
+    vi pb(n);
+    l(i,0,m) pb[i] = b[i]*suma;
+
+    int total = 0;
+
+    l(i,0,n) total += pa[i];
+    while(q--){
+        int x;
+        cin >> x;
         
     }
+
+
+    
+    
 }

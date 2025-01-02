@@ -24,43 +24,36 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int fn(int i , string s , string s2){
-    for(i,i+ s2.size()){
-        int j = i;
-        bool check = true;
-        while(check){
-            l(k,j,j+s2.size()){
-                s[k] != s2[k-j]{
-                    check = false;
-                    j++;
-                    break;
-                }
-            }
-            if(check )
-            
-        }
-    }
-}
-
-
-
-
 signed main(){
-    int n;
-    cin >> n;
-    string arr[n];
-    l(i,0,n){
-        cin >> arr[i];
-    }
-    string s = arr[0];
-    s += s.substr(0,s.size()-1);
-    int ans = INT_MAX;
-    l(i,0,s.size()/2 +1){
-        int internal_ans = 0;
-        l(j,0,n){
-            internal_ans += fn(i,s,arr[j]);
-        }
-        ans = min(ans , internal_ans);
-    }
+    int t;
+    cin >> t;
+    while(t--){
+        int n;
+        cin >> n;
+        vi v(n);
+        l(i,0,n) cin >> v[i];
+        vi zero;
 
+        l(i,0,n){
+            if(v[i] == 0) zero.pb(i);
+        }
+
+        if( zero.size() == 0)
+        {
+            cout<<1<<endl;
+        }else{
+            if(zero.size() == n){
+                cout<<0<<endl;
+            }
+            else if(v[0] == 0 || v[n-1] == 0){
+                if(zero.size() >= 2 && zero[1] != n-1){
+                    cout<<2<<endl;
+                }else{
+                    cout<<1<<endl;
+                }
+            }else{
+                cout<<2<<endl;
+            }
+        }
+    }
 }

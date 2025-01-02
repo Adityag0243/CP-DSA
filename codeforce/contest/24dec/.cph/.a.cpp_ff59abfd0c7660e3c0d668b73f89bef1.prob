@@ -1,0 +1,1 @@
+{"name":"Local: a","url":"d:\\Desktop\\CP\\codeforce\\contest\\24dec\\a.cpp","tests":[{"id":1735052672223,"input":"1\n5\n-1 -400813612 -1 -1 1","output":"8\n-400813615 -400813614 -400813613 -400813612 -2 -1 0 1 "}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Desktop\\CP\\codeforce\\contest\\24dec\\a.cpp","group":"local","local":true}
