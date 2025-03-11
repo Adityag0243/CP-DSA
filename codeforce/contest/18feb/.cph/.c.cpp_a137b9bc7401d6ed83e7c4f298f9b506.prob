@@ -1,0 +1,1 @@
+{"name":"Local: c","url":"d:\\Desktop\\CP\\codeforce\\contest\\18feb\\c.cpp","tests":[{"id":1739893398933,"input":"1\n16\n3 3 2 1 1 2 2 3 2 2 3 1 3 3 2 3\n","output":"3\n0\n1\n22"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Desktop\\CP\\codeforce\\contest\\18feb\\c.cpp","group":"local","local":true}

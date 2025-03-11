@@ -1,0 +1,1 @@
+{"name":"Local: 1771_b","url":"d:\\Desktop\\CP\\codeforce\\1400 rating\\1771_b.cpp","tests":[{"id":1735927108344,"input":"2\n3 2\n1 3\n2 3\n4 2\n1 2\n2 3","output":"4\n5"}],"interactive":false,"memoryLimit":1024,"timeLimit":3000,"srcPath":"d:\\Desktop\\CP\\codeforce\\1400 rating\\1771_b.cpp","group":"local","local":true}

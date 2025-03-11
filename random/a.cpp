@@ -25,21 +25,36 @@ using namespace std;
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
 signed main(){
-    cout<<"How's the Weather right now :\n";
-    cout<<"Press 1 for Sunny :\nPress 2 for Overcast: \nPress 3 for Rainy: \nEnter your response: ";
-    int val;
-    cin >> val;
-    if(val == 2) cout<<"you can go for playing";
-    else if( val == 1 ){
-        cout<<"If Temperature is high press 1 or press 2: ";
-        int key;
-        cin>>key;
-        if(key == 1) cout<<"Temp is High you can't go for playing\n";
-        else cout<<"You can Play\n";
-    }else if(val == 3){
-        int key;
-        cin>>key;
-        if(key == 1) cout<<"Wind is strong you cann't play\n";
-        else cout<<"You can play\n";
+    int t;
+    cin >> t;
+    vector<int> v(31,0);
+
+    while(t--){
+    
+    
+        int x,y;
+        cin >> x >> y;
+        if(x == 1){
+            v[y]++;
+        }
+        else{
+            vector<int> v2(31,0);
+            rl(i,0,30){
+                if( y & (1 << i)) v2[i]++;
+            }
+            bool flag = true;
+            l(i,0,30){
+                v2[i] -= v[i];
+                if(v2[i] > 0){
+                    flag = false;
+                    break;
+                }else{
+                    v2[i+1] -= abs(v2[i])/2;
+                }
+            }
+            if(flag) yes
+            else no
+        }
+
     }
 }

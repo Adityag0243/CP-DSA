@@ -1,6 +1,7 @@
 {
   "C_Cpp_Runner.msvcBatchPath": "",
   "files.associations": {
+    "*.ejs": "html",
     "iostream": "cpp",
     "ostream": "cpp",
     "cmath": "cpp",
@@ -35,7 +36,8 @@
     "iosfwd": "cpp",
     "iomanip": "cpp",
     "deque": "c",
-    "list": "c"
+    "list": "c",
+    "cstdlib": "cpp"
   },
   "workbench.panel.defaultLocation": "bottom",
   "C_Cpp.errorSquiggles": "disabled"
