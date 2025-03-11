@@ -5,7 +5,6 @@ using namespace std;
 // cnt is just to calculate no of operation we are doing 
 
 int cnt = 0;
-
 int fn(int a, int b){
     cnt++;
     if(b == 1) return a;

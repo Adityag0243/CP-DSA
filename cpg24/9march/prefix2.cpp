@@ -14,7 +14,6 @@ void bruteforceQueryResolveFunction(vector<int> &arr, int a, int b){
         arr[i]++;
 }
 
-
 // it will take O(1) CONSTANT time complexity for each operation...
 void prefix2QueryResolveFunction(vector<int> &arr, int a, int b){   
     arr[a]++;                          
