@@ -2,65 +2,82 @@
 using namespace std;
 
 
-vector<int> parent(100005, -1);
-vector<int> path;
+vector<int> parent;
+vector<bool> is_visited;
+int start = -1;
 
-bool fn(int source, vector<pair<int, int>> &edges, vector<int> &dist){
-    cout <<" here " << endl;
-    for (auto it : edges) {
-        int u = it.first;
-        int v = it.second;
-        int w = -1;
-        if(dist[u] + w < dist[v]){
-            dist[v] = dist[u] + w;                
-            parent[v] = u;
-            parent[u] = v;
-        }
+void fn(int node, vector<vector<int>>& adj, int par) {
+    is_visited[node] = true;
+    parent[node] = par;
 
-    }
-    cout <<" here " << endl;
-    
-    for (auto it : edges) {
-        int u = it.first;
-        int v = it.second;
-        int w = -1;
-        if (dist[u] != INT_MAX && dist[u] + w < dist[v]) {
-            path.push_back(v);
-            int temp = parent[v];
-            for (int i = 0; i < dist.size() && temp != v && temp != -1 ; i++) {
-                path.push_back(temp);
-                temp = parent[temp];
-            }
-            return true;
+    // cout <<"  node: "<<node<<"    ";
+    for( auto neighbour : adj[node]){
+        if( neighbour == par) continue;
+
+        if(is_visited[neighbour] ){
+            parent[neighbour] = node;
+            start = neighbour;
+            return;
         }
+        fn(neighbour, adj, node);
+        if(start != -1) return;
     }
-    
-    return false;
+    // cout <<" hm  ";
 }
+
 
 int main(){
     
     int node_count, edge_count;
     cin >> node_count >> edge_count;
-
-    vector<pair<int, int>> edges;
-    for(int i = 0; i<edge_count; i++){
-        int u, v;
-        cin >> u >> v;
-        edges.push_back({u - 1, v - 1});
-    }
-
-    vector<int> dist(node_count, 0);
-    dist[0] = 0;
-    if( fn(0, edges, dist) ){
-        cout << path.size() << endl;
-        for( auto it : path){
-            cout << it + 1 << " ";
-        }
-    }else{
-        cout << "IMPOSSIBLE";
-    }
-
     
+
+    // vector<vector<int>> adj(node_count+1);
+    parent.resize(node_count+1, -1);
+    is_visited.resize(node_count+1, false);
+
+
+    vector<vector<int>> adj(node_count);
+    for(int i = 0; i<edge_count; i++){
+        int u,v;
+        cin >> u >> v;
+        adj[u-1].push_back(v-1);
+        adj[v-1].push_back(u-1);
+    }
+    // cout << "ok... ";
+    for (int i = 0; i < node_count; i++) {
+        if (!is_visited[i] && start == -1) {
+            fn(i, adj, -1);
+            if(start != -1) break;
+        }
+    }
+    // cout <<"  ok  ";
+
+    vector<int> ans;
+    // cout <<"kahaaa ";
+
+    // for(int i= 0; i<node_count; i++)
+        // cout << parent[i] <<" ";
+    if(start != -1){
+        // cout <<"start /... ";
+        int end = start;
+        ans.push_back(start);
+        start = parent[start];
+        while(start != end){
+            // cout <<".. m . ";
+            ans.push_back(start);
+            start = parent[start];
+        }
+        ans.push_back(end);
+        reverse(ans.begin(), ans.end());  
+    }
+
+    if(start != -1){
+    
+        cout << ans.size() << endl;
+        for(auto it : ans) cout << it+1 << " ";
+    }else{
+        cout << "IMPOSSIBLE" << endl;
+    }
 
 }
