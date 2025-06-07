@@ -24,58 +24,57 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int power(int b){
-    int ans = 1;
-    l(i,0,b) ans *= 2;
-    return ans;
+map<int,int> fn(int x) {
+    map<int,int> mp;
+    for (int div = 2; div*div <= x; div++) {
+        while (x % div == 0) {
+            mp[div]++;
+            x /= div;
+        }
+    }
+    if (x > 1) mp[x]++;
+    return mp;
 }
 
 
+// for specifically k = 3
+//  for me any number pow(2,3j+2)* pow(13,1) * pow(19, 3*h1) === pow(2,2) * pow(13,3i+2)  * pow(19,3*h2)
+// and both will be storead as reduced for of --> stored as pow(2,2)*pow(13,1)  
+// and search for the no of compliment ---> pow(2,1) * pow(13,2)
+
+pair<int,int> fn2( map<int,int> mp, int k){
+    int red = 1;
+    int comp = 1;
+
+    for(auto it : mp){
+        if( it.second % k == 0) continue;
+        int times = it.second % k ;
+        l(i,0,times) red *= it.first;
+        l(i,0,k-times) comp *= it.first;
+    }
+
+    return {red, comp};
+}
+
 signed main(){
-    int n,m;
-    cin >> n >> m;
+    int t = 1;
+    while(t--){
+        int n, k;
+        cin >> n >> k;
+        vi v(n);
 
-    vvi v(n, vi(m));
-    l(i,0,n) l(j,0,m) cin >> v[i][j];
-
-    // cout << power(4) << "   ";
-
-    int ans = n*m;
-    l(i,0,n){
-        int b = 0;
-        l(j,0,m){
-            if(v[i][j] == 0) b++;
-        }
-        // cout << b << " b : ";
-        
-        if(b >= 2){
-            ans += power(b) - (1+b);
-        }
-        if(m-b  >= 2){
-            ans += (power(m-b)-(1+m-b));
-        }
-        // cout << ans << " ";
-    }
-    
-
-
-    
-
-
-    l(j,0,m){
-        int b = 0;
+        int ans = 0;
+        map<int,int> freq;
         l(i,0,n){
-            if(v[i][j] == 0) b++;
+            cin >> v[i];
+            auto mp = fn(v[i]);
+            auto pr = fn2(mp, k);
+            ans += freq[pr.second];
+            freq[pr.first]++;
         }
-        if(b >= 2){
-            ans += power(b) - (1+b);
-        }
-        if(n-b  >= 2){
-            ans += (power(n-b)-(1+n-b));
-        }
-        // cout << ans << " . ";
-    }
 
-    cout << ans << endl;
+         
+        cout << ans;
+    }
     return 0;
 }

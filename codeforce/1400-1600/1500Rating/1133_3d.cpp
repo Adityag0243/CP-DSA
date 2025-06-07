@@ -24,58 +24,48 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int power(int b){
-    int ans = 1;
-    l(i,0,b) ans *= 2;
-    return ans;
+
+
+pair<int,int> fn(int a, int b){
+    if( (a > 0 && b < 0 ) ||  (a < 0 && b > 0)){  // one of them is negative
+        a = -(abs(a));
+        b = abs(b);
+    }else if( a < 0 && b < 0){
+        a = abs(a);
+        b = abs(b);
+    }
+ 
+    int gc = gcd( abs(a), abs(b) );
+    return { a/gc, b/gc };
+    
 }
-
-
+   
 signed main(){
-    int n,m;
-    cin >> n >> m;
+    fastio;
+    int t = 1;
+    // cin >> t;
+    while(t--){
+        int n; cin >> n;
+        vector<int> a(n);l(i,0,n) cin >> a[i];
+        vector<int> b(n);l(i,0,n) cin >> b[i];
+        map<pair<int,int>,int> mp;
+        int ans = 0;
+        int extra = 0;
 
-    vvi v(n, vi(m));
-    l(i,0,n) l(j,0,m) cin >> v[i][j];
-
-    // cout << power(4) << "   ";
-
-    int ans = n*m;
-    l(i,0,n){
-        int b = 0;
-        l(j,0,m){
-            if(v[i][j] == 0) b++;
-        }
-        // cout << b << " b : ";
-        
-        if(b >= 2){
-            ans += power(b) - (1+b);
-        }
-        if(m-b  >= 2){
-            ans += (power(m-b)-(1+m-b));
-        }
-        // cout << ans << " ";
-    }
-    
-
-
-    
-
-
-    l(j,0,m){
-        int b = 0;
         l(i,0,n){
-            if(v[i][j] == 0) b++;
+            
+            if( a[i] == 0 && b[i] == 0) extra++;
+            else if( a[i] == 0 && b[i] != 0) continue;
+            else if( a[i] != 0 && b[i] == 0) mp[{0,0}]++;
+            else{
+                mp[fn(a[i],b[i])]++;
+            }
         }
-        if(b >= 2){
-            ans += power(b) - (1+b);
+        
+        for( auto it : mp){
+            ans = max(ans, it.y);
         }
-        if(n-b  >= 2){
-            ans += (power(n-b)-(1+n-b));
-        }
-        // cout << ans << " . ";
+        cout << ans + extra ;
     }
-
-    cout << ans << endl;
     return 0;
 }

@@ -24,58 +24,25 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int power(int b){
-    int ans = 1;
-    l(i,0,b) ans *= 2;
-    return ans;
-}
 
+int power(int b,int p) {
+    if (p == 0) return 1;
+    if (p == 1) return b;
+    
+    int half = power(b,p / 2) % MOD2;
+    long long result = (1LL * half * half) % MOD2;
+
+    if (p % 2 == 0) {
+        return result;
+    } else {
+        return (result * b) % MOD2;
+    }
+}
 
 signed main(){
     int n,m;
-    cin >> n >> m;
-
-    vvi v(n, vi(m));
-    l(i,0,n) l(j,0,m) cin >> v[i][j];
-
-    // cout << power(4) << "   ";
-
-    int ans = n*m;
-    l(i,0,n){
-        int b = 0;
-        l(j,0,m){
-            if(v[i][j] == 0) b++;
-        }
-        // cout << b << " b : ";
-        
-        if(b >= 2){
-            ans += power(b) - (1+b);
-        }
-        if(m-b  >= 2){
-            ans += (power(m-b)-(1+m-b));
-        }
-        // cout << ans << " ";
-    }
-    
-
-
-    
-
-
-    l(j,0,m){
-        int b = 0;
-        l(i,0,n){
-            if(v[i][j] == 0) b++;
-        }
-        if(b >= 2){
-            ans += power(b) - (1+b);
-        }
-        if(n-b  >= 2){
-            ans += (power(n-b)-(1+n-b));
-        }
-        // cout << ans << " . ";
-    }
-
-    cout << ans << endl;
+    cin >>n >> m;
+    int inside = power(2,m);
+    cout <<  power((inside-1), n);
     return 0;
 }

@@ -24,58 +24,50 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int power(int b){
-    int ans = 1;
-    l(i,0,b) ans *= 2;
-    return ans;
-}
-
-
 signed main(){
-    int n,m;
-    cin >> n >> m;
+    fastio;
+    int t;
+    cin >> t;
+    while(t--){
+        int n,k,z;
+        cin >> n >> k >> z;
+        vi v(n);
+        l(i,0,n) cin >> v[i];
 
-    vvi v(n, vi(m));
-    l(i,0,n) l(j,0,m) cin >> v[i][j];
+        vi dp(n);
+        dp[0] = v[0];
 
-    // cout << power(4) << "   ";
-
-    int ans = n*m;
-    l(i,0,n){
-        int b = 0;
-        l(j,0,m){
-            if(v[i][j] == 0) b++;
+        for(int i = 1; i<=k; i++){
+            dp[i] = v[i] + dp[i-1];
         }
-        // cout << b << " b : ";
+        // l(i,0,n) cout << dp[i] << " ";
+        // cout << endl; 
+        vi dp2(n);
+        l(i,1,n){
+            dp2[i] = v[i] + v[i-1];
+        }
+        l(i,1,n){
+            if(dp2[i] < dp2[i-1]) dp2[i] = dp2[i-1];
+        }
+
+        // l(i,0,n) cout << dp2[i] << " ";
+        // cout << endl;
+
+        int ans = 0;
+
+        for(int i = 0; i<= k; i++){
+            int r = k - i;
+            ans = max(ans, dp[i]);
+            r = min(r,2*z);
+            int extra = (r/2)*dp2[i];
+            if(r % 2 == 1 && i > 0) extra += v[i-1];
+            ans = max( ans, dp[i] + extra); 
+            // cout << ans << " ";
+        }
         
-        if(b >= 2){
-            ans += power(b) - (1+b);
-        }
-        if(m-b  >= 2){
-            ans += (power(m-b)-(1+m-b));
-        }
-        // cout << ans << " ";
+
+        cout << ans <<  endl;
+
     }
-    
-
-
-    
-
-
-    l(j,0,m){
-        int b = 0;
-        l(i,0,n){
-            if(v[i][j] == 0) b++;
-        }
-        if(b >= 2){
-            ans += power(b) - (1+b);
-        }
-        if(n-b  >= 2){
-            ans += (power(n-b)-(1+n-b));
-        }
-        // cout << ans << " . ";
-    }
-
-    cout << ans << endl;
     return 0;
 }

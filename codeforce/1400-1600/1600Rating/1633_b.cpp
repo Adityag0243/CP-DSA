@@ -24,58 +24,70 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int power(int b){
-    int ans = 1;
-    l(i,0,b) ans *= 2;
-    return ans;
+
+vi tim(1e3+5,INT_MAX);
+
+
+void bfs(){
+    tim[1] = 0;
+    for(int i = 1; i <= 1000; i++){
+        for(int j = 1; j <= i; ){
+            int val = i / j;
+            int nj = i / val; // all j in [j, nj] have same i/j
+            int node = i + val;
+            if(node <= 1000){
+                tim[node] = min(tim[node], tim[i]+1);
+            }
+            j = nj + 1;
+        }
+    }
 }
 
-
 signed main(){
-    int n,m;
-    cin >> n >> m;
+    // fastio;
+    int t;
+    cin >> t;
 
-    vvi v(n, vi(m));
-    l(i,0,n) l(j,0,m) cin >> v[i][j];
-
-    // cout << power(4) << "   ";
-
-    int ans = n*m;
-    l(i,0,n){
-        int b = 0;
-        l(j,0,m){
-            if(v[i][j] == 0) b++;
-        }
-        // cout << b << " b : ";
-        
-        if(b >= 2){
-            ans += power(b) - (1+b);
-        }
-        if(m-b  >= 2){
-            ans += (power(m-b)-(1+m-b));
-        }
-        // cout << ans << " ";
-    }
-    
+    bfs();
 
 
-    
+    while(t--){
+        int n, k;
+        cin >> n >> k;
+        vi b(n);
+        l(i,0,n) cin>> b[i];
 
+        vi c(n);
+        l(i,0,n) cin >> c[i];
 
-    l(j,0,m){
-        int b = 0;
+        vector< pair<int, int> > vp(n);
         l(i,0,n){
-            if(v[i][j] == 0) b++;
+            vp[i] = {tim[b[i]],-c[i]};
         }
-        if(b >= 2){
-            ans += power(b) - (1+b);
-        }
-        if(n-b  >= 2){
-            ans += (power(n-b)-(1+n-b));
-        }
-        // cout << ans << " . ";
-    }
 
-    cout << ans << endl;
+        
+        srt(vp);
+
+        map<int,int> dp;
+
+        dp[0] = 0;
+        l(j,0,n){
+            for(auto it : dp){
+                int i = it.x;
+                if( i + vp[j].x <= 0 && dp.find(i+vp[j].x) != dp.end()){
+                    dp[i+vp[i].x] =  max(dp[i], dp[i-vp[j].x] - vp[j].y);
+                }else{
+                    dp[i+vp[i].x] = dp[i-vp[j].x] - vp[j].y;
+                }
+            }
+        }
+        int ans = 0;
+        for(auto it : dp)
+        {
+            ans = max(ans, it.y);
+        }
+
+
+    }
     return 0;
 }

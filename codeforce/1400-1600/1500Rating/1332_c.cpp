@@ -24,58 +24,40 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int power(int b){
-    int ans = 1;
-    l(i,0,b) ans *= 2;
-    return ans;
-}
-
-
 signed main(){
-    int n,m;
-    cin >> n >> m;
+    fastio;
+    int t;
+    cin >> t;
+    while(t--){
+        int n,k;
+        cin >> n >> k;
 
-    vvi v(n, vi(m));
-    l(i,0,n) l(j,0,m) cin >> v[i][j];
+        string s;
+        cin >> s;
+        int ans = 0;
 
-    // cout << power(4) << "   ";
+        // (0 1 2 3 . . . k-1)   these would repeat n/k times
+        // 0th and k-1 --> should be same, 1st and k-1-1 should be same and so on
 
-    int ans = n*m;
-    l(i,0,n){
-        int b = 0;
-        l(j,0,m){
-            if(v[i][j] == 0) b++;
+        // want minimum change do will replace every thing with the most frequent character on each similar position 
+
+        for(int i = 0; i<(k+1)/2 ; i++){
+            vi v(26,0);
+ 
+            for(int j = i; j<n ; j+=k){
+                v[s[j] - 'a']++;
+            }
+
+            if(i != k-1-i){
+                for(int j = k-1-i; j<n ; j+=k){
+                    v[s[j] - 'a']++;
+                }
+            }
+            
+            if(i == k-1-i) ans += (n/k - mxv(v));
+            else ans += (2*(n/k) - mxv(v));
         }
-        // cout << b << " b : ";
-        
-        if(b >= 2){
-            ans += power(b) - (1+b);
-        }
-        if(m-b  >= 2){
-            ans += (power(m-b)-(1+m-b));
-        }
-        // cout << ans << " ";
+        cout << ans << endl;
     }
-    
-
-
-    
-
-
-    l(j,0,m){
-        int b = 0;
-        l(i,0,n){
-            if(v[i][j] == 0) b++;
-        }
-        if(b >= 2){
-            ans += power(b) - (1+b);
-        }
-        if(n-b  >= 2){
-            ans += (power(n-b)-(1+n-b));
-        }
-        // cout << ans << " . ";
-    }
-
-    cout << ans << endl;
     return 0;
 }

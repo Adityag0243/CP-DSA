@@ -24,58 +24,60 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int power(int b){
-    int ans = 1;
-    l(i,0,b) ans *= 2;
-    return ans;
-}
-
-
 signed main(){
-    int n,m;
-    cin >> n >> m;
+    fastio;
+    int t;
+    cin >> t;
+    while(t--){
+        int n,m;
+        cin >> n >> m;
+        vi a(n);
+        l(i,0,n) cin >> a[i];
 
-    vvi v(n, vi(m));
-    l(i,0,n) l(j,0,m) cin >> v[i][j];
+        vi b(m);
+        l(i,0,m) cin >> b[i];
 
-    // cout << power(4) << "   ";
+        int ans = 2e9;
+        int lo = 0;
+        int hi = mxv(b);
 
-    int ans = n*m;
-    l(i,0,n){
-        int b = 0;
-        l(j,0,m){
-            if(v[i][j] == 0) b++;
+        while( lo <= hi){
+            int mid = (lo+hi)/2;
+
+            int j = m-1;
+            bool used = false;
+            
+            rl(i,0,n)
+            {   
+                if(j < 0) break;
+                if( !used && b[j] <= mid){
+                    used = true;
+                    j--;
+                }else if( b[j] <= a[i]) j--;
+            }
+
+            if(j == 0 && !used)
+            {   
+                ans = min(ans, b[0]);
+                j--;
+            }
+
+            if(j == -1){
+                if(!used){
+                    ans = 0;
+                    break;
+                }else{
+                    ans = min(ans, mid);
+                    hi = mid-1;
+                }
+            }else{
+                lo = mid+1;
+            }
         }
-        // cout << b << " b : ";
-        
-        if(b >= 2){
-            ans += power(b) - (1+b);
-        }
-        if(m-b  >= 2){
-            ans += (power(m-b)-(1+m-b));
-        }
-        // cout << ans << " ";
+
+        if(ans == 2e9) cout << -1 << endl;
+        else cout << ans << endl;
+
     }
-    
-
-
-    
-
-
-    l(j,0,m){
-        int b = 0;
-        l(i,0,n){
-            if(v[i][j] == 0) b++;
-        }
-        if(b >= 2){
-            ans += power(b) - (1+b);
-        }
-        if(n-b  >= 2){
-            ans += (power(n-b)-(1+n-b));
-        }
-        // cout << ans << " . ";
-    }
-
-    cout << ans << endl;
     return 0;
 }

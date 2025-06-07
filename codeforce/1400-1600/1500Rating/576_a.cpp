@@ -24,58 +24,61 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int power(int b){
-    int ans = 1;
-    l(i,0,b) ans *= 2;
-    return ans;
+
+vector<int> primes;
+void pre(){
+    vector<bool> v(10000,true);
+    for(int i = 2; i<10000; i++){
+        if(v[i]){
+            for(int j = 2*i; j<10000; j += i){
+                v[j] = false;
+            }
+        }
+    }
+
+    for(int i = 2; i<10000; i++){
+        if(v[i]) primes.pb(i);
+    }
 }
 
 
 signed main(){
-    int n,m;
-    cin >> n >> m;
-
-    vvi v(n, vi(m));
-    l(i,0,n) l(j,0,m) cin >> v[i][j];
-
-    // cout << power(4) << "   ";
-
-    int ans = n*m;
-    l(i,0,n){
-        int b = 0;
-        l(j,0,m){
-            if(v[i][j] == 0) b++;
+    // fastio;
+    int t = 1;
+    // cin >> t;
+    pre();
+    while(t--){
+        int n;
+        cin >> n;
+        vector<int> freq(n+1);
+        for(int i = 2; i <= n ; i++){
+            for(int j = 0; primes[j] <= i ; j++){
+                int num = i;
+                int cnt = 0;
+                while( num > 1 && num % primes[j] == 0 ) {
+                    cnt++;
+                    num/= primes[j];
+                }
+                freq[primes[j]] = max( freq[primes[j]], cnt);
+            }
         }
-        // cout << b << " b : ";
-        
-        if(b >= 2){
-            ans += power(b) - (1+b);
+
+        vi ans;
+
+        for(int i = 2; i <= n; i++ ){
+            if(freq[i] > 0){
+                int cur = i;
+                l(j,0,freq[i]){
+                    ans.pb(cur);
+                    cur *= i;
+                }
+            }
         }
-        if(m-b  >= 2){
-            ans += (power(m-b)-(1+m-b));
-        }
-        // cout << ans << " ";
+
+        cout << ans.size() << endl;
+        for( int x : ans) cout << x << " ";
+
+
     }
-    
-
-
-    
-
-
-    l(j,0,m){
-        int b = 0;
-        l(i,0,n){
-            if(v[i][j] == 0) b++;
-        }
-        if(b >= 2){
-            ans += power(b) - (1+b);
-        }
-        if(n-b  >= 2){
-            ans += (power(n-b)-(1+n-b));
-        }
-        // cout << ans << " . ";
-    }
-
-    cout << ans << endl;
     return 0;
 }

@@ -24,58 +24,38 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int power(int b){
-    int ans = 1;
-    l(i,0,b) ans *= 2;
-    return ans;
+int mex(vector<int>& v, int i, int j) {
+    set<int> s;
+    for (int l = i; l < j; l++) {
+        s.insert(v[idx]);
+    }
+    int mex = 0;
+    while (s.count(mex)) ++mex;
+    return mex;
 }
 
 
+
 signed main(){
-    int n,m;
-    cin >> n >> m;
-
-    vvi v(n, vi(m));
-    l(i,0,n) l(j,0,m) cin >> v[i][j];
-
-    // cout << power(4) << "   ";
-
-    int ans = n*m;
-    l(i,0,n){
-        int b = 0;
-        l(j,0,m){
-            if(v[i][j] == 0) b++;
-        }
-        // cout << b << " b : ";
-        
-        if(b >= 2){
-            ans += power(b) - (1+b);
-        }
-        if(m-b  >= 2){
-            ans += (power(m-b)-(1+m-b));
-        }
-        // cout << ans << " ";
-    }
-    
-
-
-    
-
-
-    l(j,0,m){
-        int b = 0;
+    fastio;
+    int t;
+    cin >> t;
+    while(t--){
+        int n,k;
+        cin >> n >> k;
+        vi v(n);
         l(i,0,n){
-            if(v[i][j] == 0) b++;
+            cin >> v[i];
         }
-        if(b >= 2){
-            ans += power(b) - (1+b);
-        }
-        if(n-b  >= 2){
-            ans += (power(n-b)-(1+n-b));
-        }
-        // cout << ans << " . ";
-    }
+        // srt(v);
+        int i = 0;
+        int not_found = 0;
+        bool flag = false;
 
-    cout << ans << endl;
+        while(i<n){
+            
+        }
+        cout << not_found << endl;
+    }
     return 0;
 }

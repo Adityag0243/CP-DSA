@@ -24,58 +24,45 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int power(int b){
-    int ans = 1;
-    l(i,0,b) ans *= 2;
-    return ans;
-}
-
-
 signed main(){
     int n,m;
     cin >> n >> m;
 
-    vvi v(n, vi(m));
-    l(i,0,n) l(j,0,m) cin >> v[i][j];
+    vi c(n);
+    l(i,0,n) cin >> c[i];
+    srt(c);
 
-    // cout << power(4) << "   ";
+    vi t(m);
+    l(i,0,m) cin >> t[i];
 
-    int ans = n*m;
-    l(i,0,n){
-        int b = 0;
-        l(j,0,m){
-            if(v[i][j] == 0) b++;
+    int lo = 0;
+    int hi = 1e10;
+
+    int ans = 0;
+
+    while( lo <= hi ){
+        int r = (lo+hi)/2;
+
+        vi vc(n+1,0);
+        l(i,0,m){
+            int ind = lower_bound( all(c) , t[i]-r) - c.begin();
+
+            if(ind <= 0) vc[0]++;
+            else if(ind < n) vc[ind]++;
+
+            ind = upper_bound( all(c) , t[i]+r) - c.begin();
+            if(ind < n) vc[ind]--;
         }
-        // cout << b << " b : ";
-        
-        if(b >= 2){
-            ans += power(b) - (1+b);
+        l(i,1,n+1) vc[i] += vc[i-1];
+
+        if( *min_element(vc.begin(), vc.end()-1) <= 0){
+            lo = r+1;
+        }else{
+            ans = r;
+            hi = r-1;
         }
-        if(m-b  >= 2){
-            ans += (power(m-b)-(1+m-b));
-        }
-        // cout << ans << " ";
     }
-    
-
-
-    
-
-
-    l(j,0,m){
-        int b = 0;
-        l(i,0,n){
-            if(v[i][j] == 0) b++;
-        }
-        if(b >= 2){
-            ans += power(b) - (1+b);
-        }
-        if(n-b  >= 2){
-            ans += (power(n-b)-(1+n-b));
-        }
-        // cout << ans << " . ";
-    }
-
     cout << ans << endl;
+
     return 0;
 }

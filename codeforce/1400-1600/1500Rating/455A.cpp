@@ -24,58 +24,39 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int power(int b){
-    int ans = 1;
-    l(i,0,b) ans *= 2;
-    return ans;
-}
-
-
 signed main(){
-    int n,m;
-    cin >> n >> m;
-
-    vvi v(n, vi(m));
-    l(i,0,n) l(j,0,m) cin >> v[i][j];
-
-    // cout << power(4) << "   ";
-
-    int ans = n*m;
-    l(i,0,n){
-        int b = 0;
-        l(j,0,m){
-            if(v[i][j] == 0) b++;
-        }
-        // cout << b << " b : ";
-        
-        if(b >= 2){
-            ans += power(b) - (1+b);
-        }
-        if(m-b  >= 2){
-            ans += (power(m-b)-(1+m-b));
-        }
-        // cout << ans << " ";
+    int n;
+    cin >> n;
+    vi v(n);
+    l(i,0,n) cin >> v[i];
+    map<int,int> mp;
+    l(i,0,n) mp[v[i]]++;
+    
+    vector< pair<int,int> > dp;
+    for( auto it : mp ){
+        int val = it.x * it.y;
+        dp.pb({it.x,val});
     }
-    
 
-
-    
-
-
-    l(j,0,m){
-        int b = 0;
-        l(i,0,n){
-            if(v[i][j] == 0) b++;
+    for(int i = 0; i<dp.size(); i++){
+        if(i-1 >= 0  && dp[i-1].x != dp[i].x - 1 )
+        {
+            dp[i].y = dp[i].y + dp[i-1].y; 
         }
-        if(b >= 2){
-            ans += power(b) - (1+b);
+        if( i-2 >=0 ){
+            dp[i].y = max(dp[i].y, (dp[i].x * mp[dp[i].x])  + dp[i-2].y); 
         }
-        if(n-b  >= 2){
-            ans += (power(n-b)-(1+n-b));
+        if( i-3 >=0 ){
+            dp[i].y = max(dp[i].y, (dp[i].x * mp[dp[i].x])  + dp[i-3].y); 
         }
-        // cout << ans << " . ";
+    }
+    int ans = 0;
+    for(auto it : dp){
+        // cout << it.y <<" ";
+        ans = max( ans, it.y);
     }
 
     cout << ans << endl;
+
     return 0;
 }

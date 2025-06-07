@@ -24,58 +24,31 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int power(int b){
-    int ans = 1;
-    l(i,0,b) ans *= 2;
-    return ans;
-}
-
-
 signed main(){
-    int n,m;
-    cin >> n >> m;
-
-    vvi v(n, vi(m));
-    l(i,0,n) l(j,0,m) cin >> v[i][j];
-
-    // cout << power(4) << "   ";
-
-    int ans = n*m;
-    l(i,0,n){
-        int b = 0;
-        l(j,0,m){
-            if(v[i][j] == 0) b++;
-        }
-        // cout << b << " b : ";
+    fastio;
+    int t;
+    cin >> t;
+    while(t--){
+        int n;
+        cin >> n;
         
-        if(b >= 2){
-            ans += power(b) - (1+b);
+        string s;
+        cin >> s;
+
+        map<int,int> mp;
+        mp[0] = 1;
+        int cnt = 0;
+        int ans = 0;
+
+        l(i,0,n)
+        {
+            if(s[i] == '0') cnt++;
+            else cnt -= ( s[i] - '1' );
+
+            ans += (mp[cnt]);
+            mp[cnt]++;
         }
-        if(m-b  >= 2){
-            ans += (power(m-b)-(1+m-b));
-        }
-        // cout << ans << " ";
+        cout << ans << endl;
     }
-    
-
-
-    
-
-
-    l(j,0,m){
-        int b = 0;
-        l(i,0,n){
-            if(v[i][j] == 0) b++;
-        }
-        if(b >= 2){
-            ans += power(b) - (1+b);
-        }
-        if(n-b  >= 2){
-            ans += (power(n-b)-(1+n-b));
-        }
-        // cout << ans << " . ";
-    }
-
-    cout << ans << endl;
     return 0;
 }

@@ -24,58 +24,43 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int power(int b){
-    int ans = 1;
-    l(i,0,b) ans *= 2;
-    return ans;
-}
-
-
 signed main(){
-    int n,m;
-    cin >> n >> m;
-
-    vvi v(n, vi(m));
-    l(i,0,n) l(j,0,m) cin >> v[i][j];
-
-    // cout << power(4) << "   ";
-
-    int ans = n*m;
+    int n;
+    cin >> n;
+    vector< pair<pair<int,int>,int> > vp;
     l(i,0,n){
-        int b = 0;
-        l(j,0,m){
-            if(v[i][j] == 0) b++;
+        int a,b;
+        cin >> a >> b;
+        vp.pb({{a,-b},i});
+    }
+
+    srt(vp);
+
+    l(i,0,n){
+        vp[i].x.y *= (-1);
+    }
+
+    int ind = -1;
+    int maxy = vp[0].x.y;
+    l(i,1,n){
+        if(vp[i].x.y <= maxy){
+            ind = i;
+            break;
         }
-        // cout << b << " b : ";
-        
-        if(b >= 2){
-            ans += power(b) - (1+b);
+        maxy = max(maxy, vp[i].x.y);
+    }
+    if(ind == -1) cout << -1 << " "<< -1 ;
+    else{
+        l(i,0,ind){
+            if( vp[i].x.y == maxy){
+                cout << vp[ind].y + 1 << " "<< vp[i].y + 1;
+                break;
+            }
         }
-        if(m-b  >= 2){
-            ans += (power(m-b)-(1+m-b));
-        }
-        // cout << ans << " ";
+
     }
     
 
 
-    
-
-
-    l(j,0,m){
-        int b = 0;
-        l(i,0,n){
-            if(v[i][j] == 0) b++;
-        }
-        if(b >= 2){
-            ans += power(b) - (1+b);
-        }
-        if(n-b  >= 2){
-            ans += (power(n-b)-(1+n-b));
-        }
-        // cout << ans << " . ";
-    }
-
-    cout << ans << endl;
     return 0;
 }

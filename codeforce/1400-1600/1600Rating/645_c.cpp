@@ -24,58 +24,42 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int power(int b){
-    int ans = 1;
-    l(i,0,b) ans *= 2;
-    return ans;
-}
-
-
 signed main(){
-    int n,m;
-    cin >> n >> m;
+   
+    int n,k;
+    cin >> n >> k;
+    string s;
+    cin >> s;
+    vi v(n);
+    l(i,0,n) if(s[i]== '0') v[i]++;
+    l(i,1,n) v[i] += v[i-1];
 
-    vvi v(n, vi(m));
-    l(i,0,n) l(j,0,m) cin >> v[i][j];
+    int ans = 1e6;
 
-    // cout << power(4) << "   ";
-
-    int ans = n*m;
     l(i,0,n){
-        int b = 0;
-        l(j,0,m){
-            if(v[i][j] == 0) b++;
-        }
-        // cout << b << " b : ";
-        
-        if(b >= 2){
-            ans += power(b) - (1+b);
-        }
-        if(m-b  >= 2){
-            ans += (power(m-b)-(1+m-b));
-        }
-        // cout << ans << " ";
-    }
-    
+        if( s[i] == '1' || v[i] == 0) continue;
 
+        int lo = k/2;
+        int hi = ans;
 
-    
+        while( lo <= hi )
+        {
+            int mid = (lo + hi) / 2;
 
+            // check work.....
+            int ind1 = max( 0ll, i - mid );
+            int ind2 = min( n-1, i + mid );
+            int rooms;
+            if(ind1 == 0) rooms = v[ind2];
+            else rooms = v[ind2] - v[ind1 - 1];
 
-    l(j,0,m){
-        int b = 0;
-        l(i,0,n){
-            if(v[i][j] == 0) b++;
+            if(rooms >= k+1){
+                ans = min(ans, mid);
+                hi = mid - 1;
+            }else lo = mid + 1;
         }
-        if(b >= 2){
-            ans += power(b) - (1+b);
-        }
-        if(n-b  >= 2){
-            ans += (power(n-b)-(1+n-b));
-        }
-        // cout << ans << " . ";
     }
 
-    cout << ans << endl;
+    cout << ans ;
     return 0;
 }

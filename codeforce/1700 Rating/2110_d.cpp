@@ -24,58 +24,47 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int power(int b){
-    int ans = 1;
-    l(i,0,b) ans *= 2;
-    return ans;
-}
-
-
 signed main(){
-    int n,m;
-    cin >> n >> m;
+    fastio;
+    int t;
+    cin >> t;
+    while(t--){
+        int n,m; cin >> n >> m;
+        vi b(n+1); l(i,1,n+1) cin >> b[i];
+        map< pair<int,int>, int> mp;
 
-    vvi v(n, vi(m));
-    l(i,0,n) l(j,0,m) cin >> v[i][j];
+        l(i,0,m){
+            int s,t,w;
+            cin >> s >> t >> w;
 
-    // cout << power(4) << "   ";
+            if( mp.find({s,t}) != mp.end()){
+                mp[{s,t}] = min(w, mp[{s,t}]);
+            }else{
+                mp[{s,t}] = w;
+            }
+        }
 
-    int ans = n*m;
-    l(i,0,n){
-        int b = 0;
-        l(j,0,m){
-            if(v[i][j] == 0) b++;
+        vector<pair<int,int>> dp(n+1, {INT_MAX,INT_MIN});
+        l(i,1,n+1) dp[i].y = b[i];
+        dp[1] = {0, b[1]};
+
+        for( auto it : mp){
+            int cur_pos = it.x.x;
+            int dest_pos = it.x.y;
+            int cost = it.y;
+            
+            if( dp[cur_pos].y >= cost ){
+                if( dp[cur_pos].x < cost) dp[cur_pos].x = cost;
+                dp[dest_pos].x  = min( dp[dest_pos].x, dp[cur_pos].x);
+                dp[dest_pos].y  = max( dp[dest_pos].y, b[dest_pos]+dp[cur_pos].y);
+            } 
+
         }
-        // cout << b << " b : ";
-        
-        if(b >= 2){
-            ans += power(b) - (1+b);
-        }
-        if(m-b  >= 2){
-            ans += (power(m-b)-(1+m-b));
-        }
-        // cout << ans << " ";
+
+        for( auto it : dp) cout <<"(" <<it.x << ", " << it.y << ") ";
+
+        if(dp[n].x == INT_MAX) dp[n].x = -1;
+         cout << dp[n].x << endl;
     }
-    
-
-
-    
-
-
-    l(j,0,m){
-        int b = 0;
-        l(i,0,n){
-            if(v[i][j] == 0) b++;
-        }
-        if(b >= 2){
-            ans += power(b) - (1+b);
-        }
-        if(n-b  >= 2){
-            ans += (power(n-b)-(1+n-b));
-        }
-        // cout << ans << " . ";
-    }
-
-    cout << ans << endl;
     return 0;
 }

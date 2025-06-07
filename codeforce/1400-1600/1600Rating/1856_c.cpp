@@ -24,58 +24,64 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int power(int b){
-    int ans = 1;
-    l(i,0,b) ans *= 2;
-    return ans;
+
+// is it possible make mid as answer from index i
+int check(int mid, int i, int k, vi &v){
+    
+    
+    int n = v.size();
+
+    while( i < n && k >= 0){
+
+        if(v[i] >= mid) return true;
+        k -= (mid - v[i]);
+        if(k < 0) return false;
+        mid--;
+        i++;
+
+    }
+
+    return false;
 }
 
 
 signed main(){
-    int n,m;
-    cin >> n >> m;
+    fastio;
+    int t;
+    cin >> t;
+    while(t--){
+        int n,k;
+        cin >> n >> k;
 
-    vvi v(n, vi(m));
-    l(i,0,n) l(j,0,m) cin >> v[i][j];
+        vi v(n);
+        l(i,0,n) cin >> v[i];
 
-    // cout << power(4) << "   ";
+        int ans = mxv(v);
 
-    int ans = n*m;
-    l(i,0,n){
-        int b = 0;
-        l(j,0,m){
-            if(v[i][j] == 0) b++;
+        int lo = ans;
+        int hi = 1e9;
+
+        while( lo <= hi ){
+            int mid = (hi - lo)/2 + lo;
+            
+            bool flag = false;
+            l(i,0,n-1){
+                if( check( mid, i, k, v)){
+                    flag = true;
+                    break;
+                }
+            }
+
+            if(flag){
+                ans = max(ans,mid);
+                lo = mid+1;
+            }else{
+                hi = mid-1;
+            }
+
         }
-        // cout << b << " b : ";
-        
-        if(b >= 2){
-            ans += power(b) - (1+b);
-        }
-        if(m-b  >= 2){
-            ans += (power(m-b)-(1+m-b));
-        }
-        // cout << ans << " ";
+
+        cout << ans << endl;
     }
-    
-
-
-    
-
-
-    l(j,0,m){
-        int b = 0;
-        l(i,0,n){
-            if(v[i][j] == 0) b++;
-        }
-        if(b >= 2){
-            ans += power(b) - (1+b);
-        }
-        if(n-b  >= 2){
-            ans += (power(n-b)-(1+n-b));
-        }
-        // cout << ans << " . ";
-    }
-
-    cout << ans << endl;
     return 0;
 }
