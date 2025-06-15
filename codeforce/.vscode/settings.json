@@ -6,6 +6,8 @@
         "ostream": "cpp",
         "vector": "cpp",
         "cstdlib": "cpp",
-        "xstring": "cpp"
+        "xstring": "cpp",
+        "random": "cpp",
+        "xutility": "cpp"
     }
 }
