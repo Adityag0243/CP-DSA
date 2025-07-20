@@ -24,62 +24,56 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
+vi primes;
+void pre(){
+    vi v(200005, 1);
+    
+    for(int i = 2; i*i <200005 ; i++){
+        if(v[i]){
+            for(int j = i*i ; j < 200005; j += i){
+                v[j] = 0;
+            }
+        }
+    }
 
+    l(i,2,200005) if(v[i]) primes.pb(i);
+}
 
 
 
 signed main(){
+    pre();
+    int n;
+    cin >> n;
+    vi v(n); l(i,0,n) cin >> v[i];
+
+    int g = 1;
+    // l(i,0,n) g = gcd(g, v[i]);
+    // l(i,0,n) v[i] /= g;
+
+    // till now atleast gc is my answer it can be more than that
+    // if I can get x as factor from n-1 element that is useful for me 
+    // as always lcm will be combination of two element then we will get x from any possible pair's lcm
     
-    int n; cin >> n;
-    vi v(n);  l(i,0,n) cin >> v[i];
-    map<int, int> mp;
-    map<int,int> freq;
-    l(i,0,n){
-        freq[v[i]]++;
+    // cout << primes.size() << " prime size\n";
+    int psz = primes.size();
+    for(int k = 0; k < psz ; k++){
+        int x = primes[k];
 
-        for(int j = 1; j * j <= v[i]; j++){
-            if( v[i] % j != 0) continue;
-            if( mp.find(j) != mp.end() ) mp[j] = min(mp[j], v[i]);
-            else mp[j] = v[i];
-
-            if( j != v[i]/j ){
-                if( mp.find(v[i]/j) != mp.end() ) mp[(v[i]/j)] = min(mp[(v[i]/j)], v[i]);
-                else mp[(v[i]/j)] = v[i];
-            }
+        int cnt = 0;
+        l(i,0,n){
+            if(v[i] % x != 0) cnt++;
+            else v[i] /= x;
+            if( cnt >= 2) break;
+        }
+        if( cnt < 2){
+            g *= x;  // we got one more factor x
+            k--;
         }
 
     }
 
+    cout << g ;
 
-    int ans = 0;
-
-    for(int i = 0; i<n ; i++){
-        int val = v[i];
-
-
-        for(int j = 2; j * j <= v[i]; j++){
-            if( v[i] % j != 0) continue;
-            if( mp.find(j) != mp.end()){
-                val = min(val, mp[j]);
-                break;
-            }
-        }
-        for(int j = 2; j * j <= v[i]; j++){
-            if( v[i] % j != 0) continue;
-            if( mp.find(v[i]/j) != mp.end() ) val = min(val, mp[v[i]/j]);
-        }
-        
-        if(val != v[i]) ans += val;
-        else if( val != 1 && freq[val] > 1){
-            ans += val;
-            freq[val]--;
-        }
-        // cout << ans << " ";
-    }
-    if(ans == 0) ans = -1;
-
-    cout << ans ;
-
-    
     return 0;
 }

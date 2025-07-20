@@ -1,3 +1,4 @@
+// https://codeforces.com/problemset/gymProblem/101628/J
 #include <bits/stdc++.h>
 using namespace std;
 #define all(arr)        arr.begin(), arr.end()
@@ -24,62 +25,60 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-
-
-
-
 signed main(){
+    int n,k;
+    cin >> n >> k;
     
-    int n; cin >> n;
-    vi v(n);  l(i,0,n) cin >> v[i];
-    map<int, int> mp;
-    map<int,int> freq;
-    l(i,0,n){
-        freq[v[i]]++;
-
-        for(int j = 1; j * j <= v[i]; j++){
-            if( v[i] % j != 0) continue;
-            if( mp.find(j) != mp.end() ) mp[j] = min(mp[j], v[i]);
-            else mp[j] = v[i];
-
-            if( j != v[i]/j ){
-                if( mp.find(v[i]/j) != mp.end() ) mp[(v[i]/j)] = min(mp[(v[i]/j)], v[i]);
-                else mp[(v[i]/j)] = v[i];
-            }
-        }
-
+    vector<tuple<int, int, int>> v(n);
+    int lo = 0;
+    int hi = 0;
+    for (int i = 0; i < n; ++i) {
+        int a, b, c;
+        cin >> a >> b >> c;
+        lo += a;
+        hi = max(hi,a);
+        v[i] = make_tuple(a, b, c);
     }
 
+    srt(v);
 
-    int ans = 0;
+    lo = (lo+n-1)/n;
 
-    for(int i = 0; i<n ; i++){
-        int val = v[i];
+    int ans = hi;
 
+    while( lo<=hi ){
+        int mid = (lo + hi)/2;
 
-        for(int j = 2; j * j <= v[i]; j++){
-            if( v[i] % j != 0) continue;
-            if( mp.find(j) != mp.end()){
-                val = min(val, mp[j]);
-                break;
+        int sum = 0;
+        vector<pair<int,int>> lesser;
+
+        int need = 0;
+        for(auto &t : v){
+            if(get<0>(t) > mid){
+                need += get<0>(t) - mid;
+                sum += (get<0>(t) - mid) * get<1>(t);
             }
+            else lesser.pb({get<2>(t),get<0>(t)});
         }
-        for(int j = 2; j * j <= v[i]; j++){
-            if( v[i] % j != 0) continue;
-            if( mp.find(v[i]/j) != mp.end() ) val = min(val, mp[v[i]/j]);
+        srt(lesser);
+        l(i,0,lesser.size()){
+            if(need <= 0) break;
+            int can_get = mid - lesser[i].y;
+            int got = min(need,can_get);
+            need -= got;
+            sum += got * lesser[i].x;
         }
-        
-        if(val != v[i]) ans += val;
-        else if( val != 1 && freq[val] > 1){
-            ans += val;
-            freq[val]--;
-        }
-        // cout << ans << " ";
+
+
+        if( sum <= k){
+            ans = mid;
+            hi = mid-1;
+        }else{
+            lo = mid+1;
+        }        
     }
-    if(ans == 0) ans = -1;
+    cout << ans << endl;
 
-    cout << ans ;
 
-    
     return 0;
 }

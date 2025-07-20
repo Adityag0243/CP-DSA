@@ -25,61 +25,61 @@ using namespace std;
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
 
+vector<bool> vis(200005, false);
 
+bool bfs( int node, vvi & adj){
+    
+    queue<pair<int,int>> q;
+    q.push({node,-1});
+    vis[node] = true;
+    bool flag = true;
+    while( !q.empty() ){
+
+        node = q.front().x;
+        int par = q.front().y;
+        q.pop();
+        if(adj[node].size() > 2) flag = false;
+        
+        for( int neighbour : adj[node] ){
+
+            if(adj[neighbour].size() > 2) flag = false;
+            if (!vis[neighbour]) {
+                vis[neighbour] = true;
+                q.push({neighbour, node});
+            }
+            else if (neighbour != par && flag) {
+                return true;
+            }
+
+        }
+    }
+    return false;
+}
 
 
 signed main(){
-    
-    int n; cin >> n;
-    vi v(n);  l(i,0,n) cin >> v[i];
-    map<int, int> mp;
-    map<int,int> freq;
-    l(i,0,n){
-        freq[v[i]]++;
 
-        for(int j = 1; j * j <= v[i]; j++){
-            if( v[i] % j != 0) continue;
-            if( mp.find(j) != mp.end() ) mp[j] = min(mp[j], v[i]);
-            else mp[j] = v[i];
+    // fastio
+    int n, m; cin >> n >> m;
+    vvi adj(n + 1);
 
-            if( j != v[i]/j ){
-                if( mp.find(v[i]/j) != mp.end() ) mp[(v[i]/j)] = min(mp[(v[i]/j)], v[i]);
-                else mp[(v[i]/j)] = v[i];
-            }
-        }
-
+    for (int i = 0; i < m; i++) {
+        int u, v; cin >> u >> v;
+        adj[u].pb(v);
+        adj[v].pb(u);
     }
 
+    int cnt = 0;
 
-    int ans = 0;
-
-    for(int i = 0; i<n ; i++){
-        int val = v[i];
-
-
-        for(int j = 2; j * j <= v[i]; j++){
-            if( v[i] % j != 0) continue;
-            if( mp.find(j) != mp.end()){
-                val = min(val, mp[j]);
-                break;
+    for (int i = 1; i <= n; i++) {
+        if (!vis[i]) {
+            if (bfs(i, adj)) {
+                cnt++;
             }
         }
-        for(int j = 2; j * j <= v[i]; j++){
-            if( v[i] % j != 0) continue;
-            if( mp.find(v[i]/j) != mp.end() ) val = min(val, mp[v[i]/j]);
-        }
-        
-        if(val != v[i]) ans += val;
-        else if( val != 1 && freq[val] > 1){
-            ans += val;
-            freq[val]--;
-        }
-        // cout << ans << " ";
     }
-    if(ans == 0) ans = -1;
 
-    cout << ans ;
+    cout << cnt ;
 
-    
     return 0;
 }

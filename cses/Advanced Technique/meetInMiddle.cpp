@@ -24,62 +24,38 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-
-
-
-
 signed main(){
-    
+    fastio
     int n; cin >> n;
-    vi v(n);  l(i,0,n) cin >> v[i];
-    map<int, int> mp;
-    map<int,int> freq;
-    l(i,0,n){
-        freq[v[i]]++;
+    int x; cin >> x;
+    vi v(n); l(i,0,n) cin >> v[i];
 
-        for(int j = 1; j * j <= v[i]; j++){
-            if( v[i] % j != 0) continue;
-            if( mp.find(j) != mp.end() ) mp[j] = min(mp[j], v[i]);
-            else mp[j] = v[i];
+    int n1 = n/2, n2 = n - n1;
+    int total1 = 1LL << n1;
+    int total2 = 1LL << n2;
 
-            if( j != v[i]/j ){
-                if( mp.find(v[i]/j) != mp.end() ) mp[(v[i]/j)] = min(mp[(v[i]/j)], v[i]);
-                else mp[(v[i]/j)] = v[i];
-            }
+    vector<int> sums;
+    
+    for(int i = 0; i<total1; i++){
+        long long sum = 0;
+        for(int j = 0; j < n/2; j++){
+            if( i & (1 << j)) sum += v[j];
         }
-
+        sums.pb(sum);
     }
-
-
-    int ans = 0;
-
-    for(int i = 0; i<n ; i++){
-        int val = v[i];
-
-
-        for(int j = 2; j * j <= v[i]; j++){
-            if( v[i] % j != 0) continue;
-            if( mp.find(j) != mp.end()){
-                val = min(val, mp[j]);
-                break;
-            }
+    srt(sums);
+    int cnt = 0;
+    for(int i = 0; i<total2; i++){
+        long long sum = 0;
+        for(int j = n/2; j < n; j++){
+            if( i & (1 << (j-n/2))) sum += v[j];
         }
-        for(int j = 2; j * j <= v[i]; j++){
-            if( v[i] % j != 0) continue;
-            if( mp.find(v[i]/j) != mp.end() ) val = min(val, mp[v[i]/j]);
-        }
-        
-        if(val != v[i]) ans += val;
-        else if( val != 1 && freq[val] > 1){
-            ans += val;
-            freq[val]--;
-        }
-        // cout << ans << " ";
+        int ind2 = upper_bound(all(sums), x-sum) - sums.begin();
+        int ind1 = lower_bound(all(sums), x-sum) - sums.begin();
+         
+        cnt += (ind2 - ind1);
     }
-    if(ans == 0) ans = -1;
-
-    cout << ans ;
-
+    cout << cnt;
     
     return 0;
 }
