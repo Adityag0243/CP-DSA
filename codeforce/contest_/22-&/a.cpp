@@ -29,58 +29,21 @@ signed main(){
     int t;
     cin >> t;
     while(t--){
-
-        int n; cin >> n;
-        vi d(n); l(i,0,n) cin >> d[i];
-
-        vector<pair<int,int>> lr(n);
-        l(i,0,n){
-            cin >> lr[i].x >> lr[i].y;
+        string s; cin >> s;
+        vi v(26); 
+        l(i,0,s.size()) v[s[i]-'A']++;
+        string ans = "";
+        while( v['T'-'A'] > 0 ){
+            ans += 'T';
+            v['T'-'A']--;
         }
-
-        // jo already existing 1 hai uska effect hata hi de rha hu taki aage problem hi na kre vo 
-        int c = 0;
-        l(i,0,n){
-            if( d[i] == 1){
-                c++;
-            }
-            lr[i].x -= c;
-            lr[i].y -= c;
-        }
-
-        
-        
-        vi suf(n);
-        suf[n-1] = lr[n-1].y;
-        //  kahi aisa na  ho jaye ki aage max height 4 hai aur piche hi kahi x+1 bana dia 
-        for(int i = n-2; i>=0; i--){
-            suf[i] = min(suf[i+1], lr[i].y);
-        }
-
-        
-        bool flag = true;
-        int curh = 0;     
-
-        for(int i = 0; i<n ; i++){
-
-            if( d[i] == -1){
-                if( (curh < lr[i].x  ||  curh + 1 <= suf[i] ) ){
-                    d[i] = 1;
-                    curh += 1;
-                }else d[i] = 0;   
-            }
-
-            if(curh < lr[i].x || curh > lr[i].y){
-                flag = false;
-                break;
+        l(i,0,26){
+            while( v[i] > 0){
+                ans += ('A' + i);
+                v[i]--;
             }
         }
-
-        if(flag) for(int x : d) cout << x << " ";
-        else cout << -1 ;
-
-        cout << endl;
-
+        cout << ans << endl;
     }
     return 0;
 }
