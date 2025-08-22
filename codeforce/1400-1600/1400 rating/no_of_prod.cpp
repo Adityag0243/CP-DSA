@@ -25,21 +25,34 @@ using namespace std;
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
 signed main(){
-    int n,s; cin >> n >> s;
-    vi v(n); l(i,0,n) cin >> v[i];
-    
-    int p1 = 0, p2 = 0;
-    int ans = 0;
+    fastio;
+    int t = 1;
+    // cin >> t;
+    while(t--){
+        int n; cin >> n;
+        vi v(n+1); l(i,1,1+n) cin >> v[i];
 
-    while( p2 < n){
-        sum += v[p2];
-        while( sum >= s){
-            ans += n-p2;
-            sum -= v[p1++];
+        for(int i = 1; i<=n; i++){
+            if(v[i] < 0) v[i] = 1;
+            else v[i] = 0;
         }
-        p2++;        
-    }
+        
+        l(i,1,n+1) v[i] += v[i-1];
 
-    cout << ans;
+        int cnte = 0;
+        int cnto = 0;
+        int ansn = 0;
+
+        l(i,1,n+1){
+            if(v[i-1] % 2) cnto++;   
+            else cnte++;
+
+            if(v[i] % 2) ansn  += cnte;  // count(i,j)  prefCount(j) - prefCount(i-1);
+            else ansn += cnto;
+        }
+        int cnt = n * (n+1)/2;
+        cout << ansn << " " << cnt - ansn << endl; 
+        
+    }
     return 0;
 }
