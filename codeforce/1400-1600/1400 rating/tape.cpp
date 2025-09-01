@@ -25,30 +25,26 @@ using namespace std;
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
 signed main(){
-    fastio
-    int t;
-    cin >> t;
+    fastio;
+    int t = 1;
+    // cin >> t;
     while(t--){
-        int n;
-        cin >> n;
-        vi s(n);
-        vi e(n);
+        int n,m,k; cin >> n >> m >> k;
+        vi v(n); l(i,0,n) cin >> v[i];
 
-        l(i,0,n){
-            cin >> s[i] >> e[i];
-        }
+        vi gap;
+        l(i,1,n) gap.pb(v[i] - v[i-1] - 1);
+        sort(gap.rbegin(), gap.rend());
 
-        srt(s);
-        srt(e);
 
-        int ans = 0;
-        for(int i = 0; i<n; i++ ){
-            int t = e[i];
-            int si = lower_bound(all(s), t) - s.begin();
-    
-            ans += (si - i - 1);
-        }
-        cout << ans << endl;
-        
+        srt(v);
+        int total = v[n-1] - v[0] + 1;
+
+        int diff = 0;
+        l(i,0,k-1) diff += gap[i]; 
+
+        cout << total - diff << endl;
+
     }
+    return 0;
 }

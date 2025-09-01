@@ -25,30 +25,12 @@ using namespace std;
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
 signed main(){
-    fastio
-    int t;
-    cin >> t;
-    while(t--){
-        int n;
-        cin >> n;
-        vi s(n);
-        vi e(n);
+    int n;
+    double a,b;
+    cin >> n >> a >> b;
+    double num = n *  (b-a+1);
+    double den = ((b-a+1)/2 ) * ( a + b);
+    cout << fixed << setprecision(6) <<num/den;
 
-        l(i,0,n){
-            cin >> s[i] >> e[i];
-        }
-
-        srt(s);
-        srt(e);
-
-        int ans = 0;
-        for(int i = 0; i<n; i++ ){
-            int t = e[i];
-            int si = lower_bound(all(s), t) - s.begin();
-    
-            ans += (si - i - 1);
-        }
-        cout << ans << endl;
-        
-    }
+    return 0;
 }

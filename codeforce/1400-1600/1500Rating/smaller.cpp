@@ -25,30 +25,44 @@ using namespace std;
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
 signed main(){
-    fastio
+    fastio;
     int t;
     cin >> t;
     while(t--){
-        int n;
-        cin >> n;
-        vi s(n);
-        vi e(n);
+        int n; cin >> n;
+        int lens = 1,lent = 1;
+        // map<int,int> mps;
+        // map<int,int> mpt;
+
+        // mps[(int)'a']++;
+        // mpt[-1*(int)'a']++;
+        char ssmall = 'a';
+        char slarge = 'a';
+        char tlarge = 'a';
 
         l(i,0,n){
-            cin >> s[i] >> e[i];
+            int type, k;
+            string s; 
+            cin >> type >> k >> s;
+            
+            for(char &c : s){
+                if(type == 1){
+                    // mps[(int)c]+=k;
+                    ssmall = min(ssmall, c);
+                    slarge = max(slarge, c);
+                    lens += k;
+                }else{
+                    // mpt[-1* (int)c] += k;
+                    tlarge = max(tlarge, c);
+                    lent += k;
+                }
+            }
+            if( tlarge > ssmall ) yes
+            else{
+                if(lent > lens && slarge == tlarge) yes
+                else no
+            }
         }
-
-        srt(s);
-        srt(e);
-
-        int ans = 0;
-        for(int i = 0; i<n; i++ ){
-            int t = e[i];
-            int si = lower_bound(all(s), t) - s.begin();
-    
-            ans += (si - i - 1);
-        }
-        cout << ans << endl;
-        
     }
+    return 0;
 }
