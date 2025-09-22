@@ -24,43 +24,41 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
+int n,m;
+vi a;
+vvi dp(100005, vi (101, -1));
+
+int fn(int i, int prev, vvi &dp){
+
+    if( i == n) return 1;
+    if( a[i] != 0 ){
+        if( i-1 >= 0 && abs( a[i] - prev) > 1) return 0;
+        return fn(i+1, a[i]);
+    }
+    int op1 = 0;
+    if(prev > 1) op1 = fn( i+1, prev-1 );
+
+    int op2 = 0;
+    if(prev < m) op2 = fn( i+1, prev+1 );
+
+    int op3 = fn( i+1, prev );
+
+    return (op1+op2+op3)% MOD2;
+}
+
 signed main(){
-    // fastio;
-    int n;
-    cin >> n;
-    vi v(n+2);
-    v[n+1] = INT_MAX;
-    l(i,1,1+n) cin >> v[i];
+    cin >> n >> m;
+    a.resize(n);
+    l(i,0,n) cin >> a[i]; 
 
-    
-
-    int ans = 0;
-    vi dpp(n+2);
-    int len = 0;
-    for(int i = 1; i<=n ; i++){
-        if(v[i] > v[i-1]) dpp[i] = ++len;
-        else dpp[i] = len = 1;
-    }
-
-    vi dps(n+2);
-    len = 0; 
-    for(int i = n; i>0; i--){
-        if(v[i] < v[i+1]) dps[i] = ++len;
-        else dps[i] = len = 1;
-    }
-
-    for(int i=1; i<=n; i++ ){
-        
-        if(v[i+1] - v[i-1] >= 2){
-            ans = max(ans, 1 + dpp[i-1] + dps[i+1]);
-        }else{
-            ans = max({ans, 1 + dpp[i-1], 1 + dps[i+1]}); 
+    if( a[0] == 0){
+        int ans = 0;
+        l(i,1,m+1){
+            ans += fn(1,i);
+            ans %= MOD2;
         }
-        ans = max(ans, dpp[i], dps[i]);
-
+        cout << ans;
     }
-    cout << ans << endl;
-
-
+    else cout << fn(1, a[0]);
     return 0;
 }

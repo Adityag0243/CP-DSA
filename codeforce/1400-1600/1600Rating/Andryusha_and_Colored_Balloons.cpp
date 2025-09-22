@@ -24,43 +24,38 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
+
+int n,u,v,cnt; 
+vi adj[200005];
+vi inDegree(200005);
+vi color(200005);
+
+void dfs(int node, int par){
+    int c = 1;
+    for(int child : adj[node]){
+        if(child == par) continue;
+        if(c == color[node] || c == color[par]) c++;
+        if(c == color[node] || c == color[par]) c++;
+        color[child] = c++;
+        dfs(child, node);
+    }
+}
+
+
 signed main(){
-    // fastio;
-    int n;
     cin >> n;
-    vi v(n+2);
-    v[n+1] = INT_MAX;
-    l(i,1,1+n) cin >> v[i];
 
     
-
-    int ans = 0;
-    vi dpp(n+2);
-    int len = 0;
-    for(int i = 1; i<=n ; i++){
-        if(v[i] > v[i-1]) dpp[i] = ++len;
-        else dpp[i] = len = 1;
+    l(i,1,n){
+        cin >> u >> v;
+        adj[u].pb(v);
+        adj[v].pb(u);
+        inDegree[u]++; inDegree[v]++;
     }
-
-    vi dps(n+2);
-    len = 0; 
-    for(int i = n; i>0; i--){
-        if(v[i] < v[i+1]) dps[i] = ++len;
-        else dps[i] = len = 1;
-    }
-
-    for(int i=1; i<=n; i++ ){
-        
-        if(v[i+1] - v[i-1] >= 2){
-            ans = max(ans, 1 + dpp[i-1] + dps[i+1]);
-        }else{
-            ans = max({ans, 1 + dpp[i-1], 1 + dps[i+1]}); 
-        }
-        ans = max(ans, dpp[i], dps[i]);
-
-    }
-    cout << ans << endl;
-
-
+    cnt = mxv(inDegree) + 1;
+    color[1] = 1;
+    dfs(1,0);
+    cout << cnt << endl;
+    l(i,1,n+1) cout << color[i] << " ";
     return 0;
 }

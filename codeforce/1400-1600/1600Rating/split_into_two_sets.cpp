@@ -25,42 +25,45 @@ using namespace std;
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
 signed main(){
-    // fastio;
-    int n;
-    cin >> n;
-    vi v(n+2);
-    v[n+1] = INT_MAX;
-    l(i,1,1+n) cin >> v[i];
+    fastio;
+    int t;
+    cin >> t;
+    while(t--){
+        int n; cin >> n;
+        vi frq(n, 0);
+        int a,b;
+        bool flag = true;
+        vi adj[n];
 
-    
-
-    int ans = 0;
-    vi dpp(n+2);
-    int len = 0;
-    for(int i = 1; i<=n ; i++){
-        if(v[i] > v[i-1]) dpp[i] = ++len;
-        else dpp[i] = len = 1;
-    }
-
-    vi dps(n+2);
-    len = 0; 
-    for(int i = n; i>0; i--){
-        if(v[i] < v[i+1]) dps[i] = ++len;
-        else dps[i] = len = 1;
-    }
-
-    for(int i=1; i<=n; i++ ){
-        
-        if(v[i+1] - v[i-1] >= 2){
-            ans = max(ans, 1 + dpp[i-1] + dps[i+1]);
-        }else{
-            ans = max({ans, 1 + dpp[i-1], 1 + dps[i+1]}); 
+        l(i,0,n){
+            cin >> a >> b;
+            frq[a-1]++; frq[b-1]++;
+            adj[a-1].pb(b-1);
+            adj[b-1].pb(a-1);
         }
-        ans = max(ans, dpp[i], dps[i]);
-
+        if(mnv(frq) != 2 || mxv(frq) != 2) flag = false;
+        vi color(n, -1);
+        queue<int> q;
+        for(int i = 0;  i < n ; i++){
+            if(color[i] != -1) continue;
+            color[i] = 0;
+            q.push(i);
+            while(!q.empty()){
+                int u = q.front(); q.pop();
+                for(int v : adj[u]){
+                    if (color[v] == -1) {
+                        color[v] = 1 - color[u]; 
+                        q.push(v);
+                    }
+                    else if (color[v] == color[u]) {
+                        flag = false; 
+                        break;
+                    }
+                }
+            }
+        }
+        if(flag)   yes 
+        else no
     }
-    cout << ans << endl;
-
-
     return 0;
 }

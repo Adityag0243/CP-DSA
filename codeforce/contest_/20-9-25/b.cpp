@@ -25,42 +25,27 @@ using namespace std;
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
 signed main(){
-    // fastio;
-    int n;
-    cin >> n;
-    vi v(n+2);
-    v[n+1] = INT_MAX;
-    l(i,1,1+n) cin >> v[i];
+    fastio;
+    int t;
+    cin >> t;
+    while(t--){
+        int n; cin >> n;
+        vi v(2*n+1, -1);
+        l(i,1,n+1) v[i] = n-i+1;
 
-    
-
-    int ans = 0;
-    vi dpp(n+2);
-    int len = 0;
-    for(int i = 1; i<=n ; i++){
-        if(v[i] > v[i-1]) dpp[i] = ++len;
-        else dpp[i] = len = 1;
-    }
-
-    vi dps(n+2);
-    len = 0; 
-    for(int i = n; i>0; i--){
-        if(v[i] < v[i+1]) dps[i] = ++len;
-        else dps[i] = len = 1;
-    }
-
-    for(int i=1; i<=n; i++ ){
-        
-        if(v[i+1] - v[i-1] >= 2){
-            ans = max(ans, 1 + dpp[i-1] + dps[i+1]);
-        }else{
-            ans = max({ans, 1 + dpp[i-1], 1 + dps[i+1]}); 
+        l(i,1,1+n){
+            // cout << i << " " << v[i] << " :  ";
+            for(int j = i; j <= 2*n; j += v[i]){
+                // cout << j << ", ";
+                if(v[j] == -1){
+                    v[j] = v[i];
+                    break;
+                }
+            }
+            // cout << endl;
         }
-        ans = max(ans, dpp[i], dps[i]);
+        l(i,1,2*n+1) cout << v[i] << " \n"[i==2*n];
 
     }
-    cout << ans << endl;
-
-
     return 0;
 }

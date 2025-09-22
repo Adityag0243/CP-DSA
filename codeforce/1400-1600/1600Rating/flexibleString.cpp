@@ -1,7 +1,4 @@
 #include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-
 using namespace std;
 #define all(arr)        arr.begin(), arr.end()
 #define vi              vector<int>
@@ -27,38 +24,53 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-
-
- 
-typedef __gnu_pbds::tree<int, __gnu_pbds::null_type, less<int>, __gnu_pbds::rb_tree_tag, __gnu_pbds::tree_order_statistics_node_update> ordered_set;
- 
+int fn(int n){
+    return (n * (n+1))/2;  
+}
 
 signed main(){
-    fastio
+    fastio;
     int t;
     cin >> t;
     while(t--){
-        int n;
-        cin >> n;
-        vector <pair<int,int>> vp(n);
-        l(i,0,n) cin >> vp[i].x >> vp[i].y;
-
-        srt(vp); 
-        // make sure none of the starting time > x comes before doing
-        //  operation on end time == x
-
-        ordered_set st;
+        int n,k; cin >> n >> k;
+        string s, b; cin >> s >> b;
+        set<char> sc; 
+        l(i,0,n) sc.insert(s[i]);
+        map<char, int> mp;
+        int i = 0;
+        for(char c : sc) mp[c] = i++;
 
         int ans = 0;
-        
-        l(i,0,n){
-            ans += (st.size() - st.order_of_key(vp[i].y));
-            st.insert(vp[i].y); 
+
+        for(int mask = 0; mask < ( 1 << (mp.size())); mask++){
+            if(__builtin_popcount(mask) <= k){
+                int cans = 0;
+                int pt1 = 0, pt2 = 0;
+                while(pt2 < n){
+                    if( b[pt2] == s[pt2] ||  (( mask >> (mp[s[pt2]]) ) & 1 )) {
+                        pt2++;
+                    }else{
+                        cans += fn(pt2-pt1);
+                        pt2++;
+                        pt1 = pt2;
+                    }
+
+                    if(pt2 == n){
+                        cans += fn(pt2-pt1);
+                    }
+
+                    // if(mask == 7) cout << cans << " ";
+                    
+                }
+                // cout << mask << " " << cans << endl;
+                ans = max(ans, cans);
+            }
         }
 
         cout << ans << endl;
-        
-        
-        
+
+
     }
+    return 0;
 }

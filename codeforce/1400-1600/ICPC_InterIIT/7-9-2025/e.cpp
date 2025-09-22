@@ -24,43 +24,31 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
+void fn(float n){
+    cout << fixed << setprecision(2) << n << endl;
+}
+
 signed main(){
-    // fastio;
-    int n;
-    cin >> n;
-    vi v(n+2);
-    v[n+1] = INT_MAX;
-    l(i,1,1+n) cin >> v[i];
 
+    vector<float> a(4);
+    cin >> a[0] >> a[1] >> a[2] >> a[3];
     
+    srt(a);
 
-    int ans = 0;
-    vi dpp(n+2);
-    int len = 0;
-    for(int i = 1; i<=n ; i++){
-        if(v[i] > v[i-1]) dpp[i] = ++len;
-        else dpp[i] = len = 1;
-    }
+    float t; cin >> t;
+    if( (a[1] + a[2] + a[3])/3.0 <= t ){
+        cout << "infinite";
+    }else{
+        float ans1 = (t + t + t) - a[1] - a[2];
 
-    vi dps(n+2);
-    len = 0; 
-    for(int i = n; i>0; i--){
-        if(v[i] < v[i+1]) dps[i] = ++len;
-        else dps[i] = len = 1;
-    }
-
-    for(int i=1; i<=n; i++ ){
-        
-        if(v[i+1] - v[i-1] >= 2){
-            ans = max(ans, 1 + dpp[i-1] + dps[i+1]);
+        if( ans1 <= a[3] && ans1 >= a[0] ){
+            fn(ans1);
+        }else if( (a[0] + a[1] + a[2]) / 3.0 <= t){
+            fn(a[0]);
         }else{
-            ans = max({ans, 1 + dpp[i-1], 1 + dps[i+1]}); 
+            cout << "impossible";
         }
-        ans = max(ans, dpp[i], dps[i]);
-
     }
-    cout << ans << endl;
-
 
     return 0;
 }

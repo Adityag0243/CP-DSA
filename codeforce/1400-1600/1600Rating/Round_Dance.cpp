@@ -24,43 +24,48 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-signed main(){
-    // fastio;
-    int n;
-    cin >> n;
-    vi v(n+2);
-    v[n+1] = INT_MAX;
-    l(i,1,1+n) cin >> v[i];
 
-    
-
-    int ans = 0;
-    vi dpp(n+2);
-    int len = 0;
-    for(int i = 1; i<=n ; i++){
-        if(v[i] > v[i-1]) dpp[i] = ++len;
-        else dpp[i] = len = 1;
-    }
-
-    vi dps(n+2);
-    len = 0; 
-    for(int i = n; i>0; i--){
-        if(v[i] < v[i+1]) dps[i] = ++len;
-        else dps[i] = len = 1;
-    }
-
-    for(int i=1; i<=n; i++ ){
-        
-        if(v[i+1] - v[i-1] >= 2){
-            ans = max(ans, 1 + dpp[i-1] + dps[i+1]);
-        }else{
-            ans = max({ans, 1 + dpp[i-1], 1 + dps[i+1]}); 
+int dfs(int node, vector<bool> &vis, vi adj[], int min_d){
+    vis[node] = true;
+    min_d = min(min_d, (int)adj[node].size());
+    for( auto child : adj[node]){
+        if(!vis[child]){
+            dfs(child, vis, adj, min_d);
         }
-        ans = max(ans, dpp[i], dps[i]);
-
     }
-    cout << ans << endl;
+    return min_d;
+}
 
 
+signed main(){
+    fastio;
+    int t;
+    cin >> t;
+    while(t--){
+        int n,v; cin >> n;
+        vi adj[n+1];
+        set<pair<int,int>> st;
+
+        l(i,1,n+1){
+            cin >> v;
+            if(st.find({v,i}) != st.end()  ) continue;
+            st.insert({i,v});
+            adj[i].pb(v);
+            adj[v].pb(i);
+        }
+
+        vector<bool> vis(n+1, false);
+        int cnt_max = 0;
+        int c1 = 0;
+        l(i,1,n+1){
+            if(!vis[i]){
+                cnt_max++;
+                if(dfs(i,vis,adj,2) == 1) c1++;
+            }
+        }
+        // cout << c1 << " ";
+        if(c1 > 1) c1--;
+        cout << cnt_max - c1 << " " << cnt_max << endl;
+    }
     return 0;
 }

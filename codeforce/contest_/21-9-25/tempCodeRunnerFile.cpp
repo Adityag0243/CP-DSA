@@ -24,70 +24,29 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-
-vi tim(1e3+5,INT_MAX);
-
-
-void bfs(){
-    tim[1] = 0;
-    for(int i = 1; i <= 1000; i++){
-        for(int j = 1; j <= i; ){
-            int val = i / j;
-            int nj = i / val; // all j in [j, nj] have same i/j
-            int node = i + val;
-            if(node <= 1000){
-                tim[node] = min(tim[node], tim[i]+1);
-            }
-            j = nj + 1;
-        }
-    }
-}
-
 signed main(){
-    // fastio;
+    fastio;
     int t;
     cin >> t;
-
-    bfs();
-
-
     while(t--){
-        int n, k;
-        cin >> n >> k;
-        vi b(n);
-        l(i,0,n) cin>> b[i];
-
-        vi c(n);
-        l(i,0,n) cin >> c[i];
-
-        vector< pair<int, int> > vp(n);
+        int n; cin >> n;
+        map<int,int> mp;
+        int a;
         l(i,0,n){
-            vp[i] = {tim[b[i]],-c[i]};
+            cin >> a;
+            mp[a]++;
         }
 
-        
-        srt(vp);
-
-        map<int,int> dp;
-
-        dp[0] = 0;
-        l(j,0,n){
-            for(auto it : dp){
-                int i = it.x;
-                if( i + vp[j].x <= 0 && dp.find(i+vp[j].x) != dp.end()){
-                    dp[i+vp[i].x] =  max(dp[i], dp[i-vp[j].x] - vp[j].y);
-                }else{
-                    dp[i+vp[i].x] = dp[i-vp[j].x] - vp[j].y;
-                }
-            }
+        vi v;
+        for(auto p : mp){
+            v.pb(p.y);
         }
+        srt(v);
         int ans = 0;
-        for(auto it : dp)
-        {
-            ans = max(ans, it.y);
+        l(i,0,v.size()){
+            ans = max(ans, v[i] * (n-i));
         }
-
-
+        cout << ans << endl;
     }
     return 0;
 }

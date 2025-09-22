@@ -23,44 +23,45 @@ using namespace std;
 #define l(i,st,n)       for(int i=st;i<n;i++)
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
+int n,k,u,v;
+vi sz(200005, 0);
+vi dep(200005, 0);
+vi adj[200005];
+
+int dfs( int node, int par){
+    
+    int c = 0;
+    for( int child : adj[node]){
+        if( child == par) continue;
+        dep[child] = 1 + dep[node];
+        c += dfs( child, node);
+    }
+    return sz[node] = 1 + c;
+}
 
 signed main(){
-    // fastio;
-    int n;
-    cin >> n;
-    vi v(n+2);
-    v[n+1] = INT_MAX;
-    l(i,1,1+n) cin >> v[i];
-
+    cin >> n >> k;
+    l(i,1,n){
+        cin >> u >> v;
+        adj[u].pb(v);
+        adj[v].pb(u);
+    }
+    dep[1] = 1;
+    dfs(1,0);
     
+    vi v;
+    l(i,1,n+1){
+        // if {node i --> tourism} (happiness provided by it == sz[i] -1)  
+        //  else{node i as industry } (happiness provided == dep[i] - 1)
+        v.pb(sz[i] - dep[i]);
+    }
+    srt(v);
 
     int ans = 0;
-    vi dpp(n+2);
-    int len = 0;
-    for(int i = 1; i<=n ; i++){
-        if(v[i] > v[i-1]) dpp[i] = ++len;
-        else dpp[i] = len = 1;
+    rl(i,0,n-k){
+        ans += v[n-1-i];
     }
 
-    vi dps(n+2);
-    len = 0; 
-    for(int i = n; i>0; i--){
-        if(v[i] < v[i+1]) dps[i] = ++len;
-        else dps[i] = len = 1;
-    }
-
-    for(int i=1; i<=n; i++ ){
-        
-        if(v[i+1] - v[i-1] >= 2){
-            ans = max(ans, 1 + dpp[i-1] + dps[i+1]);
-        }else{
-            ans = max({ans, 1 + dpp[i-1], 1 + dps[i+1]}); 
-        }
-        ans = max(ans, dpp[i], dps[i]);
-
-    }
-    cout << ans << endl;
-
-
+    cout << ans;
     return 0;
 }

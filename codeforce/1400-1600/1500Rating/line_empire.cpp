@@ -3,7 +3,7 @@ using namespace std;
 #define all(arr)        arr.begin(), arr.end()
 #define vi              vector<int>
 #define vvi             vector<vi>
-#define int             int64_t
+#define int             long long
 #define yes             cout << "YES" << endl;
 #define no              cout << "NO" << endl;
 #define p(x)            cout << (x) << endl;
@@ -25,42 +25,41 @@ using namespace std;
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
 signed main(){
-    // fastio;
-    int n;
-    cin >> n;
-    vi v(n+2);
-    v[n+1] = INT_MAX;
-    l(i,1,1+n) cin >> v[i];
+    fastio;
+    int t;
+    cin >> t;
+    while(t--){
+        int n,a,b; cin >> n >> a >> b;
+        vi v(n+1); l(i,1,1+n) cin >> v[i];
 
-    
+        int cost = 0;
 
-    int ans = 0;
-    vi dpp(n+2);
-    int len = 0;
-    for(int i = 1; i<=n ; i++){
-        if(v[i] > v[i-1]) dpp[i] = ++len;
-        else dpp[i] = len = 1;
-    }
-
-    vi dps(n+2);
-    len = 0; 
-    for(int i = n; i>0; i--){
-        if(v[i] < v[i+1]) dps[i] = ++len;
-        else dps[i] = len = 1;
-    }
-
-    for(int i=1; i<=n; i++ ){
-        
-        if(v[i+1] - v[i-1] >= 2){
-            ans = max(ans, 1 + dpp[i-1] + dps[i+1]);
+        if( a <= b){
+            l(i,1,n+1){
+                cost += (v[i] - v[i-1]) * b;
+                if(i != n) cost += (v[i] - v[i-1]) * a;
+            }
         }else{
-            ans = max({ans, 1 + dpp[i-1], 1 + dps[i+1]}); 
+            int aPoint = 0;
+            
+            l(i,1,n+1){
+                if( (n-i)*(v[i])*b - v[i]*a  > 0){
+                    aPoint = i;
+                }
+            }
+
+            cost += (v[aPoint] * a);
+            l(i,1,1+n){
+
+                if(i <= aPoint){
+                    cost += (v[i] - v[i-1]) * b; 
+                }else{
+                    cost += (v[i] - v[aPoint]) * b;
+                }
+            }
+
         }
-        ans = max(ans, dpp[i], dps[i]);
-
+        cout << cost << endl;
     }
-    cout << ans << endl;
-
-
     return 0;
 }

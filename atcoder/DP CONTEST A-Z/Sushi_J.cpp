@@ -16,51 +16,45 @@ using namespace std;
 #define srt(arr)        sort(arr.begin(), arr.end())
 #define rev(arr)        reverse(all(arr))
 #define MOD2            1000000007
-#define x               first
-#define y               second
 #define gcd(a,b)        __gcd((a),(b))
 #define lcm(a,b)        ((a)*(b)) / gcd((a),(b))
 #define l(i,st,n)       for(int i=st;i<n;i++)
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
+
+int n,cnt;
+
+double fn(int x, int y, int z, vector<vector<vector<double>>>& dp){
+    if (x == 0 && y == 0 && z == 0) return 0;
+    if (dp[x][y][z] != -1) return dp[x][y][z];
+
+    double t = x + y + z;
+    double res = 0;
+
+    if (x > 0) res += x * fn(x - 1, y, z, dp);
+    if (y > 0) res += y * fn(x + 1, y - 1, z, dp);
+    if (z > 0) res += z * fn(x, y + 1, z - 1, dp);
+
+    res += n;
+    res /= t;
+
+    return dp[x][y][z] = res;
+}
+
 signed main(){
-    // fastio;
-    int n;
     cin >> n;
-    vi v(n+2);
-    v[n+1] = INT_MAX;
-    l(i,1,1+n) cin >> v[i];
 
-    
-
-    int ans = 0;
-    vi dpp(n+2);
-    int len = 0;
-    for(int i = 1; i<=n ; i++){
-        if(v[i] > v[i-1]) dpp[i] = ++len;
-        else dpp[i] = len = 1;
+    int x = 0 ,y = 0 ,z = 0;
+    l(i,0,n){
+        cin >> cnt;
+        if(cnt == 1) x++;
+        else if(cnt == 2) y++;
+        else z++;
     }
+    vector<vector<vector<double>>> dp(n+1, vector<vector<double>>(n+1, vector<double>(n+1, -1)));
 
-    vi dps(n+2);
-    len = 0; 
-    for(int i = n; i>0; i--){
-        if(v[i] < v[i+1]) dps[i] = ++len;
-        else dps[i] = len = 1;
-    }
-
-    for(int i=1; i<=n; i++ ){
-        
-        if(v[i+1] - v[i-1] >= 2){
-            ans = max(ans, 1 + dpp[i-1] + dps[i+1]);
-        }else{
-            ans = max({ans, 1 + dpp[i-1], 1 + dps[i+1]}); 
-        }
-        ans = max(ans, dpp[i], dps[i]);
-
-    }
-    cout << ans << endl;
-
+    cout << fixed << setprecision(10) << fn(x,y,z, dp) << "\n";
 
     return 0;
 }

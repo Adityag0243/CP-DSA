@@ -24,43 +24,36 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-signed main(){
-    // fastio;
-    int n;
-    cin >> n;
-    vi v(n+2);
-    v[n+1] = INT_MAX;
-    l(i,1,1+n) cin >> v[i];
+bool solve(int n, string s){
+    string org = s;
 
-    
+    l(i,1,n-1){
+        if(s[i] == '1') continue;
+        bool fix = false;
 
-    int ans = 0;
-    vi dpp(n+2);
-    int len = 0;
-    for(int i = 1; i<=n ; i++){
-        if(v[i] > v[i-1]) dpp[i] = ++len;
-        else dpp[i] = len = 1;
-    }
-
-    vi dps(n+2);
-    len = 0; 
-    for(int i = n; i>0; i--){
-        if(v[i] < v[i+1]) dps[i] = ++len;
-        else dps[i] = len = 1;
-    }
-
-    for(int i=1; i<=n; i++ ){
-        
-        if(v[i+1] - v[i-1] >= 2){
-            ans = max(ans, 1 + dpp[i-1] + dps[i+1]);
-        }else{
-            ans = max({ans, 1 + dpp[i-1], 1 + dps[i+1]}); 
+        if( i - 1 >= 0 && org[i-1] == '0')       fix = true;
+        else if( i+1 <n     && org[i+1] == '0')  fix = true;
+        else if( i-2 >= 0   && s[i-2] == '0')    fix = true;
+        else if( i + 2 < n  && s[i+2] == '0'){
+            fix = true;
+            s[i+2] = '1';
         }
-        ans = max(ans, dpp[i], dps[i]);
 
+        if(!fix) return false;
     }
-    cout << ans << endl;
+        
+    return true;
+}
 
 
-    return 0;
+signed main(){
+    fastio
+    int t; cin >> t;
+    while(t--){
+        int n; cin >> n; 
+        string st; cin >> st;
+
+        if(solve(n,st)) yes
+        else no
+    }
 }

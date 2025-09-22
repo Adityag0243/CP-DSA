@@ -1,3 +1,4 @@
+
 #include <bits/stdc++.h>
 using namespace std;
 #define all(arr)        arr.begin(), arr.end()
@@ -23,44 +24,34 @@ using namespace std;
 #define l(i,st,n)       for(int i=st;i<n;i++)
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
-
 signed main(){
-    // fastio;
-    int n;
-    cin >> n;
-    vi v(n+2);
-    v[n+1] = INT_MAX;
-    l(i,1,1+n) cin >> v[i];
-
+    fastio;
+    int n; cin >> n;
+    string s; cin >> s;
     
+    int plus = 0, minus = 0; // cnt of + and -
+    l(i,0,n) if(s[i] == '+') plus++; else minus++;
 
-    int ans = 0;
-    vi dpp(n+2);
-    int len = 0;
-    for(int i = 1; i<=n ; i++){
-        if(v[i] > v[i-1]) dpp[i] = ++len;
-        else dpp[i] = len = 1;
-    }
-
-    vi dps(n+2);
-    len = 0; 
-    for(int i = n; i>0; i--){
-        if(v[i] < v[i+1]) dps[i] = ++len;
-        else dps[i] = len = 1;
-    }
-
-    for(int i=1; i<=n; i++ ){
-        
-        if(v[i+1] - v[i-1] >= 2){
-            ans = max(ans, 1 + dpp[i-1] + dps[i+1]);
-        }else{
-            ans = max({ans, 1 + dpp[i-1], 1 + dps[i+1]}); 
+    int q; cin >> q;
+    while(q--){
+        int a,b; cin >> a >> b;
+        if( a == b){
+            if( plus == minus) yes
+            else no
+            continue;
         }
-        ans = max(ans, dpp[i], dps[i]);
+
+        // (plus - minus).a + (b - a).INTEGER_VALUE = 0
+
+        // INTEGER VALUE ==> K1 - K2     
+        // 0 <= K1 <= plus   && 0 <= K2 <= minus      so which means valid INTEGER_VAL range will be following...
+        //  -minus <=  INTEGER_VALUE <= plus      ----> yes  else NO
+        
+        int val = ((plus-minus)*a) / (b-a);
+        val *= -1;
+        if( ((plus-minus)*a) % (b-a) == 0  && val >= -minus && val <= plus) yes
+        else no
 
     }
-    cout << ans << endl;
-
-
     return 0;
 }

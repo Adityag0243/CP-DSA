@@ -23,44 +23,44 @@ using namespace std;
 #define l(i,st,n)       for(int i=st;i<n;i++)
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
+int n, u, v, t;
+vi ans;
+
+
+vi adj[200005];
+vi repairCnt(200005, 0);
+set<pair<int,int>> repair;
+
+
+void dfs(int node, int par){
+    if(node != 1 && adj[node].size() == 1) return;
+    
+    for(int child : adj[node]){
+        if( child == par ) continue;
+        dfs(child, node);
+        if( repair.find({child,node}) != repair.end()  || repair.find({node,child}) != repair.end() ){
+            repairCnt[child]++;
+            repairCnt[node] = 2;
+        }
+        if(repairCnt[child] == 1){
+            ans.pb(child);
+        }
+    }
+    
+}
+
 
 signed main(){
-    // fastio;
-    int n;
     cin >> n;
-    vi v(n+2);
-    v[n+1] = INT_MAX;
-    l(i,1,1+n) cin >> v[i];
-
-    
-
-    int ans = 0;
-    vi dpp(n+2);
-    int len = 0;
-    for(int i = 1; i<=n ; i++){
-        if(v[i] > v[i-1]) dpp[i] = ++len;
-        else dpp[i] = len = 1;
+    l(i,1,n){
+        cin >> u >> v >> t;
+        adj[u].pb(v);
+        adj[v].pb(u);
+        if( t == 2) repair.insert({u,v});
     }
+    dfs(1,0);
 
-    vi dps(n+2);
-    len = 0; 
-    for(int i = n; i>0; i--){
-        if(v[i] < v[i+1]) dps[i] = ++len;
-        else dps[i] = len = 1;
-    }
-
-    for(int i=1; i<=n; i++ ){
-        
-        if(v[i+1] - v[i-1] >= 2){
-            ans = max(ans, 1 + dpp[i-1] + dps[i+1]);
-        }else{
-            ans = max({ans, 1 + dpp[i-1], 1 + dps[i+1]}); 
-        }
-        ans = max(ans, dpp[i], dps[i]);
-
-    }
-    cout << ans << endl;
-
-
+    cout << ans.size() << endl;
+    for(int leaf : ans) cout << leaf << " ";
     return 0;
 }

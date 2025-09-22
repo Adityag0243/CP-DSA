@@ -1,12 +1,9 @@
 #include <bits/stdc++.h>
-#include <ext/pb_ds/assoc_container.hpp>
-#include <ext/pb_ds/tree_policy.hpp>
-
 using namespace std;
 #define all(arr)        arr.begin(), arr.end()
 #define vi              vector<int>
 #define vvi             vector<vi>
-#define int             int64_t
+#define int             long long
 #define yes             cout << "YES" << endl;
 #define no              cout << "NO" << endl;
 #define p(x)            cout << (x) << endl;
@@ -27,38 +24,51 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-
-
- 
-typedef __gnu_pbds::tree<int, __gnu_pbds::null_type, less<int>, __gnu_pbds::rb_tree_tag, __gnu_pbds::tree_order_statistics_node_update> ordered_set;
- 
-
 signed main(){
-    fastio
+    fastio;
     int t;
     cin >> t;
     while(t--){
-        int n;
-        cin >> n;
-        vector <pair<int,int>> vp(n);
-        l(i,0,n) cin >> vp[i].x >> vp[i].y;
+        int n, x; cin >> n >> x;
 
-        srt(vp); 
-        // make sure none of the starting time > x comes before doing
-        //  operation on end time == x
-
-        ordered_set st;
-
-        int ans = 0;
-        
-        l(i,0,n){
-            ans += (st.size() - st.order_of_key(vp[i].y));
-            st.insert(vp[i].y); 
+        if(n == x){
+            cout << x << endl;
         }
+        else if( (n & x) != x){
+            cout << -1 << endl;
+        }
+        else if( x == 0){
+            rl(i,0,62){
+                if( (n >> i) & 1 ){
+                    cout << (1ll << (i+1)) << endl;
+                    break;
+                }
+            }
+        }else{
+            bool flag = false;
+            int xor_ = n ^ x;  // extra bits
+            // off all the extra bit in n  i.e ==> n ^ (n ^ x)
+            // set the first bit > highest bit in xor_    but it must be before x lowest on bit
 
-        cout << ans << endl;
+            l(i,0,62){
+                if((x >> i ) & 1) break;
+
+                if( (xor_ >> i) & 1){
+                    xor_ ^= (1ll << i);   
+                }else if( xor_ == 0){
+                    xor_ ^= (1ll << i);
+                    flag = true;
+                    break;
+                }
+            }
+            if(flag) cout << (n^(n^x)^xor_) << endl;
+            else cout << -1 << endl;
+    
+        }
         
         
         
     }
+    return 0;
 }
+

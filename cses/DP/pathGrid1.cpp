@@ -24,43 +24,28 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
+int n;
+bool isValid(int i, int j){
+    return ( i < n && i >= 0 && j < n && j >= 0);
+}
+
 signed main(){
-    // fastio;
-    int n;
     cin >> n;
-    vi v(n+2);
-    v[n+1] = INT_MAX;
-    l(i,1,1+n) cin >> v[i];
+    vvi dp(n, vi (n));
+    vector<string> vs(n);
+    l(i,0,n) cin >> vs[i];
 
-    
+    if(vs[0][0] == '.' && vs[n-1][n-1] == '.') dp[0][0] = 1;
 
-    int ans = 0;
-    vi dpp(n+2);
-    int len = 0;
-    for(int i = 1; i<=n ; i++){
-        if(v[i] > v[i-1]) dpp[i] = ++len;
-        else dpp[i] = len = 1;
-    }
-
-    vi dps(n+2);
-    len = 0; 
-    for(int i = n; i>0; i--){
-        if(v[i] < v[i+1]) dps[i] = ++len;
-        else dps[i] = len = 1;
-    }
-
-    for(int i=1; i<=n; i++ ){
-        
-        if(v[i+1] - v[i-1] >= 2){
-            ans = max(ans, 1 + dpp[i-1] + dps[i+1]);
-        }else{
-            ans = max({ans, 1 + dpp[i-1], 1 + dps[i+1]}); 
+    l(i,0,n){
+        l(j,0,n){
+            if( vs[i][j] == '*' ) continue;
+            if( isValid(i-1,j) ) dp[i][j] += dp[i-1][j];
+            if( isValid(i,j-1) ) dp[i][j] += dp[i][j-1];
+            dp[i][j] %= MOD2;
         }
-        ans = max(ans, dpp[i], dps[i]);
-
     }
-    cout << ans << endl;
-
-
+    
+    cout << dp[n-1][n-1];
     return 0;
 }
