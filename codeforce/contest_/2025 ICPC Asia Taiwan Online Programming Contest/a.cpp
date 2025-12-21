@@ -25,42 +25,55 @@ using namespace std;
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
 int n,m;
-vi a;
-vvi dp(100005, vi (101, -1));
 
-int fn(int i, int prev, vvi &dp){
-    if( i == n) return 1;
-    if(dp[i][prev] != -1) return dp[i][prev];
 
-    if( a[i] != 0 ){
-        if( i-1 >= 0 && abs( a[i] - prev) > 1) return dp[i][prev] = 0;
-        return dp[i][prev]  = fn( i+1, a[i], dp );
+int fn(int node, int level, int par,  vector<tuple<int,int,int>> adj[] ){
+    if( adj[node].size() == 0 ) return 0;
+
+    int c = 0;
+    for( auto [ child, lvlc, cost]  : adj[node] ){
+        // if( ( child == par && lvlc == level ) || lvlc < level) continue;
+        
+        if(lvlc > level || ( child != par  && lvlc == level) ) c = max(c, cost + fn(child, lvlc, node, adj));
     }
 
-    int op1 = 0;
-    if(prev > 1) op1 = fn( i+1, prev-1, dp );
-
-    int op2 = 0;
-    if(prev < m) op2 = fn( i+1, prev+1, dp );
-
-    int op3 = fn( i+1, prev, dp );
-
-    return dp[i][prev] = (op1+op2+op3)% MOD2;
+    return c;
 }
 
-signed main(){
-    cin >> n >> m;
-    a.resize(n);
-    l(i,0,n) cin >> a[i]; 
 
-    if( a[0] == 0){
-        int ans = 0;
-        l(i,1,m+1){
-            ans += fn(1,i, dp);
-            ans %= MOD2;
+
+signed main(){
+    fastio;
+    int t;
+    cin >> t;
+    while(t--){
+        cin >> n >> m; 
+        int u,v,w;
+
+        vector<int> lvl[m+1]; // 0 means available hai..
+        vector<tuple<int,int,int>> adj[n+1];
+     
+
+        int lv = 0;
+        for(int i = 0; i < m ; i++){
+            cin >> u >> v >> w;
+            adj[u].pb({v, lv, w});
+            adj[v].pb({u, lv, w});
+            lvl[lv].pb(u);
+            lvl[lv].pb(v);
+
+            lv++;
         }
-        cout << ans;
+        int c = 0;
+        for(int lv = 0; lv <= m ; lv++){
+            for( int node : lvl[lv]){
+                int val = fn(node, lv, -1, adj);
+                // cout << val <<" for starting from node : " << node  << endl;
+                c = max(c, val);
+            }
+        }
+
+        cout << c << endl;
     }
-    else cout << fn(1, a[0], dp);
     return 0;
 }

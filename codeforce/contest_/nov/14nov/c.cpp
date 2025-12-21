@@ -24,43 +24,27 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int n,m;
-vi a;
-vvi dp(100005, vi (101, -1));
-
-int fn(int i, int prev, vvi &dp){
-    if( i == n) return 1;
-    if(dp[i][prev] != -1) return dp[i][prev];
-
-    if( a[i] != 0 ){
-        if( i-1 >= 0 && abs( a[i] - prev) > 1) return dp[i][prev] = 0;
-        return dp[i][prev]  = fn( i+1, a[i], dp );
-    }
-
-    int op1 = 0;
-    if(prev > 1) op1 = fn( i+1, prev-1, dp );
-
-    int op2 = 0;
-    if(prev < m) op2 = fn( i+1, prev+1, dp );
-
-    int op3 = fn( i+1, prev, dp );
-
-    return dp[i][prev] = (op1+op2+op3)% MOD2;
-}
-
 signed main(){
-    cin >> n >> m;
-    a.resize(n);
-    l(i,0,n) cin >> a[i]; 
-
-    if( a[0] == 0){
-        int ans = 0;
-        l(i,1,m+1){
-            ans += fn(1,i, dp);
-            ans %= MOD2;
+    fastio;
+    int t;
+    cin >> t;
+    while(t--){
+        int n; cin >> n;
+        vi v(n+1); l(i,1,n+1) cin >> v[i];
+        vector<int> inf(n+1);
+        l(i,1,1+n){
+            inf[i] = 2*i - v[i];
         }
-        cout << ans;
+
+        int ms = 0;
+        int cur = 0;
+        for( int i = 1; i <= n; i++){
+            cur += inf[i];
+            ms = max(ms, cur);
+            cur = max(cur, 0ll);
+        }
+        
+        cout << smv(v) + ms<< endl;
     }
-    else cout << fn(1, a[0], dp);
     return 0;
 }

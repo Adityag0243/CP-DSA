@@ -15,7 +15,7 @@ using namespace std;
 #define smv(arr)        accumulate(arr.begin(), arr.end(), 0LL)
 #define srt(arr)        sort(arr.begin(), arr.end())
 #define rev(arr)        reverse(all(arr))
-#define MOD2            1000000007
+#define MOD2            10007
 #define x               first
 #define y               second
 #define gcd(a,b)        __gcd((a),(b))
@@ -24,43 +24,49 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int n,m;
-vi a;
-vvi dp(100005, vi (101, -1));
+string s;
+vector<vvi> dp(201, vvi(201, vi(1001, -1)) );
 
-int fn(int i, int prev, vvi &dp){
-    if( i == n) return 1;
-    if(dp[i][prev] != -1) return dp[i][prev];
-
-    if( a[i] != 0 ){
-        if( i-1 >= 0 && abs( a[i] - prev) > 1) return dp[i][prev] = 0;
-        return dp[i][prev]  = fn( i+1, a[i], dp );
+int fn(int i, int j, int op){
+    if( i > j){
+        return 1;
+    }
+    if( i == j){
+        if( op >= 1) return 2;
+        else return 1;
     }
 
-    int op1 = 0;
-    if(prev > 1) op1 = fn( i+1, prev-1, dp );
 
-    int op2 = 0;
-    if(prev < m) op2 = fn( i+1, prev+1, dp );
+    
+    if( op < 0 ) return 0;
 
-    int op3 = fn( i+1, prev, dp );
+    if( dp[i][j][op] != -1) return dp[i][j][op] %= MOD2;
 
-    return dp[i][prev] = (op1+op2+op3)% MOD2;
-}
+    if( s[i] == s[j] ){
+
+        dp[i][j][op] = 26 * fn(i, j, op-2);
+
+        if( i + 1 == j){
+            if(op >= 1) dp[i][j][op] += 27;
+            else dp[i][j][op] += 1;
+        }
+        else{
+            dp[i][j][op] = fn(i+1, j-1, op) + fn(i+1, j, op-1) + fn(i, j-1, op-1);
+        }
+
+    }else{
+        dp[i][j][op] = ( fn(i+1, j, op-1)  + fn(i, j-1, op-1) ) % MOD2;
+    }
+
+    dp[i][j][op] %= MOD2;
+    return dp[i][j][op] %= MOD2;
+}   
 
 signed main(){
-    cin >> n >> m;
-    a.resize(n);
-    l(i,0,n) cin >> a[i]; 
-
-    if( a[0] == 0){
-        int ans = 0;
-        l(i,1,m+1){
-            ans += fn(1,i, dp);
-            ans %= MOD2;
-        }
-        cout << ans;
-    }
-    else cout << fn(1, a[0], dp);
+    cin >> s; 
+    int n; cin >> n;
+    int sz = s.size();
+    n = min(n , 1000* 1ll);
+    cout << fn(0, sz-1, n);    
     return 0;
 }

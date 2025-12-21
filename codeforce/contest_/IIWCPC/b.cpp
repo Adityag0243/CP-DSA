@@ -24,43 +24,56 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int n,m;
-vi a;
-vvi dp(100005, vi (101, -1));
+vector<int> spf(10000007);
 
-int fn(int i, int prev, vvi &dp){
-    if( i == n) return 1;
-    if(dp[i][prev] != -1) return dp[i][prev];
-
-    if( a[i] != 0 ){
-        if( i-1 >= 0 && abs( a[i] - prev) > 1) return dp[i][prev] = 0;
-        return dp[i][prev]  = fn( i+1, a[i], dp );
+void pre(){
+    l(i,2,10000007) spf[i] = i;
+    
+    for(int i = 2; i * i < 10000007; i++){
+        if(spf[i] == i){
+            for(int j = 2*i; j< 10000007; j+= i){
+                spf[j] = min(spf[j], i);
+            }
+        }
     }
 
-    int op1 = 0;
-    if(prev > 1) op1 = fn( i+1, prev-1, dp );
-
-    int op2 = 0;
-    if(prev < m) op2 = fn( i+1, prev+1, dp );
-
-    int op3 = fn( i+1, prev, dp );
-
-    return dp[i][prev] = (op1+op2+op3)% MOD2;
 }
 
-signed main(){
-    cin >> n >> m;
-    a.resize(n);
-    l(i,0,n) cin >> a[i]; 
 
-    if( a[0] == 0){
-        int ans = 0;
-        l(i,1,m+1){
-            ans += fn(1,i, dp);
-            ans %= MOD2;
+signed main(){
+    pre();
+    fastio
+    int n,q; cin >> n >> q;
+    while( q-- ){
+        int d; cin >> d;
+
+        if(d == 1){
+            cout << 0 << " " << 1 << endl;
+            continue;
+        }else if( spf[d] == d){
+            cout << 1 << " " << 1 << endl;
+            continue;
         }
-        cout << ans;
+
+        int extra = ( (int)sqrt(d) * (int)sqrt(d) == d);
+
+        map<int,int> mp;
+
+        while( d > 1 ){
+            mp[spf[d]]++;
+            d /= spf[d];
+        }
+
+
+        int len = 0;
+        int ans = 1;
+        for( auto it : mp){
+            len += it.second;
+            ans *= (it.second + 1);
+        }
+        
+
+        cout << len << " " << extra + ans/2 << endl;
     }
-    else cout << fn(1, a[0], dp);
     return 0;
 }

@@ -24,43 +24,41 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int n,m;
-vi a;
-vvi dp(100005, vi (101, -1));
 
-int fn(int i, int prev, vvi &dp){
-    if( i == n) return 1;
-    if(dp[i][prev] != -1) return dp[i][prev];
-
-    if( a[i] != 0 ){
-        if( i-1 >= 0 && abs( a[i] - prev) > 1) return dp[i][prev] = 0;
-        return dp[i][prev]  = fn( i+1, a[i], dp );
-    }
-
-    int op1 = 0;
-    if(prev > 1) op1 = fn( i+1, prev-1, dp );
-
-    int op2 = 0;
-    if(prev < m) op2 = fn( i+1, prev+1, dp );
-
-    int op3 = fn( i+1, prev, dp );
-
-    return dp[i][prev] = (op1+op2+op3)% MOD2;
+vi p2(32);
+void pre(){
+    p2[0] = 1;
+    l(i,1,32) p2[i] = 2 * p2[i-1]; 
 }
 
-signed main(){
-    cin >> n >> m;
-    a.resize(n);
-    l(i,0,n) cin >> a[i]; 
+int n,k;
+vi v(100005);
 
-    if( a[0] == 0){
-        int ans = 0;
-        l(i,1,m+1){
-            ans += fn(1,i, dp);
-            ans %= MOD2;
-        }
-        cout << ans;
+int fn(int i, int f, vvi &dp){
+    if( i == n) return 0;
+    if(dp[i][f] != -1e16) return dp[i][f];
+
+    if( (v[i]/p2[f]) >= 2*k ) return dp[i][f] = (v[i]/p2[f]) - k  + fn(i+1, f, dp);
+    else{
+        int op1 = (v[i]/p2[f]) - k + fn(i+1, f, dp);
+        int op2 = 0;
+        if(f < 31) op2 = (v[i]/p2[f+1]) + fn(i+1, f+1, dp);
+
+        return dp[i][f] = max(op1, op2);
     }
-    else cout << fn(1, a[0], dp);
+}
+
+
+signed main(){
+    pre();
+    fastio;
+    int t;
+    cin >> t;
+    while(t--){
+        cin >> n >> k;
+        l(i,0,n) cin >> v[i];
+        vvi dp(n, vi(32, -1e16));
+        cout << fn(0,0, dp) << endl;
+    }
     return 0;
 }

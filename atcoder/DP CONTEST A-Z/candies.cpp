@@ -24,43 +24,30 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int n,m;
-vi a;
-vvi dp(100005, vi (101, -1));
-
-int fn(int i, int prev, vvi &dp){
-    if( i == n) return 1;
-    if(dp[i][prev] != -1) return dp[i][prev];
-
-    if( a[i] != 0 ){
-        if( i-1 >= 0 && abs( a[i] - prev) > 1) return dp[i][prev] = 0;
-        return dp[i][prev]  = fn( i+1, a[i], dp );
-    }
-
-    int op1 = 0;
-    if(prev > 1) op1 = fn( i+1, prev-1, dp );
-
-    int op2 = 0;
-    if(prev < m) op2 = fn( i+1, prev+1, dp );
-
-    int op3 = fn( i+1, prev, dp );
-
-    return dp[i][prev] = (op1+op2+op3)% MOD2;
-}
+int n,k;
+vi a(101);
+vvi dp(101, vi(100005, 0));
 
 signed main(){
-    cin >> n >> m;
-    a.resize(n);
-    l(i,0,n) cin >> a[i]; 
+    cin >> n >> k;
+    l(i,0,n) cin >> a[i];
 
-    if( a[0] == 0){
-        int ans = 0;
-        l(i,1,m+1){
-            ans += fn(1,i, dp);
-            ans %= MOD2;
+    l(candy,0,a[0]+1) dp[0][candy] = 1;
+    l(i,1,100005)  dp[0][i] += dp[0][i-1];
+
+    for(int i = 1; i < n ; i++){
+        for(int candy = 0; candy < 100005; candy++){
+            dp[i][candy] += dp[i-1][candy];
+            if(candy - a[i] > 0) dp[i][candy] -= dp[i-1][candy-a[i]-1];
+            dp[i][candy] = (dp[i][candy] + MOD2) % MOD2;
         }
-        cout << ans;
+        for(int candy = 1; candy < 100005; candy++){
+            dp[i][candy] += dp[i][candy-1];
+            dp[i][candy] %= MOD2;
+        }
     }
-    else cout << fn(1, a[0], dp);
+
+    if(k > 0) cout << (dp[n-1][k] - dp[n-1][k-1] + MOD2) % MOD2;
+    else cout << 1;
     return 0;
 }

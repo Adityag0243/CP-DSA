@@ -24,43 +24,37 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int n,m;
-vi a;
-vvi dp(100005, vi (101, -1));
+int n,m,k;
+vvi nextcol(501, vi(500));
+vvi nextrow(501, vi(500));
+vector<vvi> dp(
+    500, vvi(
+        500, vi(
+            21, -2
+        )
+    )
+);
 
-int fn(int i, int prev, vvi &dp){
-    if( i == n) return 1;
-    if(dp[i][prev] != -1) return dp[i][prev];
-
-    if( a[i] != 0 ){
-        if( i-1 >= 0 && abs( a[i] - prev) > 1) return dp[i][prev] = 0;
-        return dp[i][prev]  = fn( i+1, a[i], dp );
-    }
-
-    int op1 = 0;
-    if(prev > 1) op1 = fn( i+1, prev-1, dp );
-
-    int op2 = 0;
-    if(prev < m) op2 = fn( i+1, prev+1, dp );
-
-    int op3 = fn( i+1, prev, dp );
-
-    return dp[i][prev] = (op1+op2+op3)% MOD2;
+int fn( int i, int j, int k){
+    if( k & 1) return -1;
+    if( k == 0) return 0;
+    if( dp[i][j][k] != -2) return dp[i][j][k];
+    int c = 1e15;
+    if( i-1 >= 0 ) c = min( c, 2*nextrow[i-1][j] + fn( i-1, j, k-2));  
+    if( i+1 <  n ) c = min( c, 2*nextrow[i][j]   + fn( i+1, j, k-2));  
+    if( j+1 <  m ) c = min( c, 2*nextcol[i][j]   + fn( i, j+1, k-2));  
+    if( j-1 >= 0 ) c = min( c, 2*nextcol[i][j-1] + fn( i, j-1, k-2));
+    
+    return dp[i][j][k] = c;
 }
 
-signed main(){
-    cin >> n >> m;
-    a.resize(n);
-    l(i,0,n) cin >> a[i]; 
 
-    if( a[0] == 0){
-        int ans = 0;
-        l(i,1,m+1){
-            ans += fn(1,i, dp);
-            ans %= MOD2;
-        }
-        cout << ans;
-    }
-    else cout << fn(1, a[0], dp);
+
+signed main(){
+    cin >> n >> m >> k;
+    l(i,0,n) l(j,0,m-1) cin >> nextcol[i][j];
+    l(i,0,n-1) l(j,0,m) cin >> nextrow[i][j];
+
+    l(i,0,n) l(j,0,m) cout << fn(i,j,k) << " \n"[j==m-1];
     return 0;
 }

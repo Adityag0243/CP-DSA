@@ -24,43 +24,27 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int n,m;
-vi a;
-vvi dp(100005, vi (101, -1));
-
-int fn(int i, int prev, vvi &dp){
-    if( i == n) return 1;
-    if(dp[i][prev] != -1) return dp[i][prev];
-
-    if( a[i] != 0 ){
-        if( i-1 >= 0 && abs( a[i] - prev) > 1) return dp[i][prev] = 0;
-        return dp[i][prev]  = fn( i+1, a[i], dp );
-    }
-
-    int op1 = 0;
-    if(prev > 1) op1 = fn( i+1, prev-1, dp );
-
-    int op2 = 0;
-    if(prev < m) op2 = fn( i+1, prev+1, dp );
-
-    int op3 = fn( i+1, prev, dp );
-
-    return dp[i][prev] = (op1+op2+op3)% MOD2;
-}
-
 signed main(){
-    cin >> n >> m;
-    a.resize(n);
-    l(i,0,n) cin >> a[i]; 
+    int n,k; cin >> n >> k;
+    vi v(n); l(i,0,n) cin >> v[i];
+    int pt1 = 0; 
+    int pt2 = 0;
+    int c = 0;
 
-    if( a[0] == 0){
-        int ans = 0;
-        l(i,1,m+1){
-            ans += fn(1,i, dp);
-            ans %= MOD2;
+    map<int, int> mp;
+    while(pt1 < n && pt2 < n){
+        if(mp.size() > k){
+            mp[v[pt1]]--;
+            if(mp.find(v[pt1]) != mp.end() && mp[v[pt1]] == 0) mp.erase(v[pt1]);
+            pt1++;
+        }else{
+            mp[v[pt2]]++;
+            if( mp.size() > k) continue;
+            c += (pt2 - pt1 + 1);
+            pt2++;
         }
-        cout << ans;
+        
     }
-    else cout << fn(1, a[0], dp);
+    cout << c ;
     return 0;
 }

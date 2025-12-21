@@ -24,43 +24,36 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int n,m;
-vi a;
-vvi dp(100005, vi (101, -1));
+int l,r;
 
-int fn(int i, int prev, vvi &dp){
-    if( i == n) return 1;
-    if(dp[i][prev] != -1) return dp[i][prev];
-
-    if( a[i] != 0 ){
-        if( i-1 >= 0 && abs( a[i] - prev) > 1) return dp[i][prev] = 0;
-        return dp[i][prev]  = fn( i+1, a[i], dp );
+int fn(int a, int b, int p){
+    if( p == -1){
+        if( l <= a && a <= r   && l <= b && b <= r ) return (a^b);
+        return 0ll;
     }
 
-    int op1 = 0;
-    if(prev > 1) op1 = fn( i+1, prev-1, dp );
+    int op1 = a + ( 1ll << p);
+    int op2 = b + ( 1ll << p);
 
-    int op2 = 0;
-    if(prev < m) op2 = fn( i+1, prev+1, dp );
+    int a1 = 0, a2 = 0;
 
-    int op3 = fn( i+1, prev, dp );
+    if( op1 <= r ){
+        a1 = fn( op1, b, p-1);
+    }
 
-    return dp[i][prev] = (op1+op2+op3)% MOD2;
+    if( op2 <= r ){
+        a2 = fn( a, op2, p-1);
+    }
+
+    if( a1 == 0 && a2 == 0 ){
+        return fn(a, b, p-1);
+    }
+
+    return max(a1, a2);
 }
 
 signed main(){
-    cin >> n >> m;
-    a.resize(n);
-    l(i,0,n) cin >> a[i]; 
-
-    if( a[0] == 0){
-        int ans = 0;
-        l(i,1,m+1){
-            ans += fn(1,i, dp);
-            ans %= MOD2;
-        }
-        cout << ans;
-    }
-    else cout << fn(1, a[0], dp);
+    cin >> l >> r;
+    cout << fn(0ll, 0ll, 61);
     return 0;
 }

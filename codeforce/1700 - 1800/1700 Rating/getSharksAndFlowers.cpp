@@ -24,43 +24,32 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int n,m;
-vi a;
-vvi dp(100005, vi (101, -1));
-
-int fn(int i, int prev, vvi &dp){
-    if( i == n) return 1;
-    if(dp[i][prev] != -1) return dp[i][prev];
-
-    if( a[i] != 0 ){
-        if( i-1 >= 0 && abs( a[i] - prev) > 1) return dp[i][prev] = 0;
-        return dp[i][prev]  = fn( i+1, a[i], dp );
-    }
-
-    int op1 = 0;
-    if(prev > 1) op1 = fn( i+1, prev-1, dp );
-
-    int op2 = 0;
-    if(prev < m) op2 = fn( i+1, prev+1, dp );
-
-    int op3 = fn( i+1, prev, dp );
-
-    return dp[i][prev] = (op1+op2+op3)% MOD2;
-}
-
 signed main(){
-    cin >> n >> m;
-    a.resize(n);
-    l(i,0,n) cin >> a[i]; 
-
-    if( a[0] == 0){
-        int ans = 0;
-        l(i,1,m+1){
-            ans += fn(1,i, dp);
-            ans %= MOD2;
-        }
-        cout << ans;
+    int n,p; 
+    cin >> n >> p;
+    double ans = 0;
+    vector<double> pb(n);
+    l(i,0,n){
+        int l,r; cin >> l >> r;
+        double c = r/p - (l-1)/p;
+        pb[i] = (c/(r-l+1));
     }
-    else cout << fn(1, a[0], dp);
+
+    // l(i,0,n) cout << pb[i] << " ";
+    // cout << endl;
+
+    l(i,0,n){
+        double nxt = pb[((i+1) % n)];
+
+        //  chosen number has p in itself doesn't matter if next one include or not
+        ans += pb[i];
+
+        // chosen number doesn't have p in itself ask nxt to have it 
+        ans += (1-pb[i]) * nxt;
+
+        // in above both case system will add up 2000 in itself 1000 to itself 1000 to next one
+    }
+
+    cout << fixed << setprecision(10) << ans*2000;
     return 0;
 }

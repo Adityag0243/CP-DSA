@@ -24,43 +24,47 @@ using namespace std;
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int n,m;
-vi a;
-vvi dp(100005, vi (101, -1));
-
-int fn(int i, int prev, vvi &dp){
-    if( i == n) return 1;
-    if(dp[i][prev] != -1) return dp[i][prev];
-
-    if( a[i] != 0 ){
-        if( i-1 >= 0 && abs( a[i] - prev) > 1) return dp[i][prev] = 0;
-        return dp[i][prev]  = fn( i+1, a[i], dp );
-    }
-
-    int op1 = 0;
-    if(prev > 1) op1 = fn( i+1, prev-1, dp );
-
-    int op2 = 0;
-    if(prev < m) op2 = fn( i+1, prev+1, dp );
-
-    int op3 = fn( i+1, prev, dp );
-
-    return dp[i][prev] = (op1+op2+op3)% MOD2;
-}
 
 signed main(){
-    cin >> n >> m;
-    a.resize(n);
-    l(i,0,n) cin >> a[i]; 
+    fastio;
+    int t;
+    cin >> t;
+    while(t--){
+        int n;
+        cin >> n;
+        vector<int> v1(n+1),v2(n+1);
+        for(int i = 1; i <= n ; i++) cin >> v1[i]; 
+        for(int i = 1; i <= n ; i++) cin >> v2[i]; 
 
-    if( a[0] == 0){
-        int ans = 0;
-        l(i,1,m+1){
-            ans += fn(1,i, dp);
-            ans %= MOD2;
+        vector<int> pmn(n+1, 2e9), pmx(n+1, -2e9);
+        for(int i = 1; i <= n; i++ ){
+            pmn[i] = min(v1[i], pmn[i-1]);
+            pmx[i] = max(v1[i], pmx[i-1]);
         }
-        cout << ans;
+
+        vector<int> smn(n+2, 2e9), smx(n+2, -2e9);
+        for(int i = n; i >= 1; i--){
+            smn[i] = min(v2[i], smn[i+1]);
+            smx[i] = max(v2[i], smx[i+1]);
+        }
+
+        vector<int> lrs(2*n+1, 2*n+1);
+        
+        for(int i = 1; i <= n; i++){
+            int mn = min( pmn[i], smn[i] );
+            int mx = max( pmx[i], smx[i] );
+            lrs[mn] = min( lrs[mn], mx );
+        }
+        for(int i = 2*n-1; i >= 1; i--){
+            lrs[i] = min(lrs[i], lrs[i+1]); // [1,10] [3,8...] ==> [1,8] [2,8] [3,8]
+        }
+
+        int ans = 0;
+        for(int i = 1; i <= 2*n; i++){
+            ans += ( (2*n - lrs[i] + 1) );
+        }
+
+        cout << ans << endl;        
     }
-    else cout << fn(1, a[0], dp);
     return 0;
 }

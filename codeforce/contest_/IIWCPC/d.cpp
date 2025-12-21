@@ -16,51 +16,44 @@ using namespace std;
 #define srt(arr)        sort(arr.begin(), arr.end())
 #define rev(arr)        reverse(all(arr))
 #define MOD2            1000000007
-#define x               first
-#define y               second
+// #define x               first
+// #define y               second
 #define gcd(a,b)        __gcd((a),(b))
 #define lcm(a,b)        ((a)*(b)) / gcd((a),(b))
 #define l(i,st,n)       for(int i=st;i<n;i++)
 #define rl(i,st,n)      for(int i=n-1;i>=st;i--)
 #define fastio          ios_base::sync_with_stdio(false); cin.tie(nullptr); cout.tie(nullptr);
 
-int n,m;
-vi a;
-vvi dp(100005, vi (101, -1));
+int n;
+vi adj[100005];
+vi depth(100005);
 
-int fn(int i, int prev, vvi &dp){
-    if( i == n) return 1;
-    if(dp[i][prev] != -1) return dp[i][prev];
-
-    if( a[i] != 0 ){
-        if( i-1 >= 0 && abs( a[i] - prev) > 1) return dp[i][prev] = 0;
-        return dp[i][prev]  = fn( i+1, a[i], dp );
+void dfs(int u, int p){
+    for(int v : adj[u]){
+        if( v == p) continue;
+        depth[v] = depth[u]+1;
+        dfs(v);
     }
-
-    int op1 = 0;
-    if(prev > 1) op1 = fn( i+1, prev-1, dp );
-
-    int op2 = 0;
-    if(prev < m) op2 = fn( i+1, prev+1, dp );
-
-    int op3 = fn( i+1, prev, dp );
-
-    return dp[i][prev] = (op1+op2+op3)% MOD2;
 }
 
 signed main(){
-    cin >> n >> m;
-    a.resize(n);
-    l(i,0,n) cin >> a[i]; 
-
-    if( a[0] == 0){
-        int ans = 0;
-        l(i,1,m+1){
-            ans += fn(1,i, dp);
-            ans %= MOD2;
-        }
-        cout << ans;
+    fastio;
+    cin >> n;
+    int u,v;
+    l(i,1,n){
+        cin >> u >> v;
+        adj[u].pb(v);
+        adj[v].pb(u);
     }
-    else cout << fn(1, a[0], dp);
+
+    depth[1] = 0;
+    dfs(1, -1);
+    double ans = 0;
+    double one = 1;
+    l(i,1,n+1){
+        ans += one / (depth[i]+1);
+    }
+
+    cout << fixed <<setprecision(10) << ans;
     return 0;
 }
