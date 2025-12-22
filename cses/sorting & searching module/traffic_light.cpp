@@ -8,8 +8,8 @@ int main(){
     pos.insert(0);
     pos.insert(x);
 
-    multiset<int> ms;
-    ms.insert(x);
+    priority_queue< tuple<int,int,int> > pq;
+    pq.push({ x, 0, x});
 
     while( n-- ){
         int a; cin >> a;
@@ -17,17 +17,20 @@ int main(){
         int right = *itr;
         int left = *prev(itr);
 
-
-        ms.erase(ms.find(right - left));
-        ms.insert(right- a);
-        ms.insert(a - left);
+        pq.push({right- a, a, right});
+        pq.push({a - left, left, a});
         pos.insert(a);
-        if( a - 1 == *pos.begin()) pos.erase(*pos.begin());
-        if( a + 1 == *pos.rbegin()) pos.erase(*pos.rbegin());
+        
+        while(true){
+            auto [len, left, right] = pq.top();
+            auto it2 = pos.upper_bound(left);
+            if(it2 != pos.end() && *it2 == right){
+                cout << len << " ";
+                break;
+            }
+            pq.pop(); 
+        }
 
-        if(pos.find(a+1) != pos.end()  && pos.find(a-1) != pos.end()) pos.erase(a);
-
-        cout << *ms.rbegin() << " ";
     }
     
 }
